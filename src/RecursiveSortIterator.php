@@ -6,7 +6,7 @@ class RecursiveSortIterator extends SortIterator implements \RecursiveIterator
 {
     protected $children = [];
 
-    public function __construct(\RecursiveIterator $iterator, callable $callback = self::SORT_CURRENT, int $direction = self::SORT_ASC, int $flags = 0)
+    public function __construct(\RecursiveIterator $iterator, int $direction = self::SORT_ASC, int $flags = 0, callable $callback = self::SORT_CURRENT)
     {
         parent::__construct($iterator, $callback, $direction, $flags);
     }
@@ -26,6 +26,6 @@ class RecursiveSortIterator extends SortIterator implements \RecursiveIterator
 
     public function getChildren()
     {
-        return new self($this->children[$this->key()], $this->callback, self::SORT_DESC, $this->flags);
+        return new self($this->children[$this->key()], self::SORT_DESC, $this->flags, $this->callback);
     }
 }

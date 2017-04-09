@@ -17,7 +17,7 @@ class SortIterator extends \SplHeap
     protected $count = 0;
     protected $nullCurrent;
 
-    public function __construct(\Traversable $iterator, callable $callback = self::SORT_CURRENT, int $direction = self::SORT_ASC, int $flags = 0)
+    public function __construct(\Traversable $iterator, int $direction = self::SORT_ASC, int $flags = 0, callable $callback = self::SORT_CURRENT)
     {
         $this->iterator = $iterator;
         $callback = \Closure::fromCallable($callback);

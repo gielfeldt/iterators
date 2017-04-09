@@ -6,7 +6,7 @@ class RecursiveUniqueIterator extends UniqueIterator implements \RecursiveIterat
 {
     use MultipleTypeHintingTrait;
 
-    public function __construct(\Traversable $iterator, callable $callback = self::UNIQUE_CURRENT, int $flags = 0)
+    public function __construct(\Traversable $iterator, int $flags = 0, callable $callback = self::UNIQUE_CURRENT)
     {
         $this->checkTypeHinting($iterator, \RecursiveIterator::class, \IteratorAggregate::class);
         $iterator = $iterator instanceof \IteratorAggregate ? $iterator->getIterator() : $iterator;
@@ -22,6 +22,6 @@ class RecursiveUniqueIterator extends UniqueIterator implements \RecursiveIterat
 
     public function getChildren()
     {
-        return new self($this->getInnerIterator()->getChildren(), $this->callback, $this->flags);
+        return new self($this->getInnerIterator()->getChildren(), $this->flags, $this->callback);
     }
 }

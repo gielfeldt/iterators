@@ -7,10 +7,11 @@ class UniqueIterator extends \FilterIterator
     protected $found;
 
     const ASSUME_SORTED = 1;
-    const UNIQUE_CURRENT = __CLASS__ . '::filterCurrent';
-    const UNIQUE_KEY = __CLASS__. '::filterKey';
+    const REINDEX = 2;
+    const UNIQUE_CURRENT = [__CLASS__, 'filterCurrent'];
+    const UNIQUE_KEY = [__CLASS__, 'filterKey'];
 
-    public function __construct(\Traversable $iterator, callable $callback = self::UNIQUE_CURRENT, int $flags = 0)
+    public function __construct(\Traversable $iterator, int $flags = 0, callable $callback = self::UNIQUE_CURRENT)
     {
         parent::__construct($iterator);
         $this->callback = \Closure::fromCallable($callback);
