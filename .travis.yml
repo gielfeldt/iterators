@@ -1,0 +1,27 @@
+language: php
+php:
+  - 5.3
+  #- 5.4
+  #- 5.5
+  #- 5.6
+
+sudo: false
+
+install: travis_retry composer install --no-interaction --prefer-source
+
+before_script:
+ - if [ "$TRAVIS_PHP_VERSION" = "5.1" ]; then export COVERAGE=--coverage-clover=build/logs/clover.xml; else export COVERAGE=; fi
+# - if ( test ! -z $COVERAGE ); then composer require codeclimate/php-test-reporter:@dev --dev; fi
+
+script:
+ - phpunit $COVERAGE
+
+after_script:
+# - if ( test ! -z $COVERAGE ); then wget https://scrutinizer-ci.com/ocular.phar; fi
+# - if ( test ! -z $COVERAGE ); then php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml ;fi
+# - if ( test ! -z $COVERAGE ); then vendor/bin/test-reporter --stdout > build/logs/clover.json; fi
+# - 'if ( test ! -z $COVERAGE ); then curl -X POST -d @build/logs/clover.json -H "Content-Type: application/json" -H "User-Agent: Code Climate (PHP Test Reporter v1.0.1-dev)"  https://codeclimate.com/test_reports; fi'
+# - if ( test ! -z $COVERAGE ); then vendor/bin/coveralls -v; fi
+
+notifications:
+  email: false
