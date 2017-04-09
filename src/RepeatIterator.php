@@ -16,6 +16,16 @@ class RepeatIterator extends \IteratorIterator
         $this->count = $count;
     }
 
+    public function getIterationCount()
+    {
+        return $this->count;
+    }
+
+    public function getCurrentIteration()
+    {
+        return $this->currentIteration;
+    }
+
     public function rewind()
     {
         $this->currentIteration = 0;
