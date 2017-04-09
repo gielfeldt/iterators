@@ -33,12 +33,12 @@ class DiffIterator extends \FilterIterator
         return true;
 	}
 
-    protected static function diffCurrent($iterator, $key, $value)
+    public static function diffCurrent($iterator, $key, $value)
     {
         return $iterator->current() == $value;
     }
 
-    protected static function diffKey($iterator, $key, $value)
+    public static function diffKey($iterator, $key, $value)
     {
         return $iterator->key() == $key;
     }
