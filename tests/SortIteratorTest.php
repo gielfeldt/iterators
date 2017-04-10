@@ -141,4 +141,12 @@ class SortIteratorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $iterator->last(), 'Iterator was not sorted correctly.');
     }
 
+    public function testCount()
+    {
+        $input = ['test1' => -2, 'test3' => 0, 'test2' => 3];
+
+        $iterator = new SortIterator(new \ArrayIterator($input), SortIterator::SORT_DESC, SortIterator::SORT_REINDEX, [$this, 'compareBySqare']);
+        $this->assertEquals(3, $iterator->count(), 'Iterator was not sorted correctly.');
+    }
+
 }

@@ -108,9 +108,4 @@ class SortIterator extends \IteratorIterator implements \Countable
     {
         return $a->key <=> $b->key;
     }
-
-    static public function sortSplFileInfo($a, $b)
-    {
-        return $a->current->getPathname() <=> $b->current->getPathname();
-    }
 }
