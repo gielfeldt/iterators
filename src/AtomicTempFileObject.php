@@ -9,7 +9,6 @@ class AtomicTempFileObject extends \SplFileObject
     const PERSIST_UNCHANGED = 3;
 
     protected $destinationRealPath;
-    protected $mTime = false;
     protected $persist = 0;
     protected $onPersistCallback;
     protected $onDiscardCallback;
@@ -23,16 +22,18 @@ class AtomicTempFileObject extends \SplFileObject
         $tempDir = dirname($filename);
         if (!file_exists($tempDir)) {
             if (!@mkdir($tempDir, $mode, true)) {
+                // @codeCoverageIgnoreStart
                 $last_error = error_get_last();
                 throw new \RuntimeException(sprintf("Could create directory %s - message: %s",
                     $tempDir, $last_error['message']
                 ));
+                // @codeCoverageIgnoreEnd
             }
         }
         $tempPrefix = basename($filename) . '.AtomicTempFileObject.';
         $this->destinationRealPath = $filename;
-        $this->onCompare([$this, 'compare']);
         parent::__construct(tempnam($tempDir, $tempPrefix), "w+");
+        $this->onCompare([self::class, 'compare']);
     }
 
     /**
@@ -47,18 +48,6 @@ class AtomicTempFileObject extends \SplFileObject
     }
 
     /**
-     * Set modified time stamp of persistent file.
-     *
-     * @param int $mTime
-     *   File modification time in unix timestamp.
-     */
-    public function setModifiedTime($mTime): AtomicTempFileObject
-    {
-        $this->mTime = $mTime;
-        return $this;
-    }
-
-    /**
      * Move temp file into the destination upon object desctruction.
      */
     public function persistOnClose($persist = self::PERSIST): AtomicTempFileObject
@@ -69,34 +58,28 @@ class AtomicTempFileObject extends \SplFileObject
 
     public function onPersist(callable $callback)
     {
-        $this->onPersistCallback = \Closure::fromCallback($callback);
+        $this->onPersistCallback = \Closure::fromCallable($callback);
     }
 
     public function onDiscard(callable $callback)
     {
-        $this->onDiscardCallback = \Closure::fromCallback($callback);
+        $this->onDiscardCallback = \Closure::fromCallable($callback);
     }
 
     public function onCompare(callable $callback)
     {
-        $this->onCompareCallback = \Closure::fromCallback($callback);
+        $this->onCompareCallback = \Closure::fromCallable($callback);
     }
 
     private function doPersist()
     {
-        if ($this->mTime !== false) {
-            if (!@touch($this->getRealPath(), $this->mTime)) {
-                $last_error = error_get_last();
-                throw new \RuntimeException(sprintf("Could not set modified time on %s to %d - message: %s",
-                    $this->getRealPath(), $this->mTime, $last_error['message']
-                ));
-            }
-        }
         if (!@rename($this->getRealPath(), $this->destinationRealPath)) {
+            // @codeCoverageIgnoreStart
             $last_error = error_get_last();
             throw new \RuntimeException(sprintf("Could not move %s to %s - message: %s",
                 $this->getRealPath(), $this->destinationRealPath, $last_error['message']
             ));
+            // @codeCoverageIgnoreEnd
         }
         if ($this->onPersistCallback) {
             ($this->onPersistCallback)($this);
@@ -106,10 +89,12 @@ class AtomicTempFileObject extends \SplFileObject
     private function doDiscard()
     {
         if (!@unlink($this->getRealPath())) {
+            // @codeCoverageIgnoreStart
             $last_error = error_get_last();
             throw new \RuntimeException(sprintf("Could not remove %s - message: %s",
                 $this->getRealPath(), $last_error['message']
             ));
+            // @codeCoverageIgnoreEnd
         }
         if ($this->onDiscardCallback) {
             ($this->onDiscardCallback)($this);
@@ -139,7 +124,9 @@ class AtomicTempFileObject extends \SplFileObject
             $this->doDiscard();
         }
         else {
+            // @codeCoverageIgnoreStart
             trigger_error("Temp file left on device: " . $this->getRealPath(), E_USER_WARNING);
+            // @codeCoverageIgnoreEnd
         }
     }
 
@@ -190,16 +177,16 @@ class AtomicTempFileObject extends \SplFileObject
      * @return bool
      *   True if the contents of this file matches the contents of $filename.
      */
-    private function compare(): bool
+    private static function compare($tempFile): bool
     {
-        $filename = $this->destinationRealPath;
+        $filename = $tempFile->destinationRealPath;
         if (!file_exists($filename)) {
             return false;
         }
 
         // This is a temp file opened for writing and truncated to begin with,
         // so we assume that the current position is the size of the new file.
-        $pos = $this->ftell();
+        $pos = $tempFile->ftell();
 
         $file = new \SplFileObject($filename, 'r');
         if ($pos <> $file->getSize()) {
@@ -208,16 +195,16 @@ class AtomicTempFileObject extends \SplFileObject
 
         // Rewind this temp file and compare it with the specified file.
         $identical = true;
-        $this->fseek(0);
+        $tempFile->fseek(0);
         while(!$file->eof()) {
-            if($file->fread(8192) != $this->fread(8192)) {
+            if($file->fread(8192) != $tempFile->fread(8192)) {
                 $identical = false;
                 break;
             }
         }
 
         // Reset file pointer to end of file.
-        $this->fseek($pos);
+        $tempFile->fseek($pos);
         return $identical;
     }
 }
