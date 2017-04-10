@@ -119,4 +119,26 @@ class SortIteratorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, iterator_to_array($iterator), 'Iterator was not sorted correctly.');
     }
 
+    public function testMinMaxFirstLastAsc()
+    {
+        $input = ['test1' => -2, 'test3' => 0, 'test2' => 3];
+
+        $iterator = new SortIterator(new \ArrayIterator($input), SortIterator::SORT_ASC, SortIterator::SORT_REINDEX, [$this, 'compareBySqare']);
+        $this->assertEquals(0, $iterator->min(), 'Iterator was not sorted correctly.');
+        $this->assertEquals(3, $iterator->max(), 'Iterator was not sorted correctly.');
+        $this->assertEquals(0, $iterator->first(), 'Iterator was not sorted correctly.');
+        $this->assertEquals(3, $iterator->last(), 'Iterator was not sorted correctly.');
+    }
+
+    public function testMinMaxDesc()
+    {
+        $input = ['test1' => -2, 'test3' => 0, 'test2' => 3];
+
+        $iterator = new SortIterator(new \ArrayIterator($input), SortIterator::SORT_DESC, SortIterator::SORT_REINDEX, [$this, 'compareBySqare']);
+        $this->assertEquals(0, $iterator->min(), 'Iterator was not sorted correctly.');
+        $this->assertEquals(3, $iterator->max(), 'Iterator was not sorted correctly.');
+        $this->assertEquals(3, $iterator->first(), 'Iterator was not sorted correctly.');
+        $this->assertEquals(0, $iterator->last(), 'Iterator was not sorted correctly.');
+    }
+
 }

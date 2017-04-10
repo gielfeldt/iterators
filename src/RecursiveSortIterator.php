@@ -8,15 +8,15 @@ class RecursiveSortIterator extends SortIterator implements \RecursiveIterator
 
     public function __construct(\RecursiveIterator $iterator, int $direction = self::SORT_ASC, int $flags = 0, callable $callback = self::SORT_CURRENT)
     {
-        parent::__construct($iterator, $callback, $direction, $flags);
+        parent::__construct($iterator, $direction, $flags, $callback);
     }
 
-    protected function addElement($key, $value)
+    protected function generateElement($key, $value, $iterator)
     {
-        if ($this->iterator->hasChildren()) {
-            $this->children[$key] = $this->iterator->getChildren();
+        if ($iterator->hasChildren()) {
+            $this->children[$key] = $iterator->getChildren();
         }
-        parent::addElement($key, $value);
+        parent::generateElement($key, $value, $iterator);
     }
 
     public function hasChildren()
@@ -26,6 +26,6 @@ class RecursiveSortIterator extends SortIterator implements \RecursiveIterator
 
     public function getChildren()
     {
-        return new self($this->children[$this->key()], self::SORT_DESC, $this->flags, $this->callback);
+        return new self($this->children[$this->key()], $this->direction, $this->flags, $this->callback);
     }
 }
