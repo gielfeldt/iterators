@@ -40,7 +40,7 @@ class AtomicTempFileObjects
     public function getFile($fileName): AtomicTempFileObject
     {
         if (!$this->isFileOpen($fileName)) {
-            throw new \Exception("File: $fileName not opened!");
+            throw new \RuntimeException("File: $fileName not opened!");
         }
         return $this->files[$fileName];
     }
@@ -70,7 +70,7 @@ class AtomicTempFileObjects
      */
     public function openFile($fileName): AtomicTempFileObject {
         if ($this->isFileOpen($fileName)) {
-            throw new \Exception("File: $fileName already opened!");
+            throw new \RuntimeException("File: $fileName already opened!");
         }
         $this->files[$fileName] = new AtomicTempFileObject($fileName);
         return $this->files[$fileName];
@@ -81,11 +81,11 @@ class AtomicTempFileObjects
      *
      * @param AtomicTempFileObject $file
      */
-    public function addFile($file): AtomicTempFileObject
+    public function addFile($file): AtomicTempFileObjects
     {
         $realPath = $file->getDestinationRealPath();
         if ($this->isFileOpen($realPath)) {
-            throw new \Exception("File: " . $realPath . " already opened!");
+            throw new \RuntimeException("File: " . $realPath . " already opened!");
         }
         $this->files[$realPath] = $file;
         return $this;

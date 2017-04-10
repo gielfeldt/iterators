@@ -2,6 +2,7 @@
 namespace Gielfeldt\Tests\Iterators;
 
 use Gielfeldt\Iterators\CsvFileObject;
+use Gielfeldt\Iterators\AtomicTempFileObject;
 use Gielfeldt\Iterators\AtomicTempFileObjects;
 
 class AtomicTempFileObjectsTest extends IteratorsTestBase
@@ -102,5 +103,116 @@ class AtomicTempFileObjectsTest extends IteratorsTestBase
         $expected = file_get_contents($this->fixturesPath . '/csvfile5-result-2');
         $result = file_get_contents($dirname . '/csvfile5-result-2');
         $this->assertEquals($expected, $result, 'File was not split correctly.');
+    }
+
+    public function testOpenFile()
+    {
+        $destFiles = new AtomicTempFileObjects();
+
+        $filename = $this->tempnam();
+        $newFile = $destFiles->openFile($filename);
+        $destFiles->persistOnClose(AtomicTempFileObject::DISCARD);
+
+        $this->assertInstanceOf(AtomicTempFileObject::class, $newFile, 'Temp file not properly opened.');
+
+        $filename = $this->tempnam();
+        $anotherNewFile = $destFiles->openFile($filename);
+        $destFiles->persistOnClose(AtomicTempFileObject::DISCARD);
+
+        $this->assertInstanceOf(AtomicTempFileObject::class, $anotherNewFile, 'Temp file not properly opened.');
+    }
+
+    public function testOpenFileException()
+    {
+        $destFiles = new AtomicTempFileObjects();
+
+        $filename = $this->tempnam();
+        $newFile = $destFiles->openFile($filename);
+        $destFiles->persistOnClose(AtomicTempFileObject::DISCARD);
+
+        $this->assertInstanceOf(AtomicTempFileObject::class, $newFile, 'Temp file not properly opened.');
+
+        $this->expectException(\RuntimeException::class);
+        $sameNewFile = $destFiles->openFile($filename);
+    }
+
+    public function testIsFileOpen()
+    {
+        $destFiles = new AtomicTempFileObjects();
+
+        $filename = $this->tempnam();
+        $newFile = $destFiles->openFile($filename);
+        $destFiles->persistOnClose(AtomicTempFileObject::DISCARD);
+
+        $this->assertTrue($destFiles->isFileOpen($filename), 'Temp file not properly opened.');
+        $this->assertFalse($destFiles->isFileOpen($filename . '.notopened'), 'Temp file open when it should not be?');
+    }
+
+    public function testAddFile()
+    {
+        $destFiles = new AtomicTempFileObjects();
+
+        $filename = $this->tempnam();
+        $destFiles->addFile(new AtomicTempFileObject($filename));
+        $destFiles->persistOnClose(AtomicTempFileObject::DISCARD);
+
+        $filename = $this->tempnam();
+        $destFiles->addFile(new AtomicTempFileObject($filename));
+        $destFiles->persistOnClose(AtomicTempFileObject::DISCARD);
+    }
+
+    public function testAddFileException()
+    {
+        $destFiles = new AtomicTempFileObjects();
+
+        $filename = $this->tempnam();
+        $file = new AtomicTempFileObject($filename);
+
+        $destFiles->addFile($file);
+        $destFiles->persistOnClose(AtomicTempFileObject::DISCARD);
+
+        $this->expectException(\RuntimeException::class);
+        $destFiles->addFile($file);
+    }
+
+    public function testGetFile()
+    {
+        $destFiles = new AtomicTempFileObjects();
+
+        $filename = $this->tempnam();
+        $destFiles->openFile($filename);
+        $destFiles->persistOnClose(AtomicTempFileObject::DISCARD);
+
+        $file = $destFiles->getFile($filename);
+        $this->assertInstanceOf(AtomicTempFileObject::class, $file, 'Temp file not properly opened.');
+        $this->assertEquals($filename, $file->getDestinationRealPath());
+    }
+
+    public function testGetFileException()
+    {
+        $destFiles = new AtomicTempFileObjects();
+
+        $filename = $this->tempnam();
+        $destFiles->openFile($filename);
+        $destFiles->persistOnClose(AtomicTempFileObject::DISCARD);
+
+        $this->expectException(\RuntimeException::class);
+        $file = $destFiles->getFile($filename . '.notopened');
+    }
+
+    public function testGetFiles()
+    {
+        $destFiles = new AtomicTempFileObjects();
+
+        $filename1 = $this->tempnam();
+        $destFiles->openFile($filename1);
+        $destFiles->persistOnClose(AtomicTempFileObject::DISCARD);
+
+        $filename2 = $this->tempnam();
+        $destFiles->openFile($filename2);
+        $destFiles->persistOnClose(AtomicTempFileObject::DISCARD);
+
+        $files = $destFiles->getFiles();
+        $this->assertEquals([$filename1, $filename2], array_keys($files), 'Temp files not properly opened.');
     }
 }

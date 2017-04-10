@@ -153,16 +153,13 @@ class AtomicTempFileObject extends \SplFileObject
      */
     public static function file_put_contents($filename, $data, $flags = 0)
     {
-        if ($flags & USE_INCLUDE_PATH) {
+        if ($flags & FILE_USE_INCLUDE_PATH) {
             $file = (new \SplFileInfo($filename))->openFile('r', true);
             if ($file) {
                 $filename = $file->getRealPath();
             }
         }
         $tempFile = new static($filename);
-        if ($flags & LOCK_EX) {
-            $tempFile->flock(LOCK_EX);
-        }
         $tempFile->fwrite($data);
         $tempFile->persistOnClose();
         unset($tempFile);
@@ -177,9 +174,9 @@ class AtomicTempFileObject extends \SplFileObject
      * @return bool
      *   True if the contents of this file matches the contents of $filename.
      */
-    private static function compare($tempFile): bool
+    private static function compare(AtomicTempFileObject $tempFile): bool
     {
-        $filename = $tempFile->destinationRealPath;
+        $filename = $tempFile->getDestinationRealPath();
         if (!file_exists($filename)) {
             return false;
         }

@@ -200,4 +200,20 @@ class AtomicTempFileObjectTest extends IteratorsTestBase
         $this->assertEquals($expected, $result, 'File was not processed correctly.');
     }
 
+    public function testFilePutContents()
+    {
+        $filename = $this->tempnam();
+        AtomicTempFileObject::file_put_contents($filename, "TEST1");
+
+        $this->assertEquals(5, filesize($filename), 'File is not correctly persisted - size.');
+        $this->assertEquals("TEST1", file_get_contents($filename), 'File is not correctly persisted - content.');
+
+        $old_include_path = set_include_path(dirname($filename));
+        AtomicTempFileObject::file_put_contents(basename($filename), "TEST2", FILE_USE_INCLUDE_PATH);
+        set_include_path($old_include_path);
+
+        $this->assertEquals(5, filesize($filename), 'File is not correctly persisted - size.');
+        $this->assertEquals("TEST2", file_get_contents($filename), 'File is not correctly persisted - content.');
+    }
+
 }
