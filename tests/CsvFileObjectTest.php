@@ -90,9 +90,4 @@ class CsvFileObjectTest extends IteratorsTestBase
         $this->expectExceptionMessageRegExp("/Can't seek file .* to negative line -1/");
         $csvFileObject->seek(-1);
     }
-
-    public function testCsvJsonSerialize()
-    {
-
-    }
 }
