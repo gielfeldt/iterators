@@ -69,9 +69,9 @@ class GlobIterator extends \IteratorIterator
         parent::__construct($fIterator);
     }
 
-    public function sortSplFileInfo($cmpA, $cmpA)
+    public function sortSplFileInfo($cmpA, $cmpB)
     {
-        return $cmpA->current->getPathname() <=> $cmpA->current->getPathname();
+        return $cmpA->current->getPathname() <=> $cmpB->current->getPathname();
     }
 
     /**
