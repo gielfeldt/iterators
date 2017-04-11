@@ -48,7 +48,7 @@ int(3)
 ```
 
 #### DiffIterator
-Compares two iterators. Similar to array_diff. Possible to set a custom compare
+Compares two iterators. Similar to array_diff(). Possible to set a custom compare
 function.
 ```php
 use Gielfeldt\Iterators\DiffIterator;
@@ -75,7 +75,7 @@ array(2) {
 ```
 
 #### FlipIterator
-Similar to array_flip. However, iterators can have non-unique keys. Be aware of
+Similar to array_flip(). However, iterators can have non-unique keys. Be aware of
 this when using iterator_to_array();
 
 ```php
