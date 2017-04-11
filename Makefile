@@ -4,10 +4,10 @@ clean:
 	rm -rf build/artifacts/*
 
 test:
-	phpunit --testsuite=iterators $(TEST)
+	vendor/bin/phpunit --testsuite=iterators $(TEST)
 
 coverage:
-	phpunit --testsuite=iterators --coverage-html=build/artifacts/coverage $(TEST)
+	vendor/bin/phpunit --testsuite=iterators --coverage-html=build/artifacts/coverage $(TEST)
 
 coverage-show:
 	open build/artifacts/coverage/index.html
