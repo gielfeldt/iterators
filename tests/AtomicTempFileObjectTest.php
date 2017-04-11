@@ -71,21 +71,22 @@ class AtomicTempFileObjectTest extends IteratorsTestBase
         $file->persistOnClose();
         unset($file);
 
-        $originalINode = fileinode($filename);
+        $originalMtime = filemtime($filename);
+        usleep(1000 * 1500);
 
         $file = new AtomicTempFileObject($filename);
         $file->fwrite("TEST1");
         $file->persistOnClose(AtomicTempFileObject::PERSIST_UNCHANGED);
         unset($file);
 
-        $this->assertNotEquals($originalINode, fileinode($filename), 'File was not correctly persisted.');
+        $this->assertNotEquals($originalMtime, filemtime($filename), 'File was not correctly persisted.');
 
         $file = new AtomicTempFileObject($filename);
         $file->fwrite("TEST2");
         $file->persistOnClose();
         unset($file);
 
-        $this->assertNotEquals($originalINode, fileinode($filename), 'File was not correctly persisted.');
+        $this->assertNotEquals($originalMtime, filemtime($filename), 'File was not correctly persisted.');
     }
 
     public function testDiscard()
@@ -97,14 +98,15 @@ class AtomicTempFileObjectTest extends IteratorsTestBase
         $file->persistOnClose();
         unset($file);
 
-        $originalINode = fileinode($filename);
+        $originalMtime = filemtime($filename);
+        usleep(1000 * 1500);
 
         $file = new AtomicTempFileObject($filename);
         $file->fwrite("TEST2");
         $file->persistOnClose(AtomicTempFileObject::DISCARD);
         unset($file);
 
-        $this->assertEquals($originalINode, fileinode($filename), 'File was not correctly discarded.');
+        $this->assertEquals($originalMtime, filemtime($filename), 'File was not correctly discarded.');
     }
 
     /**
