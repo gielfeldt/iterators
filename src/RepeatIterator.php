@@ -41,8 +41,8 @@ class RepeatIterator extends \IteratorIterator
         if (!$valid) {
             $this->currentIteration++;
             if ($this->currentIteration < $this->count) {
-                $valid = true;
                 parent::rewind();
+                return $this->valid();
             }
         }
         return $valid;
