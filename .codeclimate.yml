@@ -15,6 +15,10 @@ engines:
     checks:
       Controversial/CamelCaseParameterName:
         enabled: false
+      Controversial/CamelCaseVariableName:
+        enabled: false
+      Controversial/CamelCaseMethodName:
+        enabled: false
       CleanCode/BooleanArgumentFlag:
         enabled: false
       CleanCode/StaticAccess:
