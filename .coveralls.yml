@@ -1,3 +1,0 @@
-service_name: circleci
-coverage_clover: build/logs/clover.xml
-json_path: build/logs/clover.json
