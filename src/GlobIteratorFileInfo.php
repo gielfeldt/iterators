@@ -3,33 +3,33 @@
 namespace Gielfeldt\Iterators;
 
 class GlobIteratorFileInfo extends \SplFileInfo {
-    private static $id;
+    private static $iteratorId;
     private static $paths = [];
 
-    public function __construct($file_name) {
-        $file_name = $this->processFilename($file_name);
-        parent::__construct($file_name);
+    public function __construct($fileName) {
+        $fileName = $this->processFilename($fileName);
+        parent::__construct($fileName);
     }
 
-    public function getId()
+    public function getIteratorId()
     {
-        return self::$id;
+        return self::$iteratorId;
     }
 
-    public static function setId($id)
+    public static function setIteratorId($iteratorId)
     {
-        self::$id = $id;
+        self::$iteratorId = $iteratorId;
     }
 
-    public static function setPath($id, $path, $realPath)
+    public static function setPath($iteratorId, $path, $realPath)
     {
-        self::$paths[$id] = [$path, $realPath];
+        self::$paths[$iteratorId] = [$path, $realPath];
     }
 
-    protected function processFilename($file_name) {
-        $id = self::getId();
-        $pathName = self::$paths[$id][0] . substr($file_name, strlen(self::$paths[$id][1]));
-        if (!isset(self::$paths[$id][0])) {
+    protected function processFilename($fileName) {
+        $iteratorId = self::getIteratorId();
+        $pathName = self::$paths[$iteratorId][0] . substr($fileName, strlen(self::$paths[$iteratorId][1]));
+        if (!isset(self::$paths[$iteratorId][0])) {
             $pathName = substr($pathName, 2);
         }
         return $pathName;

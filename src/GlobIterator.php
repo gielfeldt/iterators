@@ -43,12 +43,12 @@ class GlobIterator extends \IteratorIterator
         $rIterator->setMaxDepth($maxDepth);
 
         // Setup file info handler.
-        $id = spl_object_hash($this);
-        GlobIteratorFileInfo::setPath($id, $path, $realPath);
+        $iteratorId = spl_object_hash($this);
+        GlobIteratorFileInfo::setPath($iteratorId, $path, $realPath);
 
         // Actual glob filtering.
-        $fIterator = new \CallbackFilterIterator($rIterator, function (&$current, &$key, $iterator) use ($id, $regexPattern) {
-            GlobIteratorFileInfo::setId($id);
+        $fIterator = new \CallbackFilterIterator($rIterator, function (&$current, &$key, $iterator) use ($iteratorId, $regexPattern) {
+            GlobIteratorFileInfo::setIteratorId($iteratorId);
             if ($this->flags & \FilesystemIterator::CURRENT_AS_PATHNAME) {
                 $fileInfo = new GlobIteratorFileInfo($current);
                 $current = $fileInfo->getPathname();
