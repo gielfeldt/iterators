@@ -61,7 +61,7 @@ class UniqueIterator extends \FilterIterator
     public function accept()
     {
         $key = ($this->callback)($this->getInnerIterator());
-        $key = is_scalar($key) ? $key : serialize($key);
+        $key = is_scalar($key) ? $key : (is_object($key) ? spl_object_hash($key) : serialize($key));
         return ($this->method)($key);
     }
 }
