@@ -11,9 +11,14 @@ class CountableIterator extends \IteratorIterator implements \Countable
 
     public function count()
     {
+        if ($this->getInnerIterator() instanceof \Countable) {
+            return $this->getInnerIterator()->count();
+        }
         $count = 0;
-        foreach ($this as $v) {
+        $this->rewind();
+        while ($this->valid()) {
             $count++;
+            $this->next();
         }
         return $count;
     }
