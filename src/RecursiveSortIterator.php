@@ -30,7 +30,6 @@ class RecursiveSortIterator extends SortIterator implements \RecursiveIterator
         // decide for itself what to return. We ask the iterator here what that
         // value is, so that we may return it ourselves after finished iteration.
         $this->nullCurrent = $iterator instanceof \Iterator ? $iterator->current() : null;
-        $this->count = count($sorted);
 
         usort($sorted, $this->realCallback);
 
