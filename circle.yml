@@ -14,7 +14,9 @@ test:
     - composer --no-interaction require codeclimate/php-test-reporter:dev-master
 
     # Run test coverage.
-    - phpunit --coverage-clover build/logs/clover.xml
+    - ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 
     # Send test coverage to codeclimate.
     - ./vendor/bin/test-reporter
+  override:
+    - ./vendor/bin/phpunit --configuration phpunit.xml

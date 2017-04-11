@@ -5,7 +5,7 @@ namespace Gielfeldt\Tests\Iterators;
 use Gielfeldt\Iterators\ZipIterator;
 use Gielfeldt\Iterators\ValuesIterator;
 
-class ZipIteratorTest extends \PHPUnit_Framework_TestCase
+class ZipIteratorTest extends IteratorsTestBase
 {
     public function testZipIterator()
     {

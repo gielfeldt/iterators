@@ -4,7 +4,7 @@ namespace Gielfeldt\Tests\Iterators;
 
 use Gielfeldt\Iterators\IntersectIterator;
 
-class IntersectIteratorTest extends \PHPUnit_Framework_TestCase
+class IntersectIteratorTest extends IteratorsTestBase
 {
     public function testDiffIterator()
     {

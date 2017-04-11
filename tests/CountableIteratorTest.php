@@ -4,7 +4,7 @@ namespace Gielfeldt\Tests\Iterators;
 
 use Gielfeldt\Iterators\CountableIterator;
 
-class CountableIteratorTest extends \PHPUnit_Framework_TestCase
+class CountableIteratorTest extends IteratorsTestBase
 {
     public function testCountableIterator()
     {

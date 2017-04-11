@@ -4,7 +4,7 @@ namespace Gielfeldt\Tests\Iterators;
 
 use Gielfeldt\Iterators\CombineIterator;
 
-class CombineIteratorTest extends \PHPUnit_Framework_TestCase
+class CombineIteratorTest extends IteratorsTestBase
 {
     public function testCombineIteratorAll()
     {

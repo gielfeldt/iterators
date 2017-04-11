@@ -5,7 +5,7 @@ namespace Gielfeldt\Tests\Iterators;
 use Gielfeldt\Iterators\UniqueIterator;
 use Gielfeldt\Iterators\FlipIterator;
 
-class UniqueIteratorTest extends \PHPUnit_Framework_TestCase
+class UniqueIteratorTest extends IteratorsTestBase
 {
     public function testUniqueIteratorAssumeUnsorted()
     {

@@ -4,7 +4,7 @@ namespace Gielfeldt\Tests\Iterators;
 
 use Gielfeldt\Iterators\DiffIterator;
 
-class DiffIteratorTest extends \PHPUnit_Framework_TestCase
+class DiffIteratorTest extends IteratorsTestBase
 {
     public function testDiffIterator()
     {

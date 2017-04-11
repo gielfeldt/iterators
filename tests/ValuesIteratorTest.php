@@ -4,7 +4,7 @@ namespace Gielfeldt\Tests\Iterators;
 
 use Gielfeldt\Iterators\ValuesIterator;
 
-class ValuesIteratorTest extends \PHPUnit_Framework_TestCase
+class ValuesIteratorTest extends IteratorsTestBase
 {
     public function testValuesIterator()
     {

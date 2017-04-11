@@ -4,7 +4,7 @@ namespace Gielfeldt\Tests\Iterators;
 
 use Gielfeldt\Iterators\RecursiveSortIterator;
 
-class RecursiveSortIteratorTest extends \PHPUnit_Framework_TestCase
+class RecursiveSortIteratorTest extends IteratorsTestBase
 {
     public function testSortIterator()
     {

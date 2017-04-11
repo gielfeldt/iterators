@@ -1,7 +1,7 @@
 <?php
 namespace Gielfeldt\Tests\Iterators;
 
-class IteratorsTestBase extends \PHPUnit_Framework_TestCase
+class IteratorsTestBase extends \PHPUnit\Framework\TestCase
 {
     public $fixturesPath = __DIR__ . '/fixtures';
     public $tempFiles = [];

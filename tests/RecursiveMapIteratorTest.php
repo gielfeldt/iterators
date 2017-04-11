@@ -4,7 +4,7 @@ namespace Gielfeldt\Tests\Iterators;
 
 use Gielfeldt\Iterators\RecursiveMapIterator;
 
-class RecursiveMapIteratorTest extends \PHPUnit_Framework_TestCase
+class RecursiveMapIteratorTest extends IteratorsTestBase
 {
     public function testMapIterator()
     {

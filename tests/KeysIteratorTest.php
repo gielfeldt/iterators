@@ -4,7 +4,7 @@ namespace Gielfeldt\Tests\Iterators;
 
 use Gielfeldt\Iterators\KeysIterator;
 
-class KeysIteratorTest extends \PHPUnit_Framework_TestCase
+class KeysIteratorTest extends IteratorsTestBase
 {
     public function testKeysIterator()
     {

@@ -4,7 +4,7 @@ namespace Gielfeldt\Tests\Iterators;
 
 use Gielfeldt\Iterators\MapIterator;
 
-class MapIteratorTest extends \PHPUnit_Framework_TestCase
+class MapIteratorTest extends IteratorsTestBase
 {
     public function testMapIterator()
     {

@@ -4,7 +4,7 @@ namespace Gielfeldt\Tests\Iterators;
 
 use Gielfeldt\Iterators\FlipIterator;
 
-class FlipIteratorTest extends \PHPUnit_Framework_TestCase
+class FlipIteratorTest extends IteratorsTestBase
 {
     public function testFlipIterator()
     {

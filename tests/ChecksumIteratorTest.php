@@ -4,7 +4,7 @@ namespace Gielfeldt\Tests\Iterators;
 
 use Gielfeldt\Iterators\ChecksumIterator;
 
-class ChecksumIteratorTest extends \PHPUnit_Framework_TestCase
+class ChecksumIteratorTest extends IteratorsTestBase
 {
     public function testChecksumIteratorSha()
     {

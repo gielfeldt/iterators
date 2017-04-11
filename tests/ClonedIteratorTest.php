@@ -4,7 +4,7 @@ namespace Gielfeldt\Tests\Iterators;
 
 use Gielfeldt\Iterators\ClonedIterator;
 
-class ClonedIteratorTest extends \PHPUnit_Framework_TestCase
+class ClonedIteratorTest extends IteratorsTestBase
 {
     public function testClonedIterator()
     {

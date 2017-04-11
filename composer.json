@@ -18,7 +18,7 @@
         "psr-4": { "Gielfeldt\\Iterators\\": "src/" }
     },
     "require-dev": {
-        "phpunit/phpunit": "^5"
+        "phpunit/phpunit": "^6"
     },
     "autoload-dev": {
         "psr-4": { "Gielfeldt\\Tests\\Iterators\\": "tests/" }

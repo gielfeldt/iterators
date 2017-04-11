@@ -4,7 +4,7 @@ namespace Gielfeldt\Tests\Iterators;
 
 use Gielfeldt\Iterators\SortIterator;
 
-class SortIteratorTest extends \PHPUnit_Framework_TestCase
+class SortIteratorTest extends IteratorsTestBase
 {
     public function testSortNoReindexAsc()
     {

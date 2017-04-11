@@ -5,7 +5,7 @@ namespace Gielfeldt\Tests\Iterators;
 use Gielfeldt\Iterators\RepeatIterator;
 use Gielfeldt\Iterators\MapIterator;
 
-class RepeatIteratorTest extends \PHPUnit_Framework_TestCase
+class RepeatIteratorTest extends IteratorsTestBase
 {
     public function testRepeatIterator()
     {

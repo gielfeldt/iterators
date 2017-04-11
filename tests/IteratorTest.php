@@ -3,7 +3,7 @@ namespace Gielfeldt\Tests\Iterators;
 
 use Gielfeldt\Iterators\Iterator;
 
-class IteratorTest extends \PHPUnit_Framework_TestCase
+class IteratorTest extends IteratorsTestBase
 {
     public function testInstanceOf()
     {

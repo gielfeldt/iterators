@@ -5,7 +5,7 @@ namespace Gielfeldt\Tests\Iterators;
 use Gielfeldt\Iterators\MapIterator;
 use Gielfeldt\Iterators\RecursiveUniqueIterator;
 
-class RecursiveUniqueIteratorTest extends \PHPUnit_Framework_TestCase
+class RecursiveUniqueIteratorTest extends IteratorsTestBase
 {
     public function testRecursiveUniqueIteratorAssumeUnsorted()
     {
