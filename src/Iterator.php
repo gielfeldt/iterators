@@ -2,7 +2,7 @@
 
 namespace Gielfeldt\Iterators;
 
-class IteratorHelper
+class Iterator
 {
     public static function instanceOf($iterator, $class)
     {
