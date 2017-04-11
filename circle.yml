@@ -23,7 +23,7 @@ dependencies:
     - ./vendor/bin/test-reporter
 
     # Send test coverage to scrutinizer.
-    - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
+    #- php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
 
     # Send test coverage to coveralls.
-    - ./vendor/bin/coveralls
+    #- ./vendor/bin/coveralls
