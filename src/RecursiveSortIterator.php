@@ -26,11 +26,6 @@ class RecursiveSortIterator extends SortIterator implements \RecursiveIterator
             $sorted[] = $this->generateElement($key, $value, $iterator);
         }
 
-        // When asking for "current" after iteration has ended, an iterator may
-        // decide for itself what to return. We ask the iterator here what that
-        // value is, so that we may return it ourselves after finished iteration.
-        $this->nullCurrent = $iterator instanceof \Iterator ? $iterator->current() : null;
-
         usort($sorted, $this->realCallback);
 
         foreach ($sorted as $data) {

@@ -15,7 +15,6 @@ class SortIterator extends \IteratorIterator implements \Countable
     protected $flags;
     protected $callback;
     protected $realCallback;
-    protected $nullCurrent;
 
     public function __construct(\Traversable $iterator, int $direction = self::SORT_ASC, int $flags = 0, callable $callback = self::SORT_CURRENT)
     {
@@ -35,11 +34,6 @@ class SortIterator extends \IteratorIterator implements \Countable
         foreach ($iterator as $key => $value) {
             $sorted[] = $this->generateElement($key, $value, $iterator);
         }
-
-        // When asking for "current" after iteration has ended, an iterator may
-        // decide for itself what to return. We ask the iterator here what that
-        // value is, so that we may return it ourselves after finished iteration.
-        $this->nullCurrent = $iterator instanceof \Iterator ? $iterator->current() : null;
 
         usort($sorted, $this->realCallback);
 
@@ -64,7 +58,7 @@ class SortIterator extends \IteratorIterator implements \Countable
 
     public function current()
     {
-        return $this->getInnerIterator()->current()->current ?? $this->nullCurrent;
+        return $this->getInnerIterator()->current()->current ?? null;
     }
 
     public function count()
