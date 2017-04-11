@@ -94,6 +94,8 @@ $iterator = new FlipIterator($input);
 foreach ($iterator as $key => $value) {
     print "$key => $value\n";
 }
+
+var_dump(iterator_to_array($iterator));
 ```
 
 Output:
