@@ -21,8 +21,134 @@ composer require gielfeldt/iterators
 
 ### Iterators
 
+This library contains a bunch of various iterators that I made primarily for
+getting more acquainted with iterators in PHP. They might be of use to someone.
+So here you go.
 
-#### Caveats
+#### ChecksumIterator
+
+#### ClonedIterator /  / RecursiveClonedIterator
+
+#### CombineIterator
+
+#### CountableIterator
+
+Takes any iterator and makes it countable, simply by iterating through it and counting.
+```
+use Gielfeldt\Iterators\DiffIterator;
+
+$some_noncountable_iterator = new \IteratorIterator(new \ArrayIterator([1, 2, 3]));
+$iterator = new CountableIterator($some_noncountable_iterator);
+var_dump(count($iterator));
+```
+
+Output:
+```
+int(3)
+```
+
+#### DiffIterator
+Compares two iterators. Similar to array_diff. Possible to set a custom compare
+function.
+```
+use Gielfeldt\Iterators\DiffIterator;
+
+$input1 = new \ArrayIterator(['key1'  => 'value1', 'key2'  => 'value2', 'key3'  => 'value3']);
+$input2 = new \ArrayIterator(['key11' => 'value1', 'key22' => 'value1', 'key2'  => 'value3']);
+$input3 = new \ArrayIterator(['key1'  => 'value2', 'key2'  => 'value2', 'key33' => 'value3']);
+
+$iterator = new DiffIterator($input1, $input2, $input3);
+$iterator->setDiff(function ($iterator, $key, $value) {
+    return $iterator->key() == $key && $iterator->current() == $value;
+});
+var_dump(iterator_to_array($iterator));
+```
+
+Output:
+```
+array(2) {
+  'key1' =>
+  string(6) "value1"
+  'key3' =>
+  string(6) "value3"
+}
+```
+
+#### FlipIterator
+Similar to array_flip. However, iterators can have non-unique keys. Be aware of
+this when using iterator_to_array();
+
+```
+use Gielfeldt\Iterators\FlipIterator;
+
+$input = new \ArrayIterator([
+    'key1'  => 'value1',
+    'key2'  => 'value2',
+    'key3'  => 'value3',
+    'key4'  => 'value1',
+    'key5'  => 'value2',
+    'key6'  => 'value3',
+]);
+
+$iterator = new FlipIterator($input);
+foreach ($iterator as $key => $value) {
+    print "$key => $value\n";
+}
+```
+
+Output:
+```
+value1 => key1
+value2 => key2
+value3 => key3
+value1 => key4
+value2 => key5
+value3 => key6
+
+array(3) {
+  'value1' =>
+  string(4) "key4"
+  'value2' =>
+  string(4) "key5"
+  'value3' =>
+  string(4) "key6"
+}
+```
+
+#### GlobIterator
+
+#### IntersectIterator
+
+#### KeysIterator
+
+#### MapIterator /  / RecursiveMapIterator
+
+#### RepeatIterator
+
+#### SortIterator / RecursiveSortIterator
+
+#### UniqueIterator  / RecursiveUniqueIterator
+
+#### ValuesIterator
+
+#### ZipIterator
+
+
+### Not iterators as such ...
+
+#### CsvFileObject
+
+#### AtomicTempFileObject
+
+#### AtomicTempFileObjects
+
+
+### Helpers
+
+#### Iterator
+
+
+### Caveats
 
 1. Lots probably.
 
