@@ -4,14 +4,14 @@ namespace Gielfeldt\Iterators;
 
 class RecursiveUniqueIterator extends UniqueIterator implements \RecursiveIterator
 {
-    use MultipleTypeHintingTrait;
+    protected $flags;
 
     public function __construct(\Traversable $iterator, int $flags = 0, callable $callback = self::UNIQUE_CURRENT)
     {
-        $this->checkTypeHinting($iterator, \RecursiveIterator::class, \IteratorAggregate::class);
-        $iterator = $iterator instanceof \IteratorAggregate ? $iterator->getIterator() : $iterator;
-        $this->checkTypeHinting($iterator, \RecursiveIterator::class);
-        parent::__construct($iterator, $callback, $flags);
+        parent::__construct($iterator, $flags, $callback);
+        if (!$this->getInnerIterator() instanceof \RecursiveIterator) {
+            throw new \InvalidArgumentException('An instance of RecursiveIterator or IteratorAggregate creating it is required');
+        }
         $this->flags = $flags;
     }
 

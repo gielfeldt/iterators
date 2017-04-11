@@ -6,9 +6,12 @@ class RecursiveSortIterator extends SortIterator implements \RecursiveIterator
 {
     protected $children = [];
 
-    public function __construct(\RecursiveIterator $iterator, int $direction = self::SORT_ASC, int $flags = 0, callable $callback = self::SORT_CURRENT)
+    public function __construct(\Traversable $iterator, int $direction = self::SORT_ASC, int $flags = 0, callable $callback = self::SORT_CURRENT)
     {
         parent::__construct($iterator, $direction, $flags, $callback);
+        if (!$this->getInnerIterator() instanceof \RecursiveIterator) {
+            throw new \InvalidArgumentException('An instance of RecursiveIterator or IteratorAggregate creating it is required');
+        }
     }
 
     protected function generateElement($key, $value, $iterator)

@@ -4,14 +4,12 @@ namespace Gielfeldt\Iterators;
 
 class RecursiveClonedIterator extends ClonedIterator implements \RecursiveIterator
 {
-    use MultipleTypeHintingTrait;
-
     public function __construct($iterator)
     {
-        $this->checkTypeHinting($iterator, \RecursiveIterator::class, \IteratorAggregate::class);
-        $iterator = $iterator instanceof \IteratorAggregate ? $iterator->getIterator() : $iterator;
-        $this->checkTypeHinting($iterator, \RecursiveIterator::class);
         parent::__construct($iterator);
+        if (!$this->getInnerIterator() instanceof \RecursiveIterator) {
+            throw new \InvalidArgumentException('An instance of RecursiveIterator or IteratorAggregate creating it is required');
+        }
     }
 
     public function hasChildren()
