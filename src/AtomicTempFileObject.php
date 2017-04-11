@@ -23,9 +23,9 @@ class AtomicTempFileObject extends \SplFileObject
         if (!file_exists($tempDir)) {
             if (!@mkdir($tempDir, $mode, true)) {
                 // @codeCoverageIgnoreStart
-                $last_error = error_get_last();
+                $lastError = error_get_last();
                 throw new \RuntimeException(sprintf("Could create directory %s - message: %s",
-                    $tempDir, $last_error['message']
+                    $tempDir, $lastError['message']
                 ));
                 // @codeCoverageIgnoreEnd
             }
@@ -75,9 +75,9 @@ class AtomicTempFileObject extends \SplFileObject
     {
         if (!@rename($this->getRealPath(), $this->destinationRealPath)) {
             // @codeCoverageIgnoreStart
-            $last_error = error_get_last();
+            $lastError = error_get_last();
             throw new \RuntimeException(sprintf("Could not move %s to %s - message: %s",
-                $this->getRealPath(), $this->destinationRealPath, $last_error['message']
+                $this->getRealPath(), $this->destinationRealPath, $lastError['message']
             ));
             // @codeCoverageIgnoreEnd
         }
@@ -90,9 +90,9 @@ class AtomicTempFileObject extends \SplFileObject
     {
         if (!@unlink($this->getRealPath())) {
             // @codeCoverageIgnoreStart
-            $last_error = error_get_last();
+            $lastError = error_get_last();
             throw new \RuntimeException(sprintf("Could not remove %s - message: %s",
-                $this->getRealPath(), $last_error['message']
+                $this->getRealPath(), $lastError['message']
             ));
             // @codeCoverageIgnoreEnd
         }
