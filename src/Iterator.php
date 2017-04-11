@@ -68,4 +68,20 @@ class Iterator
         $result = mb_substr($result, 0, -mb_strlen($separator));
         return $result;
     }
+
+    public static function chunk(\Traversable $iterator, $size)
+    {
+        if (!$iterator instanceof \Countable) {
+            $iterator = new CountableIterator($iterator);
+        }
+        $chunked = new \ArrayIterator();
+        $offset = 0;
+        $count = count($iterator);
+        while ($count > 0) {
+            $chunked->append(new \LimitIterator($iterator, $offset, $size));
+            $offset += $size;
+            $count -= $size;
+        }
+        return $chunked;
+    }
 }
