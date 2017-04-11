@@ -11,7 +11,6 @@ class SortIterator extends \IteratorIterator implements \Countable
     const SORT_DESC = 2;
     const SORT_REINDEX = 4;
 
-    protected $iterator;
     protected $direction;
     protected $flags;
     protected $callback;
@@ -22,7 +21,6 @@ class SortIterator extends \IteratorIterator implements \Countable
 
     public function __construct(\Traversable $iterator, int $direction = self::SORT_ASC, int $flags = 0, callable $callback = self::SORT_CURRENT)
     {
-        $this->iterator = $iterator;
         $this->direction = $direction;
         $this->flags = $flags;
         $this->callback = \Closure::fromCallable($callback);

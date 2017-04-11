@@ -8,18 +8,36 @@ class RecursiveSortIterator extends SortIterator implements \RecursiveIterator
 
     public function __construct(\Traversable $iterator, int $direction = self::SORT_ASC, int $flags = 0, callable $callback = self::SORT_CURRENT)
     {
-        parent::__construct($iterator, $direction, $flags, $callback);
-        if (!$this->getInnerIterator() instanceof \RecursiveIterator) {
+        $iterator = $iterator instanceof \Iterator ? $iterator : $iterator->getIterator();
+        if (!$iterator instanceof \RecursiveIterator) {
             throw new \InvalidArgumentException('An instance of RecursiveIterator or IteratorAggregate creating it is required');
         }
+        parent::__construct($iterator, $direction, $flags, $callback);
     }
 
-    protected function generateElement($key, $value, $iterator)
+    public function getSortedIterator($iterator)
     {
-        if ($iterator->hasChildren()) {
-            $this->children[$key] = $iterator->getChildren();
+        $sortedIterator = new \RecursiveArrayIterator();
+        $sorted = [];
+        foreach ($iterator as $key => $value) {
+            if ($iterator->hasChildren()) {
+                $this->children[$key] = $iterator->getChildren();
+            }
+            $sorted[] = $this->generateElement($key, $value, $iterator);
         }
-        parent::generateElement($key, $value, $iterator);
+
+        // When asking for "current" after iteration has ended, an iterator may
+        // decide for itself what to return. We ask the iterator here what that
+        // value is, so that we may return it ourselves after finished iteration.
+        $this->nullCurrent = $iterator instanceof \Iterator ? $iterator->current() : null;
+        $this->count = count($sorted);
+
+        usort($sorted, $this->realCallback);
+
+        foreach ($sorted as $data) {
+            $sortedIterator->append($data);
+        }
+        return $sortedIterator;
     }
 
     public function hasChildren()
