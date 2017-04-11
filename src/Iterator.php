@@ -15,18 +15,19 @@ class Iterator
         return false;
     }
 
-    public static function getInnerIterators(\Traversable $iterator)
+    public static function getInnerIterators(\Traversable $iterator, $include_self = false)
     {
+        $result = $include_self ? [$iterator] : [];
         if ($iterator instanceof \OuterIterator) {
-            return array_merge([$iterator], self::getInnerIterators($iterator->getInnerIterator()));
+            return array_merge($result, self::getInnerIterators($iterator->getInnerIterator(), true));
         }
-        return [];
+        return $result;
     }
 
     public static function getInnermostIterator(\Traversable $iterator)
     {
-        $iterators = self::getInnerIterators($iterator);
-        return $iterators ? end($iterators) : null;
+        $iterators = self::getInnerIterators($iterator, true);
+        return $iterators ? end($iterators) : false;
     }
 
     public static function reduce(\Traversable $iterator, callable $callback, $initial = null)
