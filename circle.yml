@@ -5,25 +5,16 @@ machine:
   php:
     version: 7.1.3
 
-dependencies:
+test:
   pre:
+    # Install hirak.
+    - composer global require "hirak/prestissimo:^0.3"
+
     # Install test reporter for codeclimate.
     - composer --no-interaction require codeclimate/php-test-reporter:dev-master
-
-    # Install test reporter for scrutinizer.
-    #- wget https://scrutinizer-ci.com/ocular.phar
-
-    # Install test reporter for coveralls.
-    # Assume satooshi/php-coveralls is installed via codeclimate.
 
     # Run test coverage.
     - phpunit --coverage-clover build/logs/clover.xml
 
     # Send test coverage to codeclimate.
     - ./vendor/bin/test-reporter
-
-    # Send test coverage to scrutinizer.
-    #- php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
-
-    # Send test coverage to coveralls.
-    #- ./vendor/bin/coveralls
