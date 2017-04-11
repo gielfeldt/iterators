@@ -152,13 +152,17 @@ class AtomicTempFileObjectsTest extends IteratorsTestBase
     {
         $destFiles = new AtomicTempFileObjects();
 
-        $filename = $this->tempnam();
-        $destFiles->addFile(new AtomicTempFileObject($filename));
+        $filename1 = $this->tempnam();
+        $destFiles->addFile(new AtomicTempFileObject($filename1));
         $destFiles->persistOnClose(AtomicTempFileObject::DISCARD);
 
-        $filename = $this->tempnam();
-        $destFiles->addFile(new AtomicTempFileObject($filename));
+        $filename2 = $this->tempnam();
+        $destFiles->addFile(new AtomicTempFileObject($filename2));
         $destFiles->persistOnClose(AtomicTempFileObject::DISCARD);
+
+        unset($destFiles);
+        $this->assertFalse(file_exists($filename1), 'File was not discarded like it should.');
+        $this->assertFalse(file_exists($filename2), 'File was not discarded like it should.');
     }
 
     public function testAddFileException()
