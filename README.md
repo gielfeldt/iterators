@@ -35,6 +35,8 @@ So here you go.
 
 Takes any iterator and makes it countable, simply by iterating through it and counting.
 ```
+<?php
+
 use Gielfeldt\Iterators\DiffIterator;
 
 $some_noncountable_iterator = new \IteratorIterator(new \ArrayIterator([1, 2, 3]));
@@ -51,6 +53,8 @@ int(3)
 Compares two iterators. Similar to array_diff. Possible to set a custom compare
 function.
 ```
+<?php
+
 use Gielfeldt\Iterators\DiffIterator;
 
 $input1 = new \ArrayIterator(['key1'  => 'value1', 'key2'  => 'value2', 'key3'  => 'value3']);
@@ -79,6 +83,8 @@ Similar to array_flip. However, iterators can have non-unique keys. Be aware of
 this when using iterator_to_array();
 
 ```
+<?php
+
 use Gielfeldt\Iterators\FlipIterator;
 
 $input = new \ArrayIterator([
