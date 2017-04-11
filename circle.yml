@@ -11,13 +11,13 @@ dependencies:
     - composer --no-interaction require codeclimate/php-test-reporter:dev-master
 
     # Install test reporter for scrutinizer.
-    - wget https://scrutinizer-ci.com/ocular.phar
+    #- wget https://scrutinizer-ci.com/ocular.phar
 
     # Install test reporter for coveralls.
     # Assume satooshi/php-coveralls is installed via codeclimate.
 
     # Run test coverage.
-    - phpunit --coverage-clover build/logs/clover.xml
+    #- phpunit --coverage-clover build/logs/clover.xml
 
     # Send test coverage to codeclimate.
     - ./vendor/bin/test-reporter
