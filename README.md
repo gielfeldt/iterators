@@ -6,7 +6,7 @@
 
 [![Latest Stable Version](https://poser.pugx.org/gielfeldt/iterators/v/stable.svg)][4]
 [![Latest Unstable Version](https://poser.pugx.org/gielfeldt/iterators/v/unstable.svg)][4]
-[![Dependency Status](https://www.versioneye.com/user/projects/55cb2eb9dfed0a001e000200/badge.svg?style=flat)][5]
+[![Dependency Status](https://www.versioneye.com/user/projects/58ed39a526a5bb0038e422f7/badge.svg?style=flat)][5]
 [![License](https://poser.pugx.org/gielfeldt/iterators/license.svg)][6]
 [![Total Downloads](https://poser.pugx.org/gielfeldt/iterators/downloads.svg)][4]
 
@@ -31,6 +31,6 @@ composer require gielfeldt/iterators
 [2]:  https://codeclimate.com/github/gielfeldt/iterators/coverage
 [3]:  https://codeclimate.com/github/gielfeldt/iterators
 [4]:  https://packagist.org/packages/gielfeldt/iterators
-[5]: https://www.versioneye.com/user/projects/55cb2eb9dfed0a001e000200
+[5]:  https://www.versioneye.com/user/projects/58ed39a526a5bb0038e422f7
 [6]:  https://github.com/gielfeldt/iterators/blob/master/LICENSE.md
-[7]: https://readthedocs.org/projects/iterators/?badge=latest
+[7]:  https://readthedocs.org/projects/iterators/?badge=latest
