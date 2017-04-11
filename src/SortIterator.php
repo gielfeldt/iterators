@@ -21,8 +21,8 @@ class SortIterator extends \IteratorIterator implements \Countable
         $this->direction = $direction;
         $this->flags = $flags;
         $this->callback = \Closure::fromCallable($callback);
-        $this->realCallback = $direction == self::SORT_ASC ? $this->callback : function ($a, $b) {
-            return ($this->callback)($b, $a);
+        $this->realCallback = $direction == self::SORT_ASC ? $this->callback : function ($cmpA, $cmpB) {
+            return ($this->callback)($cmpB, $cmpA);
         };
         parent::__construct($this->getSortedIterator($iterator));
     }
@@ -88,13 +88,13 @@ class SortIterator extends \IteratorIterator implements \Countable
         return $this->direction == self::SORT_ASC ? $this->last() : $this->first();
     }
 
-    static public function sortCurrent($a, $b)
+    static public function sortCurrent($cmpA, $cmpB)
     {
-        return $a->current <=> $b->current;
+        return $cmpA->current <=> $cmpB->current;
     }
 
-    static public function sortKey($a, $b)
+    static public function sortKey($cmpA, $cmpB)
     {
-        return $a->key <=> $b->key;
+        return $cmpA->key <=> $cmpB->key;
     }
 }
