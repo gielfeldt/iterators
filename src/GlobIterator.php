@@ -9,6 +9,8 @@ class GlobIterator extends \IteratorIterator
 {
     const GLOB_NOSORT = 2048;
 
+    protected $flags;
+
     /**
      * Constructor.
      *
@@ -17,29 +19,59 @@ class GlobIterator extends \IteratorIterator
      * @param integer $flags
      *   FilesystemIterator flags.
      */
-    public function __construct(string $globPattern, int $flags = \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO)
+    public function __construct(string $globPattern, int $flags = self::GLOB_NOSORT | \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO)
     {
+        $this->flags = $flags;
         list($path, $maxDepth) = self::extractPathAndMaxDepth($globPattern);
         $regexPattern = self::globToRegex($globPattern);
 
         $realPath = realpath($path ?? './');
         $realPath = rtrim($realPath, '/') . '/';
 
-        $iterator = new \RecursiveDirectoryIterator($realPath, $flags);
+        $iterator = new \RecursiveDirectoryIterator($realPath, $this->flags);
 
-        $sIterator = $flags & self::GLOB_NOSORT ? $iterator : new RecursiveSortIterator($iterator, SortIterator::SORT_SPL_FILE_INFO, 0);
+        // Sort if necessary.
+        $sIterator = $this->flags & self::GLOB_NOSORT ? $iterator : new RecursiveSortIterator(
+            $iterator,
+            RecursiveSortIterator::SORT_ASC,
+            0,
+            $this->flags & \FilesystemIterator::CURRENT_AS_PATHNAME ? RecursiveSortIterator::SORT_CURRENT : [$this, 'sortSplFileInfo']
+        );
+
+        // Only traverse the depth needed.
         $rIterator = new \RecursiveIteratorIterator($sIterator);
         $rIterator->setMaxDepth($maxDepth);
 
-        $fIterator = new \CallbackFilterIterator($rIterator, function ($current, $key, $iterator) use ($path, $realPath, $regexPattern, $flags) {
-            $pathName = $flags & \FilesystemIterator::CURRENT_AS_PATHNAME ? $current : $current->getPathname();
-            $pathName = $path . substr($pathName, strlen($realPath));
-            if (!isset($path)) {
-                $pathName = substr($pathName, 2);
+        // Setup file info handler.
+        $id = spl_object_hash($this);
+        GlobIteratorFileInfo::setPath($id, $path, $realPath);
+
+        // Actual glob filtering.
+        $fIterator = new \CallbackFilterIterator($rIterator, function (&$current, &$key, $iterator) use ($id, $regexPattern) {
+            GlobIteratorFileInfo::setId($id);
+            if ($this->flags & \FilesystemIterator::CURRENT_AS_PATHNAME) {
+                $fileInfo = new GlobIteratorFileInfo($current);
+                $current = $fileInfo->getPathname();
             }
-            return preg_match($regexPattern, $pathName);
+            else {
+                $fileInfo = $current->getFileInfo(GlobIteratorFileInfo::class);
+                $current = $fileInfo;
+            }
+
+            if ($this->flags & \FilesystemIterator::KEY_AS_FILENAME) {
+                $key = $fileInfo->getFilename();
+            }
+            else {
+                $key = $fileInfo->getPathname();
+            }
+            return preg_match($regexPattern, $fileInfo->getPathname());
         });
         parent::__construct($fIterator);
+    }
+
+    public function sortSplFileInfo($a, $b)
+    {
+        return $a->current->getPathname() <=> $b->current->getPathname();
     }
 
     /**
@@ -48,7 +80,7 @@ class GlobIterator extends \IteratorIterator
      * @param string $globPattern
      * @return string
      */
-    static public function extractPathAndMaxDepth(string $globPattern): array
+    public static function extractPathAndMaxDepth(string $globPattern): array
     {
         if (strpos($globPattern, '*')) {
             list($path,) = explode('*', $globPattern, 2);
@@ -65,23 +97,7 @@ class GlobIterator extends \IteratorIterator
      * @param string $globPattern
      * @return string
      */
-    static public function globToRegexOld(string $globPattern): string
-    {
-        $regexPattern = str_replace('.', '\\.', $globPattern);
-        $regexPattern = preg_replace_callback('/\*+/', function ($matches) {
-            return strlen($matches[0]) > 1 ? '.*' : '[^/]*';
-        }, $regexPattern);
-        $regexPattern = str_replace('@', '\\@', $regexPattern);
-        return '@^' . $regexPattern . '$@s';
-    }
-
-    /**
-     * Convert a glob pattern to a regex pattern.
-     *
-     * @param string $globPattern
-     * @return string
-     */
-    static public function globToRegex(string $globPattern): string
+    public static function globToRegex(string $globPattern): string
     {
         $modifiers = '';
         $transforms = array(
@@ -107,7 +123,7 @@ class GlobIterator extends \IteratorIterator
     /**
      * Use the RecursiveGlobIterator for glob://
      */
-    static public function registerStreamWrapper()
+    public static function registerStreamWrapper()
     {
         stream_wrapper_unregister('glob');
         stream_wrapper_register('glob', GlobStreamWrapper::class);
@@ -116,7 +132,7 @@ class GlobIterator extends \IteratorIterator
     /**
      * Restore the default glob:// stream wrapper.
      */
-    static public function unRegisterStreamWrapper()
+    public static function unRegisterStreamWrapper()
     {
         stream_wrapper_unregister('glob');
         stream_wrapper_restore('glob');
