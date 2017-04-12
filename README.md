@@ -29,6 +29,30 @@ So here you go.
 
 [CloningIterator](#cloningiterator)
 
+[CombineIterator](#combineiterator)
+
+[CountableIterator](#countableiterator)
+
+[DiffIterator](#diffiterator)
+
+[FlipIterator](#flipiterator)
+
+[GlobIterator](#globiterator)
+
+[IntersectIterator](#intersectiterator)
+
+[KeysIterator](#keysiterator)
+
+[MapIterator](#mapiterator)
+
+[RepeatIterator](#repeatiterator)
+
+[SortIterator](#sortiterator)
+
+[UniqueIterator](#uniqueiterator)
+
+[ValuesIterator](#valuesiterator)
+
 [ZipIterator](#zipiterator)
 
 #### ChecksumIterator
@@ -64,7 +88,7 @@ string(32) "4fd19adc845da6fdd9c7c394f4626bac"
 string(32) "4fd19adc845da6fdd9c7c394f4626bac"
 ```
 
-#### CloningIterator / RecursiveCloningIterator
+#### CloningIterator
 Clone each value in iteration.
 
 ```php
@@ -278,13 +302,13 @@ array(3) {
 }
 ```
 
-#### MapIterator / RecursiveMapIterator
+#### MapIterator
 
 #### RepeatIterator
 
-#### SortIterator / RecursiveSortIterator
+#### SortIterator
 
-#### UniqueIterator  / RecursiveUniqueIterator
+#### UniqueIterator
 
 #### ValuesIterator
 Similar to array_vales().
