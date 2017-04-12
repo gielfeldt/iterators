@@ -2,11 +2,11 @@
 
 namespace Gielfeldt\Tests\Iterators;
 
-use Gielfeldt\Iterators\RecursiveClonedIterator;
+use Gielfeldt\Iterators\RecursiveCloningIterator;
 
-class RecursiveClonedIteratorTest extends IteratorsTestBase
+class RecursiveCloningIteratorTest extends IteratorsTestBase
 {
-    public function testClonedIterator()
+    public function testCloningIterator()
     {
         $object1 = (object) ['object1' => 'value1'];
         $object2 = (object) ['object2' => 'value2'];
@@ -33,7 +33,7 @@ class RecursiveClonedIteratorTest extends IteratorsTestBase
         $iterator = new \RecursiveArrayIterator($input, \RecursiveArrayIterator::CHILD_ARRAYS_ONLY);
         $original = iterator_to_array(new \RecursiveIteratorIterator($iterator));
 
-        $iterator = new RecursiveClonedIterator($iterator);
+        $iterator = new RecursiveCloningIterator($iterator);
         $result = iterator_to_array(new \RecursiveIteratorIterator($iterator));
 
         $this->assertEquals($original, $result, 'Iterator was not cloned correctly.');
@@ -45,9 +45,9 @@ class RecursiveClonedIteratorTest extends IteratorsTestBase
 
     }
 
-    public function testRecursiveClonedIteratorException()
+    public function testRecursiveCloningIteratorException()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $iterator = new RecursiveClonedIterator(new \ArrayIterator([]));
+        $iterator = new RecursiveCloningIterator(new \ArrayIterator([]));
     }
 }

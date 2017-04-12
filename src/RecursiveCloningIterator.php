@@ -2,7 +2,7 @@
 
 namespace Gielfeldt\Iterators;
 
-class RecursiveClonedIterator extends ClonedIterator implements \RecursiveIterator
+class RecursiveCloningIterator extends CloningIterator implements \RecursiveIterator
 {
     public function __construct($iterator)
     {

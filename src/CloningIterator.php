@@ -2,7 +2,7 @@
 
 namespace Gielfeldt\Iterators;
 
-class ClonedIterator extends \IteratorIterator
+class CloningIterator extends \IteratorIterator
 {
     public function key()
     {

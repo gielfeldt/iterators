@@ -2,11 +2,11 @@
 
 namespace Gielfeldt\Tests\Iterators;
 
-use Gielfeldt\Iterators\ClonedIterator;
+use Gielfeldt\Iterators\CloningIterator;
 
-class ClonedIteratorTest extends IteratorsTestBase
+class CloningIteratorTest extends IteratorsTestBase
 {
-    public function testClonedIterator()
+    public function testCloningIterator()
     {
         $object1 = (object) ['object1' => 'value1'];
         $object2 = (object) ['object2' => 'value2'];
@@ -21,7 +21,7 @@ class ClonedIteratorTest extends IteratorsTestBase
         $iterator = new \ArrayIterator($input);
         $original = iterator_to_array($iterator);
 
-        $iterator = new ClonedIterator($iterator);
+        $iterator = new CloningIterator($iterator);
         $result = iterator_to_array($iterator);
 
         $this->assertEquals($input, $original, 'Iterator was not cloned correctly.');

@@ -27,6 +27,8 @@ So here you go.
 
 [ChecksumIterator](#checksumiterator)
 
+[CloningIterator](#cloningiterator)
+
 [ZipIterator](#zipiterator)
 
 #### ChecksumIterator
@@ -62,7 +64,63 @@ string(32) "4fd19adc845da6fdd9c7c394f4626bac"
 string(32) "4fd19adc845da6fdd9c7c394f4626bac"
 ```
 
-#### ClonedIterator / RecursiveClonedIterator
+#### CloningIterator / RecursiveCloningIterator
+Clone each value in iteration.
+
+```php
+use Gielfeldt\Iterators\CloningIterator;
+
+$object1 = (object) ['value' => 'test1'];
+$object2 = (object) ['value' => 'test2'];
+$object3 = (object) ['value' => 'test3'];
+
+$input = new \ArrayIterator([$object1, $object2, $object3]);
+
+$iterator = new CloningIterator($input);
+$cloned = iterator_to_array($iterator);
+$object1->value = 'MODIFIED';
+var_dump(iterator_to_array($input));
+var_dump($cloned);
+```
+
+Output:
+```
+array(3) {
+  [0] =>
+  class stdClass#2 (1) {
+    public $value =>
+    string(8) "MODIFIED"
+  }
+  [1] =>
+  class stdClass#3 (1) {
+    public $value =>
+    string(5) "test2"
+  }
+  [2] =>
+  class stdClass#4 (1) {
+    public $value =>
+    string(5) "test3"
+  }
+}
+
+array(3) {
+  [0] =>
+  class stdClass#9 (1) {
+    public $value =>
+    string(5) "test1"
+  }
+  [1] =>
+  class stdClass#10 (1) {
+    public $value =>
+    string(5) "test2"
+  }
+  [2] =>
+  class stdClass#11 (1) {
+    public $value =>
+    string(5) "test3"
+  }
+}
+```
 
 #### CombineIterator
 Similar to array_combine(). However, iterators can have non-unique keys. Be aware of
