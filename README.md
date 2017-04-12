@@ -402,6 +402,57 @@ array(6) {
 ### Not iterators as such ...
 
 #### CsvFileObject
+An extension of SplFileObject in csv mode, but with csv header support.
+
+```php
+use Gielfeldt\Iterators\CsvFileObject;
+
+// Load csv file and dump it.
+$file = new CsvFileObject('somefile.csv');
+var_dump(iterator_to_array($file));
+
+// Same but csv comes via a string variable.
+$csvdata = "Columm1,Column2\nValue1,Value2\nValue3,Value4";
+$file = new CsvFileObject('data://application/octet,' . $csvdata);
+var_dump(iterator_to_array($file));
+```
+
+Output:
+```
+array(2) {
+  [0] =>
+  array(2) {
+    'Columm1' =>
+    string(6) "Value1"
+    'Column2' =>
+    string(6) "Value2"
+  }
+  [1] =>
+  array(2) {
+    'Columm1' =>
+    string(6) "Value3"
+    'Column2' =>
+    string(6) "Value4"
+  }
+}
+
+array(2) {
+  [0] =>
+  array(2) {
+    'Columm1' =>
+    string(6) "Value1"
+    'Column2' =>
+    string(6) "Value2"
+  }
+  [1] =>
+  array(2) {
+    'Columm1' =>
+    string(6) "Value3"
+    'Column2' =>
+    string(6) "Value4"
+  }
+}
+```
 
 #### AtomicTempFileObject
 
