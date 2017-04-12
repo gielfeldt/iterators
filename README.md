@@ -400,6 +400,13 @@ array(6) {
 ```
 
 ### Not iterators as such ...
+These are more an extension of the SPL file handling.
+
+[CsvFileObject](#csvfileobject)
+
+[AtomicTempFileObject](#atomictempfileobject)
+
+[AtomicTempFileObjects](#atomictempfileobjects)
 
 #### CsvFileObject
 An extension of SplFileObject in csv mode, but with csv header support.
@@ -460,9 +467,26 @@ array(2) {
 
 
 ### Helpers
+Contains various helper methods.
 
 #### Iterator
+```php
+use Gielfeldt\Iterators\Iterator;
 
+$input = new \ArrayIterator([1,2,3,4,5,6]);
+var_dump(Iterator::sum($input));
+var_dump(Iterator::product($input));
+var_dump(Iterator::average($input));
+```
+
+Output:
+``
+int(21)
+
+int(720)
+
+double(3.5)
+```
 
 ### Caveats
 

@@ -54,6 +54,11 @@ class Iterator
         }, 1);
     }
 
+    public static function average(\Traversable $iterator)
+    {
+        return self::sum($iterator) / count(new CountableIterator($iterator));
+    }
+
     public static function concatenate(\Traversable $iterator)
     {
         return self::reduce($iterator, function ($carry, $value, $key) {
