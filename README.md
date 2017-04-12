@@ -25,10 +25,10 @@ This library contains a bunch of various iterators that I made primarily for
 getting more acquainted with iterators in PHP. They might be of use to someone.
 So here you go.
 
-[create an anchor](#checksumiterator)
-[create an anchor](#zipiterator)
+[ChecksumIterator](#checksumiterator)
+[ZipIterator](#zipiterator)
 
-####checksumiterator ChecksumIterator
+#### ChecksumIterator
 Generate a checksum for an iterator, either per iteration or the entire dataset.
 
 ```php
@@ -256,7 +256,7 @@ array(3) {
 }
 ```
 
-####zipiterator ZipIterator
+#### ZipIterator
 "zip" multiple iterators together.
 
 ```php
