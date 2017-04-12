@@ -327,12 +327,129 @@ array(3) {
 ```
 
 #### MapIterator
+Similar to array_map().
+
+```php
+use Gielfeldt\Iterators\MapIterator;
+
+$input = new \ArrayIterator([
+    'key1'  => 'value1',
+    'key2'  => 'value2',
+    'key3'  => 'value3',
+    'key4'  => 'value1',
+    'key5'  => 'value2',
+    'key6'  => 'value3',
+]);
+
+// Flip keys and values.
+$iterator = new MapIterator($input, function ($iterator) {
+    return [$iterator->current(), $iterator->key()];
+});
+
+foreach ($iterator as $key => $value) {
+    print "$key => $value\n";
+}
+
+var_dump(iterator_to_array($iterator));
+```
+
+Output:
+```
+value1 => key1
+value2 => key2
+value3 => key3
+value1 => key4
+value2 => key5
+value3 => key6
+
+array(3) {
+  'value1' =>
+  string(4) "key4"
+  'value2' =>
+  string(4) "key5"
+  'value3' =>
+  string(4) "key6"
+}
+```
 
 #### RepeatIterator
+Repeat and iterator n times.
+
+```php
+use Gielfeldt\Iterators\RepeatIterator;
+
+$input = new \ArrayIterator([
+    'key1'  => 'value1',
+    'key2'  => 'value2',
+    'key3'  => 'value3',
+]);
+
+$iterator = new RepeatIterator($input, 3);
+
+foreach ($iterator as $key => $value) {
+    print "$key => $value\n";
+}
+
+var_dump(iterator_to_array($iterator));
+```
+
+Output:
+```
+key1 => value1
+key2 => value2
+key3 => value3
+key1 => value1
+key2 => value2
+key3 => value3
+key1 => value1
+key2 => value2
+key3 => value3
+
+array(3) {
+  'key1' =>
+  string(6) "value1"
+  'key2' =>
+  string(6) "value2"
+  'key3' =>
+  string(6) "value3"
+}
+```
 
 #### SortIterator
 
 #### UniqueIterator
+Similar to array_unique(). Also supports a custom callback function.
+
+```php
+use Gielfeldt\Iterators\UniqueIterator;
+
+$input = new \ArrayIterator([-4, -3, -2, -1, 0, 1, 2, 3, 5]);
+
+// Unique elements by their square.
+$iterator = new UniqueIterator($input, UniqueIterator::REINDEX, function ($iterator) {
+    return $iterator->current() * $iterator->current();
+});
+
+var_dump(iterator_to_array($iterator));
+```
+
+Output:
+```
+array(6) {
+  [0] =>
+  int(-4)
+  [1] =>
+  int(-3)
+  [2] =>
+  int(-2)
+  [3] =>
+  int(-1)
+  [4] =>
+  int(0)
+  [8] =>
+  int(5)
+}
+```
 
 #### ValuesIterator
 Similar to array_vales().
