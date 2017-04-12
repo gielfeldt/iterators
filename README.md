@@ -480,7 +480,7 @@ var_dump(Iterator::average($input));
 ```
 
 Output:
-``
+```
 int(21)
 
 int(720)
