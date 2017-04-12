@@ -26,10 +26,76 @@ getting more acquainted with iterators in PHP. They might be of use to someone.
 So here you go.
 
 #### ChecksumIterator
+Generate a checksum for an iterator, either per iteration or the entire dataset.
 
-#### ClonedIterator /  / RecursiveClonedIterator
+```php
+use Gielfeldt\Iterators\ChecksumIterator;
+
+$input = new \ArrayIterator([
+    ['key1' => 'value1'],
+    ['key2' => 'value2'],
+    ['key3' => 'value3'],
+]);
+
+$iterator = new ChecksumIterator($input, 'md5');
+foreach ($iterator as $key => $value) {
+    print "$key => $value\n";
+}
+
+var_dump($iterator->getChecksum());
+
+var_dump((string) $iterator);
+```
+
+Output:
+```
+0 => e2e517365ffe6fedd279364e3fa74786
+1 => f0a0db0fc9abe193b21fd657fe678884
+2 => c04f606bb5bba82282dfa93edb59c6ee
+
+string(32) "4fd19adc845da6fdd9c7c394f4626bac"
+
+string(32) "4fd19adc845da6fdd9c7c394f4626bac"
+```
+
+#### ClonedIterator / RecursiveClonedIterator
 
 #### CombineIterator
+Similar to array_combine(). However, iterators can have non-unique keys. Be aware of
+this when using iterator_to_array();
+
+```php
+use Gielfeldt\Iterators\CombineIterator;
+
+$keys = new \ArrayIterator(['key1', 'key2', 'key3', 'key1', 'key2', 'key3']);
+$values = new \ArrayIterator(['value1', 'value2', 'value3', 'value4', 'value5', 'value6']);
+
+$iterator = new CombineIterator($keys, $values);
+foreach ($iterator as $key => $value) {
+    print "$key => $value\n";
+}
+
+var_dump(iterator_to_array($iterator));
+```
+
+Output:
+```
+key1 => value1
+key2 => value2
+key3 => value3
+key1 => value4
+key2 => value5
+key3 => value6
+
+array(3) {
+  'key1' =>
+  string(6) "value4"
+  'key2' =>
+  string(6) "value5"
+  'key3' =>
+  string(6) "value6"
+}
+```
 
 #### CountableIterator
 
@@ -122,8 +188,35 @@ array(3) {
 #### IntersectIterator
 
 #### KeysIterator
+Similar to array_keys().
 
-#### MapIterator /  / RecursiveMapIterator
+```php
+use Gielfeldt\Iterators\KeysIterator;
+
+$input = new \ArrayIterator([
+    'key1' => 'value1',
+    'key2' => 'value2',
+    'key3' => 'value3',
+]);
+
+$iterator = new KeysIterator($input);
+
+var_dump(iterator_to_array($iterator));
+```
+
+Output:
+```
+array(3) {
+  [0] =>
+  string(4) "key1"
+  [1] =>
+  string(4) "key2"
+  [2] =>
+  string(4) "key3"
+}
+```
+
+#### MapIterator / RecursiveMapIterator
 
 #### RepeatIterator
 
@@ -132,9 +225,93 @@ array(3) {
 #### UniqueIterator  / RecursiveUniqueIterator
 
 #### ValuesIterator
+Similar to array_vales().
+
+```php
+use Gielfeldt\Iterators\ValuesIterator;
+
+$input = new \ArrayIterator([
+    'key1' => 'value1',
+    'key2' => 'value2',
+    'key3' => 'value3',
+]);
+
+$iterator = new ValuesIterator($input);
+
+var_dump(iterator_to_array($iterator));
+```
+
+Output:
+```
+array(3) {
+  [0] =>
+  string(4) "value1"
+  [1] =>
+  string(4) "value2"
+  [2] =>
+  string(4) "value3"
+}
+```
 
 #### ZipIterator
+"zip" multiple iterators together.
 
+```php
+use Gielfeldt\Iterators\ZipIterator;
+
+$input1 = new \ArrayIterator([
+    'key1' => 'value11',
+    'key2' => 'value12',
+    'key3' => 'value13',
+]);
+
+$input2 = new \ArrayIterator([
+    'key21' => 'value21',
+    'key22' => 'value22',
+    'key23' => 'value23',
+]);
+
+$input3 = new \ArrayIterator([
+    'key1' => 'value31',
+    'key2' => 'value32',
+    'key3' => 'value33',
+]);
+
+$iterator = new ZipIterator($input1, $input2, $input3);
+foreach ($iterator as $key => $value) {
+    print "$key => $value\n";
+}
+
+var_dump(iterator_to_array($iterator));
+```
+
+Output:
+```
+key1 => value11
+key21 => value21
+key1 => value31
+key2 => value12
+key22 => value22
+key2 => value32
+key3 => value13
+key23 => value23
+key3 => value33
+
+array(6) {
+  'key1' =>
+  string(7) "value31"
+  'key21' =>
+  string(7) "value21"
+  'key2' =>
+  string(7) "value32"
+  'key22' =>
+  string(7) "value22"
+  'key3' =>
+  string(7) "value33"
+  'key23' =>
+  string(7) "value23"
+}
+```
 
 ### Not iterators as such ...
 
