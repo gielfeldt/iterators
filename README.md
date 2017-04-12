@@ -187,7 +187,7 @@ array(3) {
 
 Takes any iterator and makes it countable, simply by iterating through it and counting.
 ```php
-use Gielfeldt\Iterators\DiffIterator;
+use Gielfeldt\Iterators\CountableIterator;
 
 $some_noncountable_iterator = new \IteratorIterator(new \ArrayIterator([1, 2, 3]));
 $iterator = new CountableIterator($some_noncountable_iterator);
@@ -202,6 +202,7 @@ int(3)
 #### DiffIterator
 Compares two iterators. Similar to array_diff(). Possible to set a custom compare
 function.
+
 ```php
 use Gielfeldt\Iterators\DiffIterator;
 
@@ -272,6 +273,29 @@ array(3) {
 #### GlobIterator
 
 #### IntersectIterator
+Similar to array_intersect(). Possible to set a custom compare function.
+
+```php
+use Gielfeldt\Iterators\IntersectIterator;
+
+$input1 = new \ArrayIterator(['key1'  => 'value1', 'key2' => 'value2', 'key3' => 'value3']);
+$input2 = new \ArrayIterator(['key11' => 'value1', 'key1' => 'value1', 'key2' => 'value3']);
+$input3 = new \ArrayIterator(['key1'  => 'value2', 'key2' => 'value2', 'key1' => 'value1']);
+
+$iterator = new IntersectIterator($input1, $input2, $input3);
+$iterator->setDiff(function ($iterator, $key, $value) {
+    return $iterator->key() == $key && $iterator->current() == $value;
+});
+var_dump(iterator_to_array($iterator));
+```
+
+Output:
+```
+array(1) {
+  'key1' =>
+  string(6) "value1"
+}
+```
 
 #### KeysIterator
 Similar to array_keys().
