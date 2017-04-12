@@ -26,6 +26,7 @@ getting more acquainted with iterators in PHP. They might be of use to someone.
 So here you go.
 
 [ChecksumIterator](#checksumiterator)
+
 [ZipIterator](#zipiterator)
 
 #### ChecksumIterator
