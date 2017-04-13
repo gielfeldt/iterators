@@ -53,7 +53,7 @@ So here you go.
 
 [ValuesIterator](#valuesiterator)
 
-[ZipIterator](#zipiterator)
+[InterleaveIterator](#interleaveiterator)
 
 #### ChecksumIterator
 Generate a checksum for an iterator, either per iteration or the entire dataset.
@@ -548,11 +548,11 @@ Array
 )
 ```
 
-#### ZipIterator
-"zip" multiple iterators together.
+#### InterleaveIterator
+Interleave multiple iterators.
 
 ```php
-use Gielfeldt\Iterators\ZipIterator;
+use Gielfeldt\Iterators\InterleaveIterator;
 
 $input1 = new \ArrayIterator([
     'key1' => 'value11',
@@ -572,7 +572,7 @@ $input3 = new \ArrayIterator([
     'key3' => 'value33',
 ]);
 
-$iterator = new ZipIterator($input1, $input2, $input3);
+$iterator = new InterleaveIterator($input1, $input2, $input3);
 foreach ($iterator as $key => $value) {
     print "$key => $value\n";
 }

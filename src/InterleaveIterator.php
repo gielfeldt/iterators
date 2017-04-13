@@ -2,7 +2,7 @@
 
 namespace Gielfeldt\Iterators;
 
-class ZipIterator implements \Iterator
+class InterleaveIterator implements \Iterator
 {
     protected $realIterators;
     protected $iterators;
