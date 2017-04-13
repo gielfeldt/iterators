@@ -59,6 +59,20 @@ class Iterator
         return self::sum($iterator) / count(new CountableIterator($iterator));
     }
 
+    public static function min(\Traversable $iterator)
+    {
+        return self::reduce($iterator, function ($carry, $value, $key) {
+            return $carry < $value ? $carry : $value;
+        }, INF);
+    }
+
+    public static function max(\Traversable $iterator)
+    {
+        return self::reduce($iterator, function ($carry, $value, $key) {
+            return $carry > $value ? $carry : $value;
+        }, -INF);
+    }
+
     public static function concatenate(\Traversable $iterator)
     {
         return self::reduce($iterator, function ($carry, $value, $key) {

@@ -66,18 +66,18 @@ class IteratorTest extends IteratorsTestBase
         $this->assertEquals($iterator, $innermostIterator, 'Innermost iterator is incorrect.');
     }
 
-    public function reduceMax($carry, $current, $key)
+    public function reduceMin($carry, $current, $key)
     {
-        return $carry > $current ? $carry : $current;
+        return $carry < $current ? $carry : $current;
     }
 
     public function testReduce()
     {
-        $input = [1, 2, 45, 3, 4, 5, 6];
-        $expected = 45;
+        $input = [-45, 1, 2, 45, 3, 4, 5, 6];
+        $expected = -45;
 
         $iterator = new \ArrayIterator($input);
-        $this->assertEquals($expected, Iterator::reduce($iterator, [$this, 'reduceMax']), 'Iterator max is not correct.');
+        $this->assertEquals($expected, Iterator::reduce($iterator, [$this, 'reduceMin'], INF), 'Iterator min is not correct.');
     }
 
     public function testSum()
@@ -96,6 +96,33 @@ class IteratorTest extends IteratorsTestBase
 
         $iterator = new \ArrayIterator($input);
         $this->assertEquals($expected, Iterator::product($iterator), 'Iterator product is not correct.');
+    }
+
+    public function testAverage()
+    {
+        $input = [1, 2, 3, 4, 5, 6];
+        $expected = 3.5;
+
+        $iterator = new \ArrayIterator($input);
+        $this->assertEquals($expected, Iterator::average($iterator), 'Iterator average is not correct.');
+    }
+
+    public function testMin()
+    {
+        $input = [1, 2, 3, 4, 5, 6];
+        $expected = 1;
+
+        $iterator = new \ArrayIterator($input);
+        $this->assertEquals($expected, Iterator::min($iterator), 'Iterator min is not correct.');
+    }
+
+    public function testMax()
+    {
+        $input = [1, 2, 3, 4, 5, 6];
+        $expected = 6;
+
+        $iterator = new \ArrayIterator($input);
+        $this->assertEquals($expected, Iterator::max($iterator), 'Iterator max is not correct.');
     }
 
     public function testConcatenate()
