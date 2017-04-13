@@ -5,11 +5,17 @@ namespace Gielfeldt\Iterators;
 /**
  * Glob iterator with double wildcard (**) and recursive capabilities.
  */
-class GlobIterator extends \IteratorIterator
+class GlobIterator extends \IteratorIterator implements \Countable
 {
     const GLOB_NOSORT = 2048;
 
     protected $flags;
+    protected $path;
+
+    public function getPath()
+    {
+        return $this->path;
+    }
 
     /**
      * Constructor.
@@ -25,17 +31,21 @@ class GlobIterator extends \IteratorIterator
         list($path, $maxDepth) = self::extractPathAndMaxDepth($globPattern);
         $regexPattern = self::globToRegex($globPattern);
 
+        $this->path = $path;
+
         $realPath = $path ? $path : './';
         $realPath = rtrim($realPath, '/') . '/';
 
-        $iterator = new \RecursiveDirectoryIterator($realPath, $this->flags);
+        $flags = $flags &~ \FilesystemIterator::CURRENT_AS_PATHNAME;
+        $flags |= \FilesystemIterator::KEY_AS_PATHNAME;
+        $iterator = new \RecursiveDirectoryIterator($realPath, $flags);
 
         // Sort if necessary.
         $sIterator = $this->flags & self::GLOB_NOSORT ? $iterator : new RecursiveSortIterator(
             $iterator,
             RecursiveSortIterator::SORT_ASC,
             0,
-            $this->flags & \FilesystemIterator::CURRENT_AS_PATHNAME ? RecursiveSortIterator::SORT_CURRENT : [$this, 'sortSplFileInfo']
+            [$this, 'sortSplFileInfo']
         );
 
         // Only traverse the depth needed.
@@ -49,12 +59,11 @@ class GlobIterator extends \IteratorIterator
         // Actual glob filtering.
         $fIterator = new \CallbackFilterIterator($rIterator, function (&$current, &$key, $iterator) use ($iteratorId, $regexPattern) {
             GlobIteratorFileInfo::setIteratorId($iteratorId);
+            $fileInfo = $current->getFileInfo(GlobIteratorFileInfo::class);
             if ($this->flags & \FilesystemIterator::CURRENT_AS_PATHNAME) {
-                $fileInfo = new GlobIteratorFileInfo($current);
                 $current = $fileInfo->getPathname();
             }
             else {
-                $fileInfo = $current->getFileInfo(GlobIteratorFileInfo::class);
                 $current = $fileInfo;
             }
 
@@ -66,7 +75,12 @@ class GlobIterator extends \IteratorIterator
             }
             return preg_match($regexPattern, $fileInfo->getPathname());
         });
-        parent::__construct($fIterator);
+        parent::__construct(new CountableIterator($fIterator, CountableIterator::CACHE_COUNT));
+    }
+
+    public function count()
+    {
+        return $this->getInnerIterator()->count();
     }
 
     public function sortSplFileInfo($cmpA, $cmpB)
@@ -121,10 +135,11 @@ class GlobIterator extends \IteratorIterator
     /**
      * Use the RecursiveGlobIterator for glob://
      */
-    public static function registerStreamWrapper()
+    public static function registerStreamWrapper($root = null)
     {
         stream_wrapper_unregister('glob');
         stream_wrapper_register('glob', GlobStreamWrapper::class);
+        GlobStreamWrapper::setRoot($root);
     }
 
     /**
@@ -134,5 +149,6 @@ class GlobIterator extends \IteratorIterator
     {
         stream_wrapper_unregister('glob');
         stream_wrapper_restore('glob');
+        GlobStreamWrapper::setRoot(null);
     }
 }
