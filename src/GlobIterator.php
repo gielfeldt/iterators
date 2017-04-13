@@ -39,7 +39,7 @@ class GlobIterator extends \IteratorIterator
         );
 
         // Only traverse the depth needed.
-        $rIterator = new \RecursiveIteratorIterator($sIterator);
+        $rIterator = new \RecursiveIteratorIterator($sIterator, \RecursiveIteratorIterator::SELF_FIRST);
         $rIterator->setMaxDepth($maxDepth);
 
         // Setup file info handler.
