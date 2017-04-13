@@ -6,6 +6,7 @@ class MapIterator extends \IteratorIterator
 {
     protected $currentKey;
     protected $currentValue;
+    protected $currentIdx;
 
     public function __construct(\Traversable $iterator, callable $callback)
     {
@@ -16,7 +17,18 @@ class MapIterator extends \IteratorIterator
     private function map()
     {
         if ($this->valid()) {
-            list($this->currentKey, $this->currentValue) = ($this->callback)($this->getInnerIterator());
+            $result = ($this->callback)($this->getInnerIterator());
+            if (is_array($result)) {
+                list($this->currentKey, $this->currentValue) = $result;
+                if (is_numeric($this->currentKey) && intval($this->currentKey) >= $this->idx) {
+                    $this->idx = intval($this->currentKey) + 1;
+                }
+            }
+            else {
+                $this->currentKey = $this->idx++;
+                $this->currentValue = $result;
+            }
+
         }
         else {
             $this->currentKey = null;
@@ -27,6 +39,7 @@ class MapIterator extends \IteratorIterator
     public function rewind()
     {
         parent::rewind();
+        $this->idx = 0;
         $this->map();
     }
 
