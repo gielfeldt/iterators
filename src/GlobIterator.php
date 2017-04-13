@@ -25,7 +25,7 @@ class GlobIterator extends \IteratorIterator
         list($path, $maxDepth) = self::extractPathAndMaxDepth($globPattern);
         $regexPattern = self::globToRegex($globPattern);
 
-        $realPath = realpath($path ?? './');
+        $realPath = $path ? $path : './';
         $realPath = rtrim($realPath, '/') . '/';
 
         $iterator = new \RecursiveDirectoryIterator($realPath, $this->flags);
