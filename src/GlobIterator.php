@@ -108,9 +108,7 @@ class GlobIterator extends \IteratorIterator
             '\['    => '[',
             '\]'    => ']',
             '\.'    => '\.',
-            '\\'    => '\\\\'
         );
-
         $regexPattern = '#^'
             . strtr(preg_quote($globPattern, '#'), $transforms)
             . '$#'
