@@ -161,7 +161,7 @@ foreach ($iterator as $key => $value) {
     print "$key => $value\n";
 }
 
-var_dump(iterator_to_array($iterator));
+print_r(iterator_to_array($iterator));
 ```
 
 Output:
@@ -172,15 +172,12 @@ key3 => value3
 key1 => value4
 key2 => value5
 key3 => value6
-
-array(3) {
-  'key1' =>
-  string(6) "value4"
-  'key2' =>
-  string(6) "value5"
-  'key3' =>
-  string(6) "value6"
-}
+Array
+(
+    [key1] => value4
+    [key2] => value5
+    [key3] => value6
+)
 ```
 
 #### CountableIterator
@@ -214,17 +211,16 @@ $iterator = new DiffIterator($input1, $input2, $input3);
 $iterator->setDiff(function ($iterator, $key, $value) {
     return $iterator->key() == $key && $iterator->current() == $value;
 });
-var_dump(iterator_to_array($iterator));
+print_r(iterator_to_array($iterator));
 ```
 
 Output:
 ```
-array(2) {
-  'key1' =>
-  string(6) "value1"
-  'key3' =>
-  string(6) "value3"
-}
+Array
+(
+    [key1] => value1
+    [key3] => value3
+)
 ```
 
 #### FlipIterator
@@ -248,7 +244,7 @@ foreach ($iterator as $key => $value) {
     print "$key => $value\n";
 }
 
-var_dump(iterator_to_array($iterator));
+print_r(iterator_to_array($iterator));
 ```
 
 Output:
@@ -259,18 +255,43 @@ value3 => key3
 value1 => key4
 value2 => key5
 value3 => key6
-
-array(3) {
-  'value1' =>
-  string(4) "key4"
-  'value2' =>
-  string(4) "key5"
-  'value3' =>
-  string(4) "key6"
-}
+Array
+(
+    [value1] => key4
+    [value2] => key5
+    [value3] => key6
+)
 ```
 
 #### GlobIterator
+Similar to \GlobIterator, but supports **
+
+```php
+use Gielfeldt\Iterators\GlobIterator;
+
+$iterator = new GlobIterator('/tmp/**.log');
+var_dump(iterator_to_array($iterator));
+```
+
+Output:
+```
+array(2) {
+  '/tmp/one.log' =>
+  class Gielfeldt\Iterators\GlobIteratorFileInfo#17 (2) {
+    private $pathName =>
+    string(20) "/tmp/one.log"
+    private $fileName =>
+    string(10) "one.log"
+  }
+  '/tmp/somedir/two.log' =>
+  class Gielfeldt\Iterators\GlobIteratorFileInfo#16 (2) {
+    private $pathName =>
+    string(20) "/tmp/somedir/two.log"
+    private $fileName =>
+    string(15) "two.log"
+  }
+}
+```
 
 #### IntersectIterator
 Similar to array_intersect(). Possible to set a custom compare function.
@@ -286,15 +307,15 @@ $iterator = new IntersectIterator($input1, $input2, $input3);
 $iterator->setDiff(function ($iterator, $key, $value) {
     return $iterator->key() == $key && $iterator->current() == $value;
 });
-var_dump(iterator_to_array($iterator));
+print_r(iterator_to_array($iterator));
 ```
 
 Output:
 ```
-array(1) {
-  'key1' =>
-  string(6) "value1"
-}
+Array
+(
+    [key1] => value1
+)
 ```
 
 #### KeysIterator
@@ -311,19 +332,17 @@ $input = new \ArrayIterator([
 
 $iterator = new KeysIterator($input);
 
-var_dump(iterator_to_array($iterator));
+print_r(iterator_to_array($iterator));
 ```
 
 Output:
 ```
-array(3) {
-  [0] =>
-  string(4) "key1"
-  [1] =>
-  string(4) "key2"
-  [2] =>
-  string(4) "key3"
-}
+Array
+(
+    [0] => key1
+    [1] => key2
+    [2] => key3
+)
 ```
 
 #### MapIterator
@@ -350,7 +369,7 @@ foreach ($iterator as $key => $value) {
     print "$key => $value\n";
 }
 
-var_dump(iterator_to_array($iterator));
+print_r(iterator_to_array($iterator));
 ```
 
 Output:
@@ -361,15 +380,12 @@ value3 => key3
 value1 => key4
 value2 => key5
 value3 => key6
-
-array(3) {
-  'value1' =>
-  string(4) "key4"
-  'value2' =>
-  string(4) "key5"
-  'value3' =>
-  string(4) "key6"
-}
+Array
+(
+    [value1] => key4
+    [value2] => key5
+    [value3] => key6
+)
 ```
 
 #### RepeatIterator
@@ -390,7 +406,7 @@ foreach ($iterator as $key => $value) {
     print "$key => $value\n";
 }
 
-var_dump(iterator_to_array($iterator));
+print_r(iterator_to_array($iterator));
 ```
 
 Output:
@@ -404,18 +420,77 @@ key3 => value3
 key1 => value1
 key2 => value2
 key3 => value3
-
-array(3) {
-  'key1' =>
-  string(6) "value1"
-  'key2' =>
-  string(6) "value2"
-  'key3' =>
-  string(6) "value3"
-}
+Array
+(
+    [key1] => value1
+    [key2] => value2
+    [key3] => value3
+)
 ```
 
 #### SortIterator
+
+```php
+use Gielfeldt\Iterators\SortIterator;
+
+$input = new \ArrayIterator([6, 3, 2, 7, 1, 9]);
+$iterator = new SortIterator($input);
+print_r(iterator_to_array($iterator));
+
+$input = new \ArrayIterator([6, 3, 2, 7, 1, 9]);
+$iterator = new SortIterator($input, SortIterator::SORT_DESC);
+print_r(iterator_to_array($iterator));
+
+$input = new \ArrayIterator([6, 3, 2, 7, 1, 9]);
+$iterator = new SortIterator($input, SortIterator::SORT_ASC, SortIterator::SORT_REINDEX);
+print_r(iterator_to_array($iterator));
+
+$input = new \ArrayIterator([6, 3, 2, 7, 1, 9]);
+$iterator = new SortIterator($input, SortIterator::SORT_ASC, SortIterator::SORT_REINDEX, function ($a, $b) {
+    return -$a->current <=> -$b->current;
+});
+print_r(iterator_to_array($iterator));
+```
+
+Output:
+```
+Array
+(
+    [4] => 1
+    [2] => 2
+    [1] => 3
+    [0] => 6
+    [3] => 7
+    [5] => 9
+)
+Array
+(
+    [5] => 9
+    [3] => 7
+    [0] => 6
+    [1] => 3
+    [2] => 2
+    [4] => 1
+)
+Array
+(
+    [0] => 1
+    [1] => 2
+    [2] => 3
+    [3] => 6
+    [4] => 7
+    [5] => 9
+)
+Array
+(
+    [0] => 9
+    [1] => 7
+    [2] => 6
+    [3] => 3
+    [4] => 2
+    [5] => 1
+)
+```
 
 #### UniqueIterator
 Similar to array_unique(). Also supports a custom callback function.
@@ -430,25 +505,20 @@ $iterator = new UniqueIterator($input, UniqueIterator::REINDEX, function ($itera
     return $iterator->current() * $iterator->current();
 });
 
-var_dump(iterator_to_array($iterator));
+print_r(iterator_to_array($iterator));
 ```
 
 Output:
 ```
-array(6) {
-  [0] =>
-  int(-4)
-  [1] =>
-  int(-3)
-  [2] =>
-  int(-2)
-  [3] =>
-  int(-1)
-  [4] =>
-  int(0)
-  [8] =>
-  int(5)
-}
+Array
+(
+    [0] => -4
+    [1] => -3
+    [2] => -2
+    [3] => -1
+    [4] => 0
+    [8] => 5
+)
 ```
 
 #### ValuesIterator
@@ -465,19 +535,17 @@ $input = new \ArrayIterator([
 
 $iterator = new ValuesIterator($input);
 
-var_dump(iterator_to_array($iterator));
+print_r(iterator_to_array($iterator));
 ```
 
 Output:
 ```
-array(3) {
-  [0] =>
-  string(4) "value1"
-  [1] =>
-  string(4) "value2"
-  [2] =>
-  string(4) "value3"
-}
+Array
+(
+    [0] => value1
+    [1] => value2
+    [2] => value3
+)
 ```
 
 #### ZipIterator
@@ -509,7 +577,7 @@ foreach ($iterator as $key => $value) {
     print "$key => $value\n";
 }
 
-var_dump(iterator_to_array($iterator));
+print_r(iterator_to_array($iterator));
 ```
 
 Output:
@@ -523,21 +591,15 @@ key2 => value32
 key3 => value13
 key23 => value23
 key3 => value33
-
-array(6) {
-  'key1' =>
-  string(7) "value31"
-  'key21' =>
-  string(7) "value21"
-  'key2' =>
-  string(7) "value32"
-  'key22' =>
-  string(7) "value22"
-  'key3' =>
-  string(7) "value33"
-  'key23' =>
-  string(7) "value23"
-}
+Array
+(
+    [key1] => value31
+    [key21] => value21
+    [key2] => value32
+    [key22] => value22
+    [key3] => value33
+    [key23] => value23
+)
 ```
 
 ### Not iterators as such ...
@@ -557,49 +619,46 @@ use Gielfeldt\Iterators\CsvFileObject;
 
 // Load csv file and dump it.
 $file = new CsvFileObject('somefile.csv');
-var_dump(iterator_to_array($file));
+print_r(iterator_to_array($file));
 
 // Same but csv comes via a string variable.
 $csvdata = "Columm1,Column2\nValue1,Value2\nValue3,Value4";
 $file = new CsvFileObject('data://application/octet,' . $csvdata);
-var_dump(iterator_to_array($file));
+print_r(iterator_to_array($file));
 ```
 
 Output:
 ```
-array(2) {
-  [0] =>
-  array(2) {
-    'Columm1' =>
-    string(6) "Value1"
-    'Column2' =>
-    string(6) "Value2"
-  }
-  [1] =>
-  array(2) {
-    'Columm1' =>
-    string(6) "Value3"
-    'Column2' =>
-    string(6) "Value4"
-  }
-}
+Array
+(
+    [0] => Array
+        (
+            [Columm1] => Value1
+            [Column2] => Value2
+        )
 
-array(2) {
-  [0] =>
-  array(2) {
-    'Columm1' =>
-    string(6) "Value1"
-    'Column2' =>
-    string(6) "Value2"
-  }
-  [1] =>
-  array(2) {
-    'Columm1' =>
-    string(6) "Value3"
-    'Column2' =>
-    string(6) "Value4"
-  }
-}
+    [1] => Array
+        (
+            [Columm1] => Value3
+            [Column2] => Value4
+        )
+
+)
+Array
+(
+    [0] => Array
+        (
+            [Columm1] => Value1
+            [Column2] => Value2
+        )
+
+    [1] => Array
+        (
+            [Columm1] => Value3
+            [Column2] => Value4
+        )
+
+)
 ```
 
 #### AtomicTempFileObject
