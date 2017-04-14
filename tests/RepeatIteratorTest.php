@@ -45,6 +45,58 @@ class RepeatIteratorTest extends IteratorsTestBase
         $this->assertEquals([], iterator_to_array($iterator));
     }
 
+    public function testFractionalRepeat()
+    {
+        $input1 = new \ArrayIterator(range(1, 40));
+        $input2 = new \ArrayIterator(range(1, 40));
+
+        $iterator = new RepeatIterator($input1, 0.25);
+        $result = iterator_to_array($iterator, false);
+        $this->assertEquals(10, count($result));
+        $this->assertEquals(10, count($iterator));
+
+        $iterator = new RepeatIterator($input1, 1.75);
+        $result = iterator_to_array($iterator, false);
+        $this->assertEquals(70, count($result));
+        $this->assertEquals(70, count($iterator));
+
+        $iterator = new RepeatIterator($input2, 0.25);
+        $this->assertEquals(10, count($iterator));
+        $result = iterator_to_array($iterator, false);
+        $this->assertEquals(10, count($result));
+
+        $iterator = new RepeatIterator($input2, 1.75);
+        $this->assertEquals(70, count($iterator));
+        $result = iterator_to_array($iterator, false);
+        $this->assertEquals(70, count($result));
+    }
+
+    public function testFractionalRepeatNonCountable()
+    {
+        $input1 = new \IteratorIterator(new \ArrayIterator(range(1, 40)));
+        $input2 = new \IteratorIterator(new \ArrayIterator(range(1, 40)));
+
+        $iterator = new RepeatIterator($input1, 0.25);
+        $result = iterator_to_array($iterator, false);
+        $this->assertEquals(10, count($result));
+        $this->assertEquals(10, count($iterator));
+
+        $iterator = new RepeatIterator($input1, 1.75);
+        $result = iterator_to_array($iterator, false);
+        $this->assertEquals(70, count($result));
+        $this->assertEquals(70, count($iterator));
+
+        $iterator = new RepeatIterator($input2, 0.25);
+        $this->assertEquals(10, count($iterator));
+        $result = iterator_to_array($iterator, false);
+        $this->assertEquals(10, count($result));
+
+        $iterator = new RepeatIterator($input2, 1.75);
+        $this->assertEquals(70, count($iterator));
+        $result = iterator_to_array($iterator, false);
+        $this->assertEquals(70, count($result));
+    }
+
     public function mapFunction($iterator)
     {
         $number = str_replace('test', '', $iterator->current());
