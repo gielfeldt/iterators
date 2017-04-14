@@ -29,9 +29,6 @@ class GlobIteratorFileInfo extends \SplFileInfo {
     protected function processFilename($fileName) {
         $iteratorId = self::getIteratorId();
         $pathName = self::$paths[$iteratorId][0] . substr($fileName, strlen(self::$paths[$iteratorId][1]));
-        if (!isset(self::$paths[$iteratorId][0])) {
-            $pathName = substr($pathName, 2);
-        }
         return $pathName;
     }
 }
