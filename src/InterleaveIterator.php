@@ -18,7 +18,7 @@ class InterleaveIterator implements \Iterator
 
     public function appendIterator(\Traversable $iterator)
     {
-        $this->realIterators->append($iterator instanceof \Iterator ? $iterator : $iterator->getIterator());
+        $this->realIterators->append($iterator instanceof \Iterator ? $iterator : new \IteratorIterator($iterator));
     }
 
     public function rewind()

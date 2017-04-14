@@ -8,7 +8,7 @@ class RecursiveSortIterator extends SortIterator implements \RecursiveIterator
 
     public function __construct(\Traversable $iterator, int $direction = self::SORT_ASC, int $flags = 0, callable $callback = self::SORT_CURRENT)
     {
-        $iterator = $iterator instanceof \Iterator ? $iterator : $iterator->getIterator();
+        $iterator = $iterator instanceof \IteratorAggregate ? $iterator->getIterator() : $iterator;
         if (!$iterator instanceof \RecursiveIterator) {
             throw new \InvalidArgumentException('An instance of RecursiveIterator or IteratorAggregate creating it is required');
         }
