@@ -789,6 +789,8 @@ $input = new \ArrayIterator([1,2,3,4,5,6]);
 var_dump(Iterator::sum($input));
 var_dump(Iterator::product($input));
 var_dump(Iterator::average($input));
+var_dump(Iterator::min($input));
+var_dump(Iterator::max($input));
 ```
 
 Output:
@@ -798,6 +800,10 @@ int(21)
 int(720)
 
 double(3.5)
+
+int(1)
+
+int(6)
 ```
 
 ### Caveats
