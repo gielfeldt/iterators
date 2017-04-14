@@ -138,9 +138,10 @@ class AtomicTempFileObject extends \SplFileObject
      */
     public function process(\Iterator $input, callable $callback)
     {
+        $callback = \Closure::fromCallable($callback);
         $input->rewind();
         iterator_apply($input, function (\Iterator $iterator) use ($callback) {
-            call_user_func($callback, $iterator->current(), $iterator->key(), $iterator, $this);
+            $callback($iterator->current(), $iterator->key(), $iterator, $this);
             return true;
         }, [$input]);
         return $this;
