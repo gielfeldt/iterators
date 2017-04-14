@@ -2,6 +2,7 @@
 namespace Gielfeldt\Tests\Iterators;
 
 use Gielfeldt\Iterators\Iterator;
+use Gielfeldt\Iterators\ChunkIterator;
 
 class IteratorTest extends IteratorsTestBase
 {
@@ -143,33 +144,36 @@ class IteratorTest extends IteratorsTestBase
         $this->assertEquals($expected, Iterator::implode(',', $iterator), 'Iterator implosion is not correct.');
     }
 
-    public function testChunkCountable()
+    public function testIteratorToArray()
     {
-        $input = [1, 2, 3, 4, 5, 6, 7];
+        $input = new \ArrayIterator(range(1, 20));
+        $iterator = new ChunkIterator($input, 4);
 
-        $iterator = new \ArrayIterator($input);
-        $chunks = Iterator::chunk($iterator, 2);
-        $this->assertCount(4, $chunks, 'Iterator chunk count is not correct.');
+        $expected = [
+            [1, 2, 3, 4],
+            [5, 6, 7, 8],
+            [9, 10, 11, 12],
+            [13, 14, 15, 16],
+            [17, 18, 19, 20],
+        ];
 
-        $this->assertCount(2, $chunks[0], 'Iterator chunk 0 count is not correct.');
-        $this->assertCount(2, $chunks[1], 'Iterator chunk 1 count is not correct.');
-        $this->assertCount(2, $chunks[2], 'Iterator chunk 2 count is not correct.');
-        $this->assertCount(1, $chunks[3], 'Iterator chunk 3 count is not correct.');
+        $result = Iterator::iterator_to_array_deep($iterator, false);
+
+        $this->assertEquals($expected, $result, 'Iterator not converted properly.');
+
+        $input = new \ArrayIterator(range(1, 20));
+        $iterator = new ChunkIterator($input, 4);
+
+        $expected = [
+            [1, 2, 3, 4],
+            [4 => 5, 6, 7, 8],
+            [8 => 9, 10, 11, 12],
+            [12 => 13, 14, 15, 16],
+            [16 => 17, 18, 19, 20],
+        ];
+
+        $result = Iterator::iterator_to_array_deep($iterator);
+
+        $this->assertEquals($expected, $result, 'Iterator not converted properly.');
     }
-
-    public function testChunkNonCountable()
-    {
-        $input = [1, 2, 3, 4, 5, 6, 7];
-
-        $iterator = new \ArrayIterator($input);
-        $iterator = new \IteratorIterator($iterator);
-        $chunks = Iterator::chunk($iterator, 2);
-        $this->assertCount(4, $chunks, 'Iterator chunk count is not correct.');
-
-        $this->assertCount(2, $chunks[0], 'Iterator chunk 0 count is not correct.');
-        $this->assertCount(2, $chunks[1], 'Iterator chunk 1 count is not correct.');
-        $this->assertCount(2, $chunks[2], 'Iterator chunk 2 count is not correct.');
-        $this->assertCount(1, $chunks[3], 'Iterator chunk 3 count is not correct.');
-    }
-
 }

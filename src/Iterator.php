@@ -89,19 +89,18 @@ class Iterator
         return $result;
     }
 
-    public static function chunk(\Traversable $iterator, $size)
+    public static function iterator_to_array_deep(\Traversable $iterator, $use_keys = true)
     {
-        if (!$iterator instanceof \Countable) {
-            $iterator = new CountableIterator($iterator);
+        $result = [];
+        foreach ($iterator as $key => $value) {
+            $value = $value instanceof \Traversable ? self::iterator_to_array_deep($value, $use_keys) : $value;
+            if ($use_keys) {
+                $result[$key] = $value;
+            }
+            else {
+                $result[] = $value;
+            }
         }
-        $chunked = new \ArrayIterator();
-        $offset = 0;
-        $count = count($iterator);
-        while ($count > 0) {
-            $chunked->append(new \LimitIterator($iterator, $offset, $size));
-            $offset += $size;
-            $count -= $size;
-        }
-        return $chunked;
+        return $result;
     }
 }
