@@ -43,6 +43,8 @@ So here you go.
 
 [GlobIterator](#globiterator)
 
+[InterleaveIterator](#interleaveiterator)
+
 [IntersectIterator](#intersectiterator)
 
 [KeysIterator](#keysiterator)
@@ -58,8 +60,6 @@ So here you go.
 [UniqueIterator](#uniqueiterator)
 
 [ValuesIterator](#valuesiterator)
-
-[InterleaveIterator](#interleaveiterator)
 
 #### ChecksumIterator
 Generate a checksum for an iterator, either per iteration or the entire dataset.
@@ -374,6 +374,60 @@ array(2) {
 }
 ```
 
+#### InterleaveIterator
+Interleave multiple iterators.
+
+```php
+use Gielfeldt\Iterators\InterleaveIterator;
+
+$input1 = new \ArrayIterator([
+    'key1' => 'value11',
+    'key2' => 'value12',
+    'key3' => 'value13',
+]);
+
+$input2 = new \ArrayIterator([
+    'key21' => 'value21',
+    'key22' => 'value22',
+    'key23' => 'value23',
+]);
+
+$input3 = new \ArrayIterator([
+    'key1' => 'value31',
+    'key2' => 'value32',
+    'key3' => 'value33',
+]);
+
+$iterator = new InterleaveIterator($input1, $input2, $input3);
+foreach ($iterator as $key => $value) {
+    print "$key => $value\n";
+}
+
+print_r(iterator_to_array($iterator));
+```
+
+Output:
+```
+key1 => value11
+key21 => value21
+key1 => value31
+key2 => value12
+key22 => value22
+key2 => value32
+key3 => value13
+key23 => value23
+key3 => value33
+Array
+(
+    [key1] => value31
+    [key21] => value21
+    [key2] => value32
+    [key22] => value22
+    [key3] => value33
+    [key23] => value23
+)
+```
+
 #### IntersectIterator
 Similar to array_intersect(). Possible to set a custom compare function.
 
@@ -657,60 +711,6 @@ Array
     [0] => value1
     [1] => value2
     [2] => value3
-)
-```
-
-#### InterleaveIterator
-Interleave multiple iterators.
-
-```php
-use Gielfeldt\Iterators\InterleaveIterator;
-
-$input1 = new \ArrayIterator([
-    'key1' => 'value11',
-    'key2' => 'value12',
-    'key3' => 'value13',
-]);
-
-$input2 = new \ArrayIterator([
-    'key21' => 'value21',
-    'key22' => 'value22',
-    'key23' => 'value23',
-]);
-
-$input3 = new \ArrayIterator([
-    'key1' => 'value31',
-    'key2' => 'value32',
-    'key3' => 'value33',
-]);
-
-$iterator = new InterleaveIterator($input1, $input2, $input3);
-foreach ($iterator as $key => $value) {
-    print "$key => $value\n";
-}
-
-print_r(iterator_to_array($iterator));
-```
-
-Output:
-```
-key1 => value11
-key21 => value21
-key1 => value31
-key2 => value12
-key22 => value22
-key2 => value32
-key3 => value13
-key23 => value23
-key3 => value33
-Array
-(
-    [key1] => value31
-    [key21] => value21
-    [key2] => value32
-    [key22] => value22
-    [key3] => value33
-    [key23] => value23
 )
 ```
 
