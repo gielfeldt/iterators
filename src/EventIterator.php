@@ -6,7 +6,6 @@ class EventIterator extends ReplaceableIterator
 {
     protected $onRewindCallback;
     protected $onFinishedCallback;
-    protected $onNextCallback;
 
     public function onRewind(callable $callback = null)
     {
@@ -16,19 +15,6 @@ class EventIterator extends ReplaceableIterator
     public function onFinished(callable $callback = null)
     {
         $this->onFinishedCallback = $callback ? \Closure::fromCallable($callback) : null;
-    }
-
-    public function onNext(callable $callback = null)
-    {
-        $this->onNextCallback = $callback ? \Closure::fromCallable($callback) : null;
-    }
-
-    public function next()
-    {
-        parent::next();
-        if ($this->onNextCallback) {
-            ($this->onNextCallback)($this, $this->onNextCallback);
-        }
     }
 
     public function rewind()
