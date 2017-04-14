@@ -19,23 +19,23 @@ class ChunkIterator extends EventIterator
         $this->innerIterator->rewind();
         $this->setInnerIterator(new \ArrayIterator());
         if ($this->innerIterator->valid()) {
-            $nr = new \NoRewindIterator($this->innerIterator);
-            $l = new \LimitIterator($nr, 0, $this->size);
-            $e = new EventIterator($l);
+            $innerIterator = new \NoRewindIterator($this->innerIterator);
+            $limitedInnerIterator = new \LimitIterator($innerIterator, 0, $this->size);
+            $eventIterator = new EventIterator($limitedInnerIterator);
 
-            $e->onFinished(function ($iterator, $callback) use ($nr) {
+            $eventIterator->onFinished(function ($iterator, $callback) use ($innerIterator) {
                 $iterator->onFinished(null);
-                $l = new \LimitIterator($nr, 0, $this->size);
-                $l->rewind();
-                if ($l->valid()) {
-                    $e = new EventIterator($l);
-                    $e->onFinished($callback);
-                    $e->rewind();
-                    $this->append($e);
+                $limitedInnerIterator = new \LimitIterator($innerIterator, 0, $this->size);
+                $limitedInnerIterator->rewind();
+                if ($limitedInnerIterator->valid()) {
+                    $eventIterator = new EventIterator($limitedInnerIterator);
+                    $eventIterator->onFinished($callback);
+                    $eventIterator->rewind();
+                    $this->append($eventIterator);
                 }
                 return false;
             });
-            $this->append($e);
+            $this->append($eventIterator);
         }
     }
 
