@@ -27,6 +27,8 @@ So here you go.
 
 [ChecksumIterator](#checksumiterator)
 
+[ChunkIterator](#chunkiterator)
+
 [CloningIterator](#cloningiterator)
 
 [CombineIterator](#combineiterator)
@@ -34,6 +36,8 @@ So here you go.
 [CountableIterator](#countableiterator)
 
 [DiffIterator](#diffiterator)
+
+[EventIterator](#eventiterator)
 
 [FlipIterator](#flipiterator)
 
@@ -46,6 +50,8 @@ So here you go.
 [MapIterator](#mapiterator)
 
 [RepeatIterator](#repeatiterator)
+
+[ReplaceableIterator](#replaceableiterator)
 
 [SortIterator](#sortiterator)
 
@@ -86,6 +92,20 @@ Output:
 string(32) "4fd19adc845da6fdd9c7c394f4626bac"
 
 string(32) "4fd19adc845da6fdd9c7c394f4626bac"
+```
+
+#### ChunkIterator
+Split an iterator into chunks of iterators.
+
+```php
+use Gielfeldt\Iterators\ChunkIterator;
+use Gielfeldt\Iterators\AtomicTempFileObject;
+
+// Split a file into multiple files of a 100 lines each.
+$file = new \SplFileObject('inputfile');
+foreach (new ChunkIterator($file, 100) as $i => $lines) {
+    AtomicTempFileObject::file_put_contents("outputfile.part.$i", implode("", iterator_to_array($lines)));
+}
 ```
 
 #### CloningIterator
@@ -220,6 +240,67 @@ Array
 (
     [key1] => value1
     [key3] => value3
+)
+```
+
+#### EventIterator
+React on iterator events. The EventIterator is also a ReplaceableIterator.
+
+```php
+use Gielfeldt\Iterators\EventIterator;
+use Gielfeldt\Iterators\ValuesIterator;
+
+$iterator = new EventIterator(new \ArrayIterator(range(1, 4)));
+$iterator->onFinished(function ($iterator) {
+    $iterator->onFinished(null);
+    $iterator->setInnerIterator(new \ArrayIterator(range(5, 8)));
+    return true;
+});
+print_r(iterator_to_array(new ValuesIterator($iterator)));
+```
+
+Output:
+```
+Array
+(
+    [0] => 1
+    [1] => 2
+    [2] => 3
+    [3] => 4
+    [4] => 5
+    [5] => 6
+    [6] => 7
+    [7] => 8
+)
+```
+
+```php
+$fibonacci = new EventIterator(new \ArrayIterator([0, 1]));
+$fibonacci->onFinished(function ($iterator) {
+    $iterator->getInnerIterator()->append(Iterator::sum($iterator->getInnerIterator()));
+    if ($iterator->getInnerIterator()->current() < INF) {
+        $iterator->getInnerIterator()->offsetUnset($iterator->getInnerIterator()->key() - 2);
+        $iterator->getInnerIterator()->seek(1);
+        return true;
+    }
+    $iterator->onFinished(null);
+    return false;
+});
+print_r(iterator_to_array(new \LimitIterator($fibonacci, 4, 8)));
+```
+
+Output:
+```
+Array
+(
+    [4] => 3
+    [5] => 5
+    [6] => 8
+    [7] => 13
+    [8] => 21
+    [9] => 34
+    [10] => 55
+    [11] => 89
 )
 ```
 
@@ -425,6 +506,37 @@ Array
     [key1] => value1
     [key2] => value2
     [key3] => value3
+)
+```
+
+#### ReplaceableIterator
+Just like IteratorIterator but with a setInnerIterator() method.
+
+```php
+use Gielfeldt\Iterators\ReplaceableIterator;
+
+$iterator = new ReplaceableIterator(new \ArrayIterator(range(1, 4)));
+print_r(iterator_to_array($iterator));
+
+$iterator->setInnerIterator(new \ArrayIterator(range(5, 8)));
+print_r(iterator_to_array($iterator));
+```
+
+Output:
+```
+Array
+(
+    [0] => 1
+    [1] => 2
+    [2] => 3
+    [3] => 4
+)
+Array
+(
+    [0] => 5
+    [1] => 6
+    [2] => 7
+    [3] => 8
 )
 ```
 
