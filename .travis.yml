@@ -13,7 +13,10 @@ script:
 
 after_success:
  - >
-   ./vendor/bin/test-reporter
+   ./vendor/bin/test-reporter &&
+   composer global require theseer/phpdox:dev-master &&
+   phpdox
+
 
 notifications:
   email: false
