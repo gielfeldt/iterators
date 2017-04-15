@@ -14,7 +14,7 @@ script:
 
 after_success:
  - ./vendor/bin/test-reporter
- #- curl http://phpdox.gielfeldt.dk/api/build/iterators/$TRAVIS_BRANCH?token=$PHPDOXINIZER_TOKEN
+ - curl http://netcup.gielfeldt.dk:8111/api/build/iterators/$TRAVIS_BRANCH?token=$PHPDOXINIZER_TOKEN
 
 notifications:
   email: false
