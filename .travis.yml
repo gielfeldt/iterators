@@ -6,16 +6,15 @@ install:
   - composer global require "hirak/prestissimo:^0.3"
   - composer install
   - composer --no-interaction require codeclimate/php-test-reporter:dev-master
+  - composer --no-interaction require theseer/phpdox:dev-master
 
 script:
  - >
    ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 
 after_success:
- - >
-   ./vendor/bin/test-reporter &&
-   composer global require theseer/phpdox:dev-master &&
-   phpdox
+ - ./vendor/bin/test-reporter
+ - ./vendor/bin/phpdox
 
 
 notifications:
