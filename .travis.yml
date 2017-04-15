@@ -6,7 +6,6 @@ install:
   - composer global require "hirak/prestissimo:^0.3"
   - composer install
   - composer --no-interaction require codeclimate/php-test-reporter:dev-master
-  - composer --no-interaction require theseer/phpdox:dev-master
 
 script:
  - >
