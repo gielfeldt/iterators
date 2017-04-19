@@ -12,7 +12,8 @@ namespace Gielfeldt\Iterators;
  *    }
  * }
  */
-class ChunkIterator extends EventIterator
+
+class ChunkIterator extends FiniteIterator
 {
     /**
      * Size of a chunk
@@ -34,63 +35,53 @@ class ChunkIterator extends EventIterator
      * @param int $size
      *   The size of each chunk.
      */
-    public function __construct(\Traversable $iterator, $size)
+    public function __construct(\Traversable $iterator, int $size)
     {
+        $this->innerIterator = $iterator;
         $this->size = $size;
-        $this->innerIterator = $iterator instanceof \Iterator ? $iterator : new \IteratorIterator($iterator);
-        parent::__construct(new \ArrayIterator());
+
+        // The outer iterator is a finite iterator with a condition on the
+        // inner iterator not being empty.
+        parent::__construct(new ReplaceableIterator(), function ($iterator) {
+            return $this->current()->valid();
+        }, self::REINDEX);
     }
 
     /**
-     * Rewind the original iterator and setup self appending iterator for the
-     * chunks.
+     * Rewind original inner iterator, and recreate inner and outer iterator.
      *
-     * @see \Iterator::rewind().
+     * @see Iterator::rewind()
      */
     public function rewind()
     {
+        // Setup chunked inner iterator.
         $this->innerIterator->rewind();
+        $innerIterator = new \NoRewindIterator($this->innerIterator);
+        $limitedInnerIterator = new \LimitIterator($innerIterator, 0, $this->size);
+        $limitedInnerIterator->rewind();
 
-        // We start of with an empty array of chunks.
-        $this->setInnerIterator(new \ArrayIterator());
-
-        // Only add a chunk if the original iterator is not empty.
-        if ($this->innerIterator->valid()) {
-            // Each chunk is a limited non-rewindable iterator of the original
-            // iterator.
-            // An onFinished event is attached to the chunk, so that it append
-            // the next iterator chunk to the outer iterator.
-            $innerIterator = new \NoRewindIterator($this->innerIterator);
-            $limitedInnerIterator = new \LimitIterator($innerIterator, 0, $this->size);
-            $eventIterator = new EventIterator($limitedInnerIterator);
-
-            $eventIterator->onFinished(function ($iterator, $callback) use ($innerIterator) {
-                $iterator->onFinished(null);
-                $limitedInnerIterator = new \LimitIterator($innerIterator, 0, $this->size);
-                $limitedInnerIterator->rewind();
-                if ($limitedInnerIterator->valid()) {
-                    $eventIterator = new EventIterator($limitedInnerIterator);
-                    $eventIterator->onFinished($callback);
-                    $eventIterator->rewind();
-                    $this->append($eventIterator);
-                }
-                return false;
-            });
-            $this->append($eventIterator);
-        }
+        // Setup outer iterator.
+        $outerIterator = new \ArrayIterator([$limitedInnerIterator]);
+        $this->setInnerIterator($outerIterator);
+        parent::rewind();
     }
 
     /**
-     * @see \Iterator::next()
+     * Make sure that the inner iterator is positioned properly, before skipping
+     * to next chunk.
+     *
+     * @see Iterator::next()
      */
     public function next()
     {
         // Finish iteration on the current chunk, if necessary, in order to
         // trigger the onFinished event, which sets up the next chunk.
-        $current = $this->current();
-        while ($current->valid()) {
-            $current->next();
+        while ($this->current()->valid()) {
+            $this->current()->next();
         }
-        parent::next();
+
+        // Check if next chunk has any values.
+        $this->current()->rewind();
+        return parent::next();
     }
 }
