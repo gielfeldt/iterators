@@ -13,7 +13,7 @@ namespace Gielfeldt\Iterators;
  * }
  */
 
-class ChunkIterator extends FiniteIterator
+class ChunkIterator extends ValuesIterator
 {
     /**
      * Size of a chunk
@@ -42,9 +42,9 @@ class ChunkIterator extends FiniteIterator
 
         // The outer iterator is a finite replaceable iterator with a condition
         // on the inner iterator not being empty.
-        parent::__construct(new ReplaceableIterator(), function ($iterator) {
-            return $this->current()->valid();
-        }, self::REINDEX);
+        parent::__construct(new InfiniteIterator(new ReplaceableIterator(), function ($iterator) {
+            return $iterator->current()->valid();
+        }));
     }
 
     /**

@@ -2,18 +2,16 @@
 
 namespace Gielfeldt\Iterators;
 
-class FiniteIterator extends InfiniteIterator
+class FiniteIterator extends \IteratorIterator
 {
-    protected $endCondition;
-
-    public function __construct(\Traversable $iterator, callable $endCondition, $flags = 0)
+    public function __construct(\Traversable $iterator, callable $endCondition = null)
     {
-        $this->endCondition = \Closure::fromCallable($endCondition);
-        parent::__construct($iterator, $flags);
+        $this->endCondition = $endCondition ? \Closure::fromCallable($endCondition) : null;
+        parent::__construct($iterator);
     }
 
     public function valid()
     {
-        return ($this->endCondition)($this);
+        return $this->endCondition ? ($this->endCondition)($this) : parent::valid();
     }
 }

@@ -4,32 +4,14 @@ namespace Gielfeldt\Iterators;
 
 class InfiniteIterator extends \InfiniteIterator
 {
-    const REINDEX = 1;
-
-    protected $index = 0;
-    protected $flags = 0;
-
-    public function __construct(\Traversable $iterator, $flags = 0)
+    public function __construct(\Traversable $iterator, callable $endCondition = null)
     {
-        $this->flags = $flags;
-        $iterator = $iterator instanceof \Iterator ? $iterator : new \IteratorIterator($iterator);
+        $this->endCondition = $endCondition ? \Closure::fromCallable($endCondition) : null;
         parent::__construct($iterator);
     }
 
-    public function rewind()
+    public function valid()
     {
-        $this->index = 0;
-        return parent::rewind();
-    }
-
-    public function next()
-    {
-        $this->index++;
-        return parent::next();
-    }
-
-    public function key()
-    {
-        return $this->flags & self::REINDEX ? $this->index : parent::key();
+        return $this->endCondition ? ($this->endCondition)($this) : parent::valid();
     }
 }
