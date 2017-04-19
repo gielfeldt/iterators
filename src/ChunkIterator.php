@@ -40,8 +40,8 @@ class ChunkIterator extends FiniteIterator
         $this->innerIterator = $iterator;
         $this->size = $size;
 
-        // The outer iterator is a finite iterator with a condition on the
-        // inner iterator not being empty.
+        // The outer iterator is a finite replaceable iterator with a condition
+        // on the inner iterator not being empty.
         parent::__construct(new ReplaceableIterator(), function ($iterator) {
             return $this->current()->valid();
         }, self::REINDEX);
