@@ -16,6 +16,6 @@ class ReplaceableIteratorTest extends IteratorsTestBase
 
         $iterator->setInnerIterator(new \ArrayIterator(range(11, 20)));
         $this->assertEquals(range(11, 20), iterator_to_array($iterator), 'Inner iterator was not set correctly.');
-        $this->assertEquals(range(11, 20), $iterator->getArrayCopy(), 'Call to inner iterator not dispatched.');
+        $this->assertEquals(range(11, 20), $iterator->getArrayCopy(), 'Method not delegated correctly.');
     }
 }
