@@ -67,20 +67,20 @@ class ChunkIterator extends ValuesIterator
     }
 
     /**
-     * Make sure that the inner iterator is positioned properly, before skipping
+     * Make sure that the inner iterator is positioned correctly, before skipping
      * to next chunk.
      *
      * @see Iterator::next()
      */
     public function next()
     {
-        // Finish iteration on the current chunk, if necessary, in order to
-        // trigger the onFinished event, which sets up the next chunk.
+        // Finish iteration on the current chunk, if necessary, so that our
+        // inner iterator is positioned correctly.
         while ($this->current()->valid()) {
             $this->current()->next();
         }
 
-        // Check if next chunk has any values.
+        // Rewind norewind iterator to repeat iterator of chunk size.
         $this->current()->rewind();
         return parent::next();
     }
