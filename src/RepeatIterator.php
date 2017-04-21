@@ -32,6 +32,10 @@ class RepeatIterator extends \IteratorIterator implements \Countable
 
     public function count()
     {
+        if ($this->count == INF) {
+            return $this->count;
+        }
+
         if (!isset($this->innerCount)) {
             $this->innerCount = count(new CountableIterator($this->getInnerIterator()));
             $this->innerLimit = round($this->innerCount * $this->fraction);
@@ -68,9 +72,10 @@ class RepeatIterator extends \IteratorIterator implements \Countable
 
     public function valid()
     {
-        if (!$this->count) {
+        if ($this->count <= 0) {
             return false;
         }
+
         $valid = parent::valid();
         if (!$valid) {
             $this->currentIteration++;

@@ -2,16 +2,17 @@
 
 namespace Gielfeldt\Iterators;
 
-class InfiniteIterator extends \InfiniteIterator
+class InfiniteIterator extends RepeatIterator
 {
     public function __construct(\Traversable $iterator, callable $endCondition = null)
     {
         $this->endCondition = $endCondition ? \Closure::fromCallable($endCondition) : null;
-        parent::__construct($iterator);
+        parent::__construct($iterator, INF);
     }
 
     public function valid()
     {
-        return $this->endCondition ? ($this->endCondition)($this) : parent::valid();
+        $valid = parent::valid();
+        return $this->endCondition ? ($this->endCondition)($this) : $valid;
     }
 }

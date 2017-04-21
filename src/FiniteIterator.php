@@ -12,6 +12,7 @@ class FiniteIterator extends \IteratorIterator
 
     public function valid()
     {
-        return $this->endCondition ? ($this->endCondition)($this) : parent::valid();
+        $valid = parent::valid();
+        return $this->endCondition ? ($this->endCondition)($this) : $valid;
     }
 }
