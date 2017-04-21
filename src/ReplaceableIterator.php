@@ -13,7 +13,7 @@ class ReplaceableIterator implements \Iterator, \OuterIterator
     public function setInnerIterator(\Traversable $iterator)
     {
         $this->iterator = $iterator instanceof \Iterator ? $iterator : new \IteratorIterator($iterator);
-        $this->getInnerIterator()->rewind();
+        #$this->getInnerIterator()->rewind();
     }
 
     public function getInnerIterator()
@@ -23,7 +23,9 @@ class ReplaceableIterator implements \Iterator, \OuterIterator
 
     public function valid()
     {
-        return $this->getInnerIterator()->valid();
+        $valid = $this->getInnerIterator()->valid();
+        print "VALID: $valid\n";
+        return $valid;
     }
 
     public function key()
@@ -38,11 +40,13 @@ class ReplaceableIterator implements \Iterator, \OuterIterator
 
     public function rewind()
     {
+        print "REWIND\n";
         return $this->getInnerIterator()->rewind();
     }
 
     public function next()
     {
+        print "NEXT\n";
         return $this->getInnerIterator()->next();
     }
 
