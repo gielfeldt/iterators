@@ -1,0 +1,34 @@
+<?php
+
+require 'vendor/autoload.php';
+
+use Gielfeldt\Iterators\Iterator;
+use Gielfeldt\Iterators\ReplaceableIterator;
+use Gielfeldt\Iterators\EventIterator;
+use Gielfeldt\Iterators\DebugIterator;
+use Gielfeldt\Iterators\ChunkIterator;
+use Gielfeldt\Iterators\RepeatIterator;
+use Gielfeldt\Iterators\MapIterator;
+use Gielfeldt\Iterators\AtomicTempFileObject;
+
+$a = new ArrayIterator(range(1, 18));
+
+$o = new ChunkIterator($a, 4);
+
+foreach ($o as $ok => $ov) {
+    print "OUTER: $ok\n";
+    foreach ($ov as $ik => $iv) {
+        print "-- INNER: $ik => $iv\n";
+        if ($iv == 6) break;
+    }
+}
+
+foreach ($o as $ok => $ov) {
+    print "OUTER: $ok\n";
+    foreach ($ov as $ik => $iv) {
+        print "-- INNER: $ik => $iv\n";
+        if ($iv == 6) break;
+    }
+}
+
+exit;
