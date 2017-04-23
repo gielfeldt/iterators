@@ -5,7 +5,7 @@ namespace Gielfeldt\Iterators;
 /**
  * Glob iterator with double wildcard (**) and recursive capabilities.
  */
-class GlobIterator extends \IteratorIterator implements \Countable
+class GlobIterator extends IteratorIterator implements \Countable
 {
     const GLOB_NOSORT = 2048;
 

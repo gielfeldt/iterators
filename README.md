@@ -37,8 +37,6 @@ So here you go.
 
 [DiffIterator](#diffiterator)
 
-[EventIterator](#eventiterator)
-
 [FlipIterator](#flipiterator)
 
 [GlobIterator](#globiterator)
@@ -240,67 +238,6 @@ Array
 (
     [key1] => value1
     [key3] => value3
-)
-```
-
-#### EventIterator
-React on iterator events. The EventIterator is also a ReplaceableIterator.
-
-```php
-use Gielfeldt\Iterators\EventIterator;
-use Gielfeldt\Iterators\ValuesIterator;
-
-$iterator = new EventIterator(new \ArrayIterator(range(1, 4)));
-$iterator->onFinished(function ($iterator) {
-    $iterator->onFinished(null);
-    $iterator->setInnerIterator(new \ArrayIterator(range(5, 8)));
-    return true;
-});
-print_r(iterator_to_array(new ValuesIterator($iterator)));
-```
-
-Output:
-```
-Array
-(
-    [0] => 1
-    [1] => 2
-    [2] => 3
-    [3] => 4
-    [4] => 5
-    [5] => 6
-    [6] => 7
-    [7] => 8
-)
-```
-
-```php
-$fibonacci = new EventIterator(new \ArrayIterator([0, 1]));
-$fibonacci->onFinished(function ($iterator) {
-    $iterator->getInnerIterator()->append(Iterator::sum($iterator->getInnerIterator()));
-    if ($iterator->getInnerIterator()->current() < INF) {
-        $iterator->getInnerIterator()->offsetUnset($iterator->getInnerIterator()->key() - 2);
-        $iterator->getInnerIterator()->seek(1);
-        return true;
-    }
-    $iterator->onFinished(null);
-    return false;
-});
-print_r(iterator_to_array(new \LimitIterator($fibonacci, 4, 8)));
-```
-
-Output:
-```
-Array
-(
-    [4] => 3
-    [5] => 5
-    [6] => 8
-    [7] => 13
-    [8] => 21
-    [9] => 34
-    [10] => 55
-    [11] => 89
 )
 ```
 

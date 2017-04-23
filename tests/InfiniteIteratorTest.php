@@ -25,7 +25,7 @@ class InfiniteIteratorTest extends IteratorsTestBase
     {
         $input = [1, 2, 3, 4];
         $iterator = new InfiniteIterator(new \ArrayIterator($input), function ($iterator) {
-            return $iterator->current() != 4;
+            return $iterator->current() == 4;
         });
 
         $iterator = new \LimitIterator($iterator, 0, 10);
@@ -36,7 +36,7 @@ class InfiniteIteratorTest extends IteratorsTestBase
         $this->assertEquals($expectedValues, iterator_to_array(new ValuesIterator($iterator)), 'Limited infinite iterator did not work, values are wrong.');
 
         $iterator = new InfiniteIterator(new \ArrayIterator($input), function ($iterator) {
-            return $iterator->getCurrentIteration() < 1 || $iterator->current() != 4;
+            return $iterator->getCurrentIteration() >= 1 && $iterator->current() == 4;
         });
 
         $iterator = new \LimitIterator($iterator, 0, 10);

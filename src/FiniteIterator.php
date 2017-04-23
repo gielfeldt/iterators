@@ -2,7 +2,7 @@
 
 namespace Gielfeldt\Iterators;
 
-class FiniteIterator extends \IteratorIterator
+class FiniteIterator extends IteratorIterator
 {
     public function __construct(\Traversable $iterator, callable $endCondition = null)
     {
@@ -12,7 +12,6 @@ class FiniteIterator extends \IteratorIterator
 
     public function valid()
     {
-        $valid = parent::valid();
-        return $this->endCondition ? ($this->endCondition)($this) : $valid;
+        return $this->endCondition ? !($this->endCondition)($this) : parent::valid();
     }
 }

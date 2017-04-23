@@ -30,6 +30,16 @@ class Iterator
         return $iterators ? end($iterators) : false;
     }
 
+    public static function nth(\Traversable $iterator, int $offset)
+    {
+        $iterator = new \IteratorIterator($iterator);
+        $iterator->rewind();
+        while ($iterator->valid() && $offset-- > 0) {
+            $iterator->next();
+        }
+        return $iterator->current();
+    }
+
     public static function reduce(\Traversable $iterator, callable $callback, $initial = null)
     {
         $callback = \Closure::fromCallable($callback);

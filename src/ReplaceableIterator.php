@@ -4,16 +4,17 @@ namespace Gielfeldt\Iterators;
 
 class ReplaceableIterator implements \Iterator, \OuterIterator
 {
+    private $index;
+
     public function __construct(\Traversable $iterator = null)
     {
         $iterator = $iterator ?? new \EmptyIterator();
-        $this->iterator = $iterator instanceof \Iterator ? $iterator : new \IteratorIterator($iterator);
+        $this->setInnerIterator($iterator);
     }
 
     public function setInnerIterator(\Traversable $iterator)
     {
         $this->iterator = $iterator instanceof \Iterator ? $iterator : new \IteratorIterator($iterator);
-        $this->getInnerIterator()->rewind();
     }
 
     public function getInnerIterator()
@@ -38,12 +39,19 @@ class ReplaceableIterator implements \Iterator, \OuterIterator
 
     public function rewind()
     {
+        $this->index = 0;
         return $this->getInnerIterator()->rewind();
     }
 
     public function next()
     {
+        $this->index++;
         return $this->getInnerIterator()->next();
+    }
+
+    public function getIndex()
+    {
+        return $this->index;
     }
 
     public function __call($method, $arguments)

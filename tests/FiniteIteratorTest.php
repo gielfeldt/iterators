@@ -24,7 +24,7 @@ class FiniteIteratorTest extends IteratorsTestBase
     {
         $input = [1, 2, 3, 4];
         $iterator = new FiniteIterator(new \ArrayIterator($input), function ($iterator) {
-            return $iterator->current() != 4;
+            return $iterator->current() == 4;
         });
 
         $expectedKeys = [0, 1, 2];

@@ -2,7 +2,7 @@
 
 namespace Gielfeldt\Iterators;
 
-class CountableIterator extends \IteratorIterator implements \Countable
+class CountableIterator extends IteratorIterator implements \Countable
 {
     const CACHE_COUNT = 1;
 
