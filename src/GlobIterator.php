@@ -36,7 +36,7 @@ class GlobIterator extends IteratorIterator implements \Countable
         $realPath = $path ? $path : './';
         $realPath = rtrim($realPath, '/') . '/';
 
-        $flags = $flags &~ \FilesystemIterator::CURRENT_AS_PATHNAME;
+        $flags = $flags & ~ \FilesystemIterator::CURRENT_AS_PATHNAME;
         $flags |= \FilesystemIterator::KEY_AS_PATHNAME;
         $iterator = new \RecursiveDirectoryIterator($realPath, $flags);
 
@@ -57,20 +57,18 @@ class GlobIterator extends IteratorIterator implements \Countable
         GlobIteratorFileInfo::setPath($iteratorId, $path, $realPath);
 
         // Actual glob filtering.
-        $fIterator = new \CallbackFilterIterator($rIterator, function (&$current, &$key, $iterator) use ($iteratorId, $regexPattern) {
+        $fIterator = new \CallbackFilterIterator($rIterator, function(&$current, &$key, $iterator) use ($iteratorId, $regexPattern) {
             GlobIteratorFileInfo::setIteratorId($iteratorId);
             $fileInfo = $current->getFileInfo(GlobIteratorFileInfo::class);
             if ($this->flags & \FilesystemIterator::CURRENT_AS_PATHNAME) {
                 $current = $fileInfo->getPathname();
-            }
-            else {
+            } else {
                 $current = $fileInfo;
             }
 
             if ($this->flags & \FilesystemIterator::KEY_AS_FILENAME) {
                 $key = $fileInfo->getFilename();
-            }
-            else {
+            } else {
                 $key = $fileInfo->getPathname();
             }
             return preg_match($regexPattern, $fileInfo->getPathname());

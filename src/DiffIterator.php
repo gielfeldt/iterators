@@ -31,7 +31,7 @@ class DiffIterator extends \FilterIterator
             }
         }
         return true;
-	}
+    }
 
     public static function diffCurrent($iterator, $key, $value)
     {

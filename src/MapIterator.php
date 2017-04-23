@@ -23,14 +23,12 @@ class MapIterator extends IteratorIterator
                 if (is_numeric($this->currentKey) && intval($this->currentKey) >= $this->idx) {
                     $this->idx = intval($this->currentKey) + 1;
                 }
-            }
-            else {
+            } else {
                 $this->currentKey = $this->idx++;
                 $this->currentValue = $result;
             }
 
-        }
-        else {
+        } else {
             $this->currentKey = null;
             $this->currentValue = null;
         }

@@ -18,8 +18,7 @@ class UniqueIterator extends \FilterIterator
 
         if ($flags & self::ASSUME_SORTED) {
             $this->method = \Closure::fromCallable([$this, 'filterAssumeSorted']);
-        }
-        else {
+        } else {
             $this->method = \Closure::fromCallable([$this, 'filterAssumeUnsorted']);
         }
     }

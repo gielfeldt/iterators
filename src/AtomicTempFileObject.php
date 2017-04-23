@@ -115,15 +115,12 @@ class AtomicTempFileObject extends \SplFileObject
         if ($this->persist == self::PERSIST || $this->persist == self::PERSIST_UNCHANGED) {
             if ($this->persist == self::PERSIST_UNCHANGED || !$this->doCompare()) {
                 $this->doPersist();
-            }
-            else {
+            } else {
                 $this->doDiscard();
             }
-        }
-        elseif ($this->persist & self::DISCARD) {
+        } elseif ($this->persist & self::DISCARD) {
             $this->doDiscard();
-        }
-        else {
+        } else {
             // @codeCoverageIgnoreStart
             trigger_error("Temp file left on device: " . $this->getRealPath(), E_USER_WARNING);
             // @codeCoverageIgnoreEnd
@@ -133,14 +130,14 @@ class AtomicTempFileObject extends \SplFileObject
     /**
      * Easy access iterator apply for processing an entire file.
      *
-     * @param  Iterator $input    [description]
+     * @param  \Iterator $input    [description]
      * @param  callable $callback [description]
      */
     public function process(\Iterator $input, callable $callback)
     {
         $callback = \Closure::fromCallable($callback);
         $input->rewind();
-        iterator_apply($input, function (\Iterator $iterator) use ($callback) {
+        iterator_apply($input, function(\Iterator $iterator) use ($callback) {
             $callback($iterator->current(), $iterator->key(), $iterator, $this);
             return true;
         }, [$input]);
@@ -169,8 +166,6 @@ class AtomicTempFileObject extends \SplFileObject
     /**
      * File comparison
      *
-     * @param string $filename
-     *   The file to check against.
      *
      * @return bool
      *   True if the contents of this file matches the contents of $filename.
@@ -194,8 +189,8 @@ class AtomicTempFileObject extends \SplFileObject
         // Rewind this temp file and compare it with the specified file.
         $identical = true;
         $tempFile->fseek(0);
-        while(!$file->eof()) {
-            if($file->fread(8192) != $tempFile->fread(8192)) {
+        while (!$file->eof()) {
+            if ($file->fread(8192) != $tempFile->fread(8192)) {
                 $identical = false;
                 break;
             }
