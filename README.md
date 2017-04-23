@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/gielfeldt/iterators.svg?branch=master)][1]
 [![Test Coverage](https://codeclimate.com/github/gielfeldt/iterators/badges/coverage.svg)][2]
 [![Code Climate](https://codeclimate.com/github/gielfeldt/iterators/badges/gpa.svg)][3]
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/gielfeldt/iterators/badges/quality-score.png?b=master)][8]
 
 [![Latest Stable Version](https://poser.pugx.org/gielfeldt/iterators/v/stable.svg)][4]
 [![Latest Unstable Version](https://poser.pugx.org/gielfeldt/iterators/v/unstable.svg)][4]
@@ -755,3 +756,4 @@ int(6)
 [5]:  https://www.versioneye.com/user/projects/58ed39a526a5bb0038e422f7
 [6]:  https://github.com/gielfeldt/iterators/blob/master/LICENSE.md
 [7]:  https://readthedocs.org/projects/iterators/?badge=latest
+[8]:  https://scrutinizer-ci.com/g/gielfeldt/iterators/?branch=master
