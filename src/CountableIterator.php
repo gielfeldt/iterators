@@ -20,8 +20,7 @@ class CountableIterator extends IteratorIterator implements \Countable
         if (!($this->flags & self::CACHE_COUNT) || !isset($this->count)) {
             if ($this->getInnerIterator() instanceof \Countable) {
                 $this->count = intval($this->getInnerIterator()->count());
-            }
-            else {
+            } else {
                 $this->count = 0;
                 $this->rewind();
                 while ($this->valid()) {

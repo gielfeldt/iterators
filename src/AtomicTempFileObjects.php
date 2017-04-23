@@ -103,7 +103,7 @@ class AtomicTempFileObjects
     public function splitCsvFile(\Iterator $input, callable $callback)
     {
         $callback = \Closure::fromCallable($callback);
-        $this->process($input, function ($row, $rowNum, $input, $output) use ($callback) {
+        $this->process($input, function($row, $rowNum, $input, $output) use ($callback) {
             if ($fileName = $callback($row)) {
                 if (!$output->isFileOpen($fileName)) {
                     $output->openFile($fileName)->fputcsv(array_keys($row));
@@ -126,7 +126,7 @@ class AtomicTempFileObjects
     {
         $callback = \Closure::fromCallable($callback);
         $input->rewind();
-        iterator_apply($input, function (\Iterator $iterator) use ($callback) {
+        iterator_apply($input, function(\Iterator $iterator) use ($callback) {
             $callback($iterator->current(), $iterator->key(), $iterator, $this);
             return true;
         }, [$input]);

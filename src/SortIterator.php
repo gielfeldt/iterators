@@ -21,12 +21,15 @@ class SortIterator extends IteratorIterator implements \Countable
         $this->direction = $direction;
         $this->flags = $flags;
         $this->callback = \Closure::fromCallable($callback);
-        $this->realCallback = $direction == self::SORT_ASC ? $this->callback : function ($cmpA, $cmpB) {
+        $this->realCallback = $direction == self::SORT_ASC ? $this->callback : function($cmpA, $cmpB) {
             return ($this->callback)($cmpB, $cmpA);
         };
         parent::__construct($this->getSortedIterator($iterator));
     }
 
+    /**
+     * @param \Traversable $iterator
+     */
     public function getSortedIterator($iterator)
     {
         $sortedIterator = new \ArrayIterator();

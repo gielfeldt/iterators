@@ -33,6 +33,9 @@ class ShuffleIterator extends IteratorIterator implements \Countable
         return $sortedIterator;
     }
 
+    /**
+     * @param \Traversable $iterator
+     */
     protected function generateElement($key, $value, $iterator)
     {
         return (object) ['key' => $key, 'current' => $value];

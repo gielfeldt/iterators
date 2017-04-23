@@ -16,6 +16,9 @@ class GlobStreamWrapper {
         self::$root = $root;
     }
 
+    /**
+     * @param string $path
+     */
     protected static function getRootedPath($path)
     {
         // Avoid infinite recursion.

@@ -15,5 +15,5 @@ class IntersectIterator extends DiffIterator
             }
         }
         return $found == count($this->iterators);
-	}
+    }
 }
