@@ -91,12 +91,12 @@ class SortIterator extends IteratorIterator implements \Countable
         return $this->direction == self::SORT_ASC ? $this->last() : $this->first();
     }
 
-    static public function sortCurrent($cmpA, $cmpB)
+    public static function sortCurrent($cmpA, $cmpB)
     {
         return $cmpA->current <=> $cmpB->current;
     }
 
-    static public function sortKey($cmpA, $cmpB)
+    public static function sortKey($cmpA, $cmpB)
     {
         return $cmpA->key <=> $cmpB->key;
     }

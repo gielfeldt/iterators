@@ -31,7 +31,8 @@ class InterleaveIterator implements \Iterator
 
     public function valid()
     {
-        for ($i = 0; $i < count($this->realIterators); $i++) {
+        $count = count($this->realIterators);
+        while ($count-- >= 0) {
             if ($this->iterators->current()->valid()) {
                 return true;
             }
