@@ -62,7 +62,7 @@ class Iterator
 
     public static function product(\Traversable $iterator)
     {
-        return self::reduce($iterator, function($carry, $value, $key) {
+        return self::reduce($iterator, function($carry, $value) {
             return $carry * $value;
         }, 1);
     }
@@ -74,28 +74,28 @@ class Iterator
 
     public static function min(\Traversable $iterator)
     {
-        return self::reduce($iterator, function($carry, $value, $key) {
+        return self::reduce($iterator, function($carry, $value) {
             return $carry < $value ? $carry : $value;
         }, INF);
     }
 
     public static function max(\Traversable $iterator)
     {
-        return self::reduce($iterator, function($carry, $value, $key) {
+        return self::reduce($iterator, function($carry, $value) {
             return $carry > $value ? $carry : $value;
         }, -INF);
     }
 
     public static function concatenate(\Traversable $iterator)
     {
-        return self::reduce($iterator, function($carry, $value, $key) {
+        return self::reduce($iterator, function($carry, $value) {
             return $carry . $value;
         }, '');
     }
 
     public static function implode($separator, \Traversable $iterator)
     {
-        $result = self::reduce($iterator, function($carry, $value, $key) use ($separator) {
+        $result = self::reduce($iterator, function($carry, $value) use ($separator) {
             return $carry . $value . $separator;
         }, '');
         $result = mb_substr($result, 0, -mb_strlen($separator));

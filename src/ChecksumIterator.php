@@ -6,6 +6,8 @@ class ChecksumIterator extends IteratorIterator
 {
     protected $algo;
 
+    protected $callback;
+
     public function __construct(\Traversable $iterator, $algo = 'sha256')
     {
         $this->algo = $algo;

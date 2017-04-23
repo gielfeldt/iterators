@@ -5,6 +5,8 @@ namespace Gielfeldt\Iterators;
 class UniqueIterator extends \FilterIterator
 {
     protected $found;
+    protected $callback;
+    protected $method;
 
     const ASSUME_SORTED = 1;
     const REINDEX = 2;

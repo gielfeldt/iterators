@@ -5,6 +5,7 @@ namespace Gielfeldt\Iterators;
 class StepIterator extends IteratorIterator
 {
     private $step;
+    private $offset;
 
     public function __construct(\Traversable $iterator, int $step, int $offset = 0)
     {

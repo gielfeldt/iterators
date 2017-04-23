@@ -37,7 +37,7 @@ class ChunkIterator extends ValuesIterator
      */
     public function __construct(\Traversable $iterator, int $size)
     {
-        $this->innerIterator = $iterator;
+        $this->innerIterator = $iterator instanceof \Iterator ? $iterator : new \IteratorIterator($iterator);
         $this->size = $size;
 
         // The outer iterator is a finite replaceable iterator with a condition

@@ -17,11 +17,13 @@ class CombineIterator extends IteratorIterator
 
     public function key()
     {
-        return parent::current()['key'] ?? null;
+        $current = parent::current();
+        return $current['key'] ?? null;
     }
 
     public function current()
     {
-        return parent::current()['value'] ?? null;
+        $current = parent::current();
+        return $current['value'] ?? null;
     }
 }

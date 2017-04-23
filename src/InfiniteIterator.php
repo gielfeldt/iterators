@@ -4,6 +4,9 @@ namespace Gielfeldt\Iterators;
 
 class InfiniteIterator extends IteratorIterator
 {
+    private $endCondition;
+    private $currentIteration;
+
     public function __construct(\Traversable $iterator, callable $endCondition = null)
     {
         $this->endCondition = $endCondition ? \Closure::fromCallable($endCondition) : null;
@@ -19,12 +22,6 @@ class InfiniteIterator extends IteratorIterator
     {
         $this->currentIteration = 0;
         parent::rewind();
-    }
-
-    public function next()
-    {
-        parent::next();
-        #if (!parent::valid())
     }
 
     public function valid()

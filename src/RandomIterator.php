@@ -17,6 +17,7 @@ class RandomIterator implements \IteratorAggregate
     {
         $innerCount = $this->innerIterator->count();
         $count = min($this->count, $innerCount);
+        $indexes = [];
         for ($i = 0; $i < $count; $i++) {
             do {
                 $index = rand(0, $innerCount - 1);

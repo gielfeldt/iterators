@@ -4,6 +4,8 @@ namespace Gielfeldt\Iterators;
 
 class FiniteIterator extends IteratorIterator
 {
+    private $endCondition;
+
     public function __construct(\Traversable $iterator, callable $endCondition = null)
     {
         $this->endCondition = $endCondition ? \Closure::fromCallable($endCondition) : null;
