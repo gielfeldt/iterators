@@ -12,6 +12,9 @@ class ShuffleIterator extends IteratorIterator implements \Countable
         parent::__construct($this->getShuffledIterator($iterator));
     }
 
+    /**
+     * @param \Traversable $iterator
+     */
     public function getShuffledIterator($iterator)
     {
         $sortedIterator = new \ArrayIterator();

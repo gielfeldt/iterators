@@ -40,6 +40,9 @@ class Iterator
         return $iterator->current();
     }
 
+    /**
+     * @return string
+     */
     public static function reduce(\Traversable $iterator, callable $callback, $initial = null)
     {
         $callback = \Closure::fromCallable($callback);
