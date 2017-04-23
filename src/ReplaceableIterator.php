@@ -5,6 +5,7 @@ namespace Gielfeldt\Iterators;
 class ReplaceableIterator implements \Iterator, \OuterIterator
 {
     private $index;
+    private $iterator;
 
     public function __construct(\Traversable $iterator = null)
     {

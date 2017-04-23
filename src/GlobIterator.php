@@ -57,7 +57,7 @@ class GlobIterator extends IteratorIterator implements \Countable
         GlobIteratorFileInfo::setPath($iteratorId, $path, $realPath);
 
         // Actual glob filtering.
-        $fIterator = new \CallbackFilterIterator($rIterator, function(&$current, &$key, $iterator) use ($iteratorId, $regexPattern) {
+        $fIterator = new \CallbackFilterIterator($rIterator, function(&$current, &$key) use ($iteratorId, $regexPattern) {
             GlobIteratorFileInfo::setIteratorId($iteratorId);
             $fileInfo = $current->getFileInfo(GlobIteratorFileInfo::class);
             if ($this->flags & \FilesystemIterator::CURRENT_AS_PATHNAME) {
