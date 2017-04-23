@@ -17,7 +17,6 @@ class ReservoirSamplingIterator implements \IteratorAggregate
     {
         $result = new \ArrayIterator();
         $this->iterator->rewind();
-        $index = 0;
         while ($this->iterator->getIndex() < $this->count && $this->iterator->valid()) {
             $result->append($this->iterator->current());
             $this->iterator->next();
