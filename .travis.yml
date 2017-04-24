@@ -12,9 +12,9 @@ script:
    ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 
 after_success:
- - wget https://scrutinizer-ci.com/ocular.phar
+ #- wget https://scrutinizer-ci.com/ocular.phar
  - ./vendor/bin/test-reporter
- - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
+ #- php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
  - curl http://netcup.gielfeldt.dk:8111/api/build/iterators/$TRAVIS_BRANCH?token=$PHPDOXINIZER_TOKEN
 
 notifications:
