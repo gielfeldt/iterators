@@ -17,12 +17,14 @@ class ChunkIterator extends ValuesIterator
 {
     /**
      * Size of a chunk
+     *
      * @var int
      */
     private $size;
 
     /**
      * The original iterator to split into chunks.
+     *
      * @var \Iterator
      */
     private $innerIterator;
@@ -32,7 +34,7 @@ class ChunkIterator extends ValuesIterator
      *
      * @param \Traversable $iterator
      *   The iterator to split into chunks.
-     * @param int $size
+     * @param int          $size
      *   The size of each chunk.
      */
     public function __construct(\Traversable $iterator, int $size)
@@ -42,9 +44,14 @@ class ChunkIterator extends ValuesIterator
 
         // The outer iterator is a finite replaceable iterator with a condition
         // on the inner iterator not being empty.
-        parent::__construct(new InfiniteIterator(new ReplaceableIterator(), function($iterator) {
-            return !$iterator->current()->valid();
-        }));
+        parent::__construct(
+            new InfiniteIterator(
+                new ReplaceableIterator(),
+                function ($iterator) {
+                    return !$iterator->current()->valid();
+                }
+            )
+        );
     }
 
     /**

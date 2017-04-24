@@ -5,7 +5,8 @@ namespace Gielfeldt\Iterators;
 /**
  * Stream wrapper providing recursive glob functionality.
  */
-class GlobStreamWrapper {
+class GlobStreamWrapper
+{
 
     protected $directoryIterator;
 

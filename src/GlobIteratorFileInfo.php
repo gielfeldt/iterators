@@ -2,11 +2,13 @@
 
 namespace Gielfeldt\Iterators;
 
-class GlobIteratorFileInfo extends \SplFileInfo {
+class GlobIteratorFileInfo extends \SplFileInfo
+{
     private static $iteratorId;
     private static $paths = [];
 
-    public function __construct($fileName) {
+    public function __construct($fileName)
+    {
         $fileName = $this->processFilename($fileName);
         parent::__construct($fileName);
     }
@@ -26,7 +28,8 @@ class GlobIteratorFileInfo extends \SplFileInfo {
         self::$paths[$iteratorId] = [$path, $realPath];
     }
 
-    protected function processFilename($fileName) {
+    protected function processFilename($fileName)
+    {
         $iteratorId = self::getIteratorId();
         $pathName = self::$paths[$iteratorId][0] . substr($fileName, strlen(self::$paths[$iteratorId][1]));
         return $pathName;

@@ -68,7 +68,8 @@ class AtomicTempFileObjects
      * @return AtomicTempFileObject
      *   The file opened.
      */
-    public function openFile($fileName): AtomicTempFileObject {
+    public function openFile($fileName): AtomicTempFileObject
+    {
         if ($this->isFileOpen($fileName)) {
             throw new \RuntimeException("File: $fileName already opened!");
         }
@@ -103,33 +104,40 @@ class AtomicTempFileObjects
     public function splitCsvFile(\Iterator $input, callable $callback)
     {
         $callback = \Closure::fromCallable($callback);
-        $this->process($input, function($row, $rowNum, $input, $output) use ($callback) {
-            if ($fileName = $callback($row)) {
-                if (!$output->isFileOpen($fileName)) {
-                    $output->openFile($fileName)->fputcsv(array_keys($row));
+        $this->process(
+            $input,
+            function ($row, $rowNum, $input, $output) use ($callback) {
+                if ($fileName = $callback($row)) {
+                    if (!$output->isFileOpen($fileName)) {
+                        $output->openFile($fileName)->fputcsv(array_keys($row));
+                    }
+                    $output->getFile($fileName)->fputcsv(array_values($row));
                 }
-                $output->getFile($fileName)->fputcsv(array_values($row));
             }
-        });
+        );
         return $this;
     }
 
     /**
      * Easy access iterator apply for processing an entire file.
      *
-     * @param  Iterator $input
+     * @param Iterator $input
      *   The input to split.
-     * @param  callable $callback
+     * @param callable $callback
      *   Callback for each item in iterator.
      */
     public function process(\Iterator $input, callable $callback)
     {
         $callback = \Closure::fromCallable($callback);
         $input->rewind();
-        iterator_apply($input, function(\Iterator $iterator) use ($callback) {
-            $callback($iterator->current(), $iterator->key(), $iterator, $this);
-            return true;
-        }, [$input]);
+        iterator_apply(
+            $input,
+            function (\Iterator $iterator) use ($callback) {
+                $callback($iterator->current(), $iterator->key(), $iterator, $this);
+                return true;
+            },
+            [$input]
+        );
         return $this;
     }
 

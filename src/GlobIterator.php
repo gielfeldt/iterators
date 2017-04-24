@@ -20,7 +20,7 @@ class GlobIterator extends IteratorIterator implements \Countable
     /**
      * Constructor.
      *
-     * @param string $globPattern
+     * @param string  $globPattern
      *   Glob pattern.
      * @param integer $flags
      *   FilesystemIterator flags.
@@ -57,22 +57,25 @@ class GlobIterator extends IteratorIterator implements \Countable
         GlobIteratorFileInfo::setPath($iteratorId, $path, $realPath);
 
         // Actual glob filtering.
-        $fIterator = new \CallbackFilterIterator($rIterator, function(&$current, &$key) use ($iteratorId, $regexPattern) {
-            GlobIteratorFileInfo::setIteratorId($iteratorId);
-            $fileInfo = $current->getFileInfo(GlobIteratorFileInfo::class);
-            if ($this->flags & \FilesystemIterator::CURRENT_AS_PATHNAME) {
-                $current = $fileInfo->getPathname();
-            } else {
-                $current = $fileInfo;
-            }
+        $fIterator = new \CallbackFilterIterator(
+            $rIterator,
+            function (&$current, &$key) use ($iteratorId, $regexPattern) {
+                GlobIteratorFileInfo::setIteratorId($iteratorId);
+                $fileInfo = $current->getFileInfo(GlobIteratorFileInfo::class);
+                if ($this->flags & \FilesystemIterator::CURRENT_AS_PATHNAME) {
+                    $current = $fileInfo->getPathname();
+                } else {
+                    $current = $fileInfo;
+                }
 
-            if ($this->flags & \FilesystemIterator::KEY_AS_FILENAME) {
-                $key = $fileInfo->getFilename();
-            } else {
-                $key = $fileInfo->getPathname();
+                if ($this->flags & \FilesystemIterator::KEY_AS_FILENAME) {
+                    $key = $fileInfo->getFilename();
+                } else {
+                    $key = $fileInfo->getPathname();
+                }
+                return preg_match($regexPattern, $fileInfo->getPathname());
             }
-            return preg_match($regexPattern, $fileInfo->getPathname());
-        });
+        );
         parent::__construct(new CountableIterator($fIterator, CountableIterator::CACHE_COUNT));
     }
 
@@ -89,7 +92,7 @@ class GlobIterator extends IteratorIterator implements \Countable
     /**
      * Extract the path to start at.
      *
-     * @param string $globPattern
+     * @param  string $globPattern
      * @return string
      */
     public static function extractPathAndMaxDepth(string $globPattern): array
@@ -106,7 +109,7 @@ class GlobIterator extends IteratorIterator implements \Countable
     /**
      * Convert a glob pattern to a regex pattern.
      *
-     * @param string $globPattern
+     * @param  string $globPattern
      * @return string
      */
     public static function globToRegex(string $globPattern): string
@@ -127,7 +130,6 @@ class GlobIterator extends IteratorIterator implements \Countable
             . $modifiers;
 
         return $regexPattern;
-
     }
 
     /**

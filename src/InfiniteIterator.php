@@ -33,5 +33,4 @@ class InfiniteIterator extends IteratorIterator
 
         return $this->endCondition ? !($this->endCondition)($this) : parent::valid();
     }
-
 }

@@ -15,7 +15,8 @@ class ChecksumIterator extends IteratorIterator
         parent::__construct($iterator);
     }
 
-    public static function serializeCurrent($iterator) {
+    public static function serializeCurrent($iterator)
+    {
         $current = $iterator->current();
         return is_scalar($current) ? $current : serialize($current);
     }
@@ -25,7 +26,8 @@ class ChecksumIterator extends IteratorIterator
         $this->callback = \Closure::fromCallable($callback);
     }
 
-    public function current() {
+    public function current()
+    {
         return hash($this->algo, ($this->callback)($this->getInnerIterator()));
     }
 

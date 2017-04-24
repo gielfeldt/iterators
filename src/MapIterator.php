@@ -28,7 +28,6 @@ class MapIterator extends IteratorIterator
                 $this->currentKey = $this->currentIdx++;
                 $this->currentValue = $result;
             }
-
         } else {
             $this->currentKey = null;
             $this->currentValue = null;

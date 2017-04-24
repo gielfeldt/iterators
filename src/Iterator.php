@@ -46,25 +46,37 @@ class Iterator
     public static function reduce(\Traversable $iterator, callable $callback, $initial = null)
     {
         $callback = \Closure::fromCallable($callback);
-        iterator_apply($iterator, function($iterator) use (&$initial, $callback) {
-            $initial = $callback($initial, $iterator->current(), $iterator->key());
-            return true;
-        }, [$iterator]);
+        iterator_apply(
+            $iterator,
+            function ($iterator) use (&$initial, $callback) {
+                $initial = $callback($initial, $iterator->current(), $iterator->key());
+                return true;
+            },
+            [$iterator]
+        );
         return $initial;
     }
 
     public static function sum(\Traversable $iterator)
     {
-        return self::reduce($iterator, function($carry, $value, $key) {
-            return $carry + $value;
-        }, 0);
+        return self::reduce(
+            $iterator,
+            function ($carry, $value, $key) {
+                return $carry + $value;
+            },
+            0
+        );
     }
 
     public static function product(\Traversable $iterator)
     {
-        return self::reduce($iterator, function($carry, $value) {
-            return $carry * $value;
-        }, 1);
+        return self::reduce(
+            $iterator,
+            function ($carry, $value) {
+                return $carry * $value;
+            },
+            1
+        );
     }
 
     public static function average(\Traversable $iterator)
@@ -74,30 +86,46 @@ class Iterator
 
     public static function min(\Traversable $iterator)
     {
-        return self::reduce($iterator, function($carry, $value) {
-            return $carry < $value ? $carry : $value;
-        }, INF);
+        return self::reduce(
+            $iterator,
+            function ($carry, $value) {
+                return $carry < $value ? $carry : $value;
+            },
+            INF
+        );
     }
 
     public static function max(\Traversable $iterator)
     {
-        return self::reduce($iterator, function($carry, $value) {
-            return $carry > $value ? $carry : $value;
-        }, -INF);
+        return self::reduce(
+            $iterator,
+            function ($carry, $value) {
+                return $carry > $value ? $carry : $value;
+            },
+            -INF
+        );
     }
 
     public static function concatenate(\Traversable $iterator)
     {
-        return self::reduce($iterator, function($carry, $value) {
-            return $carry . $value;
-        }, '');
+        return self::reduce(
+            $iterator,
+            function ($carry, $value) {
+                return $carry . $value;
+            },
+            ''
+        );
     }
 
     public static function implode($separator, \Traversable $iterator)
     {
-        $result = self::reduce($iterator, function($carry, $value) use ($separator) {
-            return $carry . $value . $separator;
-        }, '');
+        $result = self::reduce(
+            $iterator,
+            function ($carry, $value) use ($separator) {
+                return $carry . $value . $separator;
+            },
+            ''
+        );
         $result = mb_substr($result, 0, -mb_strlen($separator));
         return $result;
     }

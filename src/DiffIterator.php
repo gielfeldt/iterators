@@ -22,7 +22,8 @@ class DiffIterator extends \FilterIterator
         $this->callback = \Closure::fromCallable($callback);
     }
 
-    public function accept() {
+    public function accept()
+    {
         foreach ($this->iterators as $iterator) {
             foreach ($iterator as $key => $value) {
                 if (($this->callback)($this->getInnerIterator(), $key, $value)) {

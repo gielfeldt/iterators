@@ -24,9 +24,13 @@ class AtomicTempFileObject extends \SplFileObject
             if (!@mkdir($tempDir, $mode, true)) {
                 // @codeCoverageIgnoreStart
                 $lastError = error_get_last();
-                throw new \RuntimeException(sprintf("Could create directory %s - message: %s",
-                    $tempDir, $lastError['message']
-                ));
+                throw new \RuntimeException(
+                    sprintf(
+                        "Could create directory %s - message: %s",
+                        $tempDir,
+                        $lastError['message']
+                    )
+                );
                 // @codeCoverageIgnoreEnd
             }
         }
@@ -76,9 +80,14 @@ class AtomicTempFileObject extends \SplFileObject
         if (!@rename($this->getRealPath(), $this->destinationRealPath)) {
             // @codeCoverageIgnoreStart
             $lastError = error_get_last();
-            throw new \RuntimeException(sprintf("Could not move %s to %s - message: %s",
-                $this->getRealPath(), $this->destinationRealPath, $lastError['message']
-            ));
+            throw new \RuntimeException(
+                sprintf(
+                    "Could not move %s to %s - message: %s",
+                    $this->getRealPath(),
+                    $this->destinationRealPath,
+                    $lastError['message']
+                )
+            );
             // @codeCoverageIgnoreEnd
         }
         if ($this->onPersistCallback) {
@@ -91,9 +100,13 @@ class AtomicTempFileObject extends \SplFileObject
         if (!@unlink($this->getRealPath())) {
             // @codeCoverageIgnoreStart
             $lastError = error_get_last();
-            throw new \RuntimeException(sprintf("Could not remove %s - message: %s",
-                $this->getRealPath(), $lastError['message']
-            ));
+            throw new \RuntimeException(
+                sprintf(
+                    "Could not remove %s - message: %s",
+                    $this->getRealPath(),
+                    $lastError['message']
+                )
+            );
             // @codeCoverageIgnoreEnd
         }
         if ($this->onDiscardCallback) {
@@ -130,17 +143,21 @@ class AtomicTempFileObject extends \SplFileObject
     /**
      * Easy access iterator apply for processing an entire file.
      *
-     * @param  \Iterator $input    [description]
-     * @param  callable $callback [description]
+     * @param \Iterator $input    [description]
+     * @param callable  $callback [description]
      */
     public function process(\Iterator $input, callable $callback)
     {
         $callback = \Closure::fromCallable($callback);
         $input->rewind();
-        iterator_apply($input, function(\Iterator $iterator) use ($callback) {
-            $callback($iterator->current(), $iterator->key(), $iterator, $this);
-            return true;
-        }, [$input]);
+        iterator_apply(
+            $input,
+            function (\Iterator $iterator) use ($callback) {
+                $callback($iterator->current(), $iterator->key(), $iterator, $this);
+                return true;
+            },
+            [$input]
+        );
         return $this;
     }
 
@@ -165,7 +182,6 @@ class AtomicTempFileObject extends \SplFileObject
 
     /**
      * File comparison
-     *
      *
      * @return bool
      *   True if the contents of this file matches the contents of $filename.

@@ -4,7 +4,8 @@ namespace Gielfeldt\Iterators;
 
 class IntersectIterator extends DiffIterator
 {
-    public function accept() {
+    public function accept()
+    {
         $found = 0;
         foreach ($this->iterators as $iterator) {
             foreach ($iterator as $key => $value) {
