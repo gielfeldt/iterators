@@ -32,6 +32,5 @@ class CloningIteratorTest extends IteratorsTestBase
         $this->assertEquals($input, $original, 'Iterator was not cloned correctly.');
         $this->assertNotEquals($input, $result, 'Iterator was not cloned correctly.');
         $this->assertEquals($expected, $result, 'Iterator was not cloned correctly.');
-
     }
 }

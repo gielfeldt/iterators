@@ -17,7 +17,6 @@ class RandomIteratorTest extends IteratorsTestBase
             $this->assertGreaterThanOrEqual(1, $v, 'Random iterator contains incorrect values.');
             $this->assertLessThanOrEqual(20, $v, 'Random iterator contains incorrect values.');
         }
-
     }
 
     public function testRandomIteratorTooSmall()

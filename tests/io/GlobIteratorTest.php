@@ -93,7 +93,7 @@ class GlobIteratorTest extends IteratorsTestBase
     {
         $iterator = new GlobIterator($pattern);
 
-        $result2 = new MapIterator($iterator, function($iterator) {
+        $result2 = new MapIterator($iterator, function ($iterator) {
             return $iterator->current()->getPathname();
         });
 

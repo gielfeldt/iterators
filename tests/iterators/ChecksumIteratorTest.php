@@ -56,5 +56,4 @@ class ChecksumIteratorTest extends IteratorsTestBase
         $this->assertEquals($expectedSha256, iterator_to_array($iterator), 'Checksum was incorrect');
         $this->assertEquals($expectedSha256Full, (string) ($iterator), 'Checksum was incorrect');
     }
-
 }

@@ -218,5 +218,4 @@ class AtomicTempFileObjectTest extends IteratorsTestBase
         $this->assertEquals(5, filesize($filename), 'File is not correctly persisted - size.');
         $this->assertEquals("TEST2", file_get_contents($filename), 'File is not correctly persisted - content.');
     }
-
 }

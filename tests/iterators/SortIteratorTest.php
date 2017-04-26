@@ -148,5 +148,4 @@ class SortIteratorTest extends IteratorsTestBase
         $iterator = new SortIterator(new \ArrayIterator($input), SortIterator::SORT_DESC, SortIterator::SORT_REINDEX, [$this, 'compareBySqare']);
         $this->assertEquals(3, $iterator->count(), 'Iterator was not sorted correctly.');
     }
-
 }

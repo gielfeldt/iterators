@@ -42,7 +42,6 @@ class RecursiveCloningIteratorTest extends IteratorsTestBase
         $object1->object1 = 'newvalue1';
         $this->assertNotEquals($original, $result, 'Iterator was not cloned correctly.');
         $this->assertEquals($expected, $result, 'Iterator was not cloned correctly.');
-
     }
 
     public function testRecursiveCloningIteratorException()

@@ -96,7 +96,6 @@ class CachingIteratorTest extends IteratorsTestBase
         $cachingIterator->seek(4);
         $cachingIterator[] = 'test';
         $this->assertCount(21, $cachingIterator, 'Iterator has incorrect count.');
-
     }
 
     public function testCachingIteratorSeek()
@@ -184,18 +183,26 @@ class CachingIteratorTest extends IteratorsTestBase
         $cachingIterator = new CachingIterator($inputIterator);
         $this->assertEquals(iterator_to_array($inputIterator), iterator_to_array($cachingIterator), 'Iterator not cached properly.');
 
-        $inputIterator->uasort(function ($a, $b) { return $a <=> $b; });
+        $inputIterator->uasort(function ($a, $b) {
+            return $a <=> $b;
+        });
         $this->assertNotEquals(iterator_to_array($inputIterator, false), iterator_to_array($cachingIterator, false), 'Iterator not cached properly.');
-        $cachingIterator->uasort(function ($a, $b) { return $a <=> $b; });
+        $cachingIterator->uasort(function ($a, $b) {
+            return $a <=> $b;
+        });
         $this->assertEquals(iterator_to_array($inputIterator, false), iterator_to_array($cachingIterator, false), 'Iterator not cached properly.');
 
         $inputIterator = new \ArrayIterator(array_flip($input));
         $cachingIterator = new CachingIterator($inputIterator);
         $this->assertEquals(iterator_to_array($inputIterator), iterator_to_array($cachingIterator), 'Iterator not cached properly.');
 
-        $inputIterator->uksort(function ($a, $b) { return $a <=> $b; });
+        $inputIterator->uksort(function ($a, $b) {
+            return $a <=> $b;
+        });
         $this->assertNotEquals(iterator_to_array($inputIterator, false), iterator_to_array($cachingIterator, false), 'Iterator not cached properly.');
-        $cachingIterator->uksort(function ($a, $b) { return $a <=> $b; });
+        $cachingIterator->uksort(function ($a, $b) {
+            return $a <=> $b;
+        });
         $this->assertEquals(iterator_to_array($inputIterator, false), iterator_to_array($cachingIterator, false), 'Iterator not cached properly.');
 
         $inputIterator = new \ArrayIterator($input);
@@ -213,7 +220,5 @@ class CachingIteratorTest extends IteratorsTestBase
         $newInput->unserialize($inputSerialized);
         $newCache->unserialize($cachingSerialized);
         $this->assertEquals(iterator_to_array($inputIterator), iterator_to_array($cachingIterator), 'Iterator not cached properly.');
-
     }
-
 }

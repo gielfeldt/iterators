@@ -17,7 +17,6 @@ class ReservoirSamplingIteratorTest extends IteratorsTestBase
             $this->assertGreaterThanOrEqual(1, $v, 'ReservoirSampling iterator contains incorrect values.');
             $this->assertLessThanOrEqual(20, $v, 'ReservoirSampling iterator contains incorrect values.');
         }
-
     }
 
     public function testReservoirSamplingIteratorTooSmall()

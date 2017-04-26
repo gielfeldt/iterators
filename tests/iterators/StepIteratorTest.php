@@ -27,6 +27,5 @@ class StepIteratorTest extends IteratorsTestBase
         $input = new \ArrayIterator(range(1, 20));
         $iterator = new StepIterator($input, 4, 3);
         $this->assertEquals(range(4, 20, 4), iterator_to_array($iterator, false), 'Inner iterator was not stepped correctly.');
-
     }
 }

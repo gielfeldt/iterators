@@ -43,5 +43,4 @@ class IntersectIteratorTest extends IteratorsTestBase
         });
         $this->assertEquals($expected, iterator_to_array($iterator), 'Iterator was not diffed correctly.');
     }
-
 }

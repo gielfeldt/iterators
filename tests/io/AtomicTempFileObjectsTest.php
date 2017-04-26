@@ -69,7 +69,6 @@ class AtomicTempFileObjectsTest extends IteratorsTestBase
         $expected = file_get_contents($this->fixturesPath . '/csvfile4-result-modified-3');
         $result = file_get_contents($dirname . '/csvfile4-result-modified-3');
         $this->assertEquals($expected, $result, 'File was not split correctly.');
-
     }
 
     public function testProcess()

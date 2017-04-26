@@ -38,6 +38,7 @@ class RecursiveMapIteratorTest extends IteratorsTestBase
     public function testRecursiveMapIteratorException()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $iterator = new RecursiveMapIterator(new \ArrayIterator([]), function ($iterator) {});
+        $iterator = new RecursiveMapIterator(new \ArrayIterator([]), function ($iterator) {
+        });
     }
 }

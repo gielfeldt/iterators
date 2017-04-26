@@ -54,7 +54,8 @@ class CsvFileObjectTest extends IteratorsTestBase
         $this->assertEquals($expectedCount, count($csvFileObject), 'Lines were not counted correctly');
 
         $csvFileObject = new CsvFileObject($csvFile);
-        foreach ($csvFileObject as $row) {}
+        foreach ($csvFileObject as $row) {
+        }
         $this->assertEquals($expectedCount, count($csvFileObject), 'Lines were not counted correctly');
 
         $csvFileObject = new CsvFileObject($csvFile);
