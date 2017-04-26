@@ -23,8 +23,10 @@ composer require gielfeldt/iterators
 ### Iterators
 
 This library contains a bunch of various iterators that I made primarily for
-getting more acquainted with iterators in PHP. They might be of use to someone.
-So here you go.
+getting more acquainted with iterators in PHP. Some may be useful. Some may be
+silly.
+
+Enjoy!
 
 [ChecksumIterator](#checksumiterator)
 
