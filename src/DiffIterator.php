@@ -12,7 +12,7 @@ class DiffIterator extends \FilterIterator
         $innerIterator = array_shift($iterators);
         parent::__construct($innerIterator);
         foreach ($iterators as $iterator) {
-            $this->iterators[] = new \CachingIterator($iterator, \CachingIterator::FULL_CACHE);
+            $this->iterators[] = new CachingIterator($iterator);
         }
         $this->callback = \Closure::fromCallable([static::class, 'diffCurrent']);
     }
