@@ -35,7 +35,7 @@ class CachingIterator extends \ArrayIterator
         if ($this->uncachedIterator->getIndex() === null) {
             $this->uncachedIterator->rewind();
             parent::rewind();
-            $this->collect();            
+            $this->collect();
         }
     }
 
@@ -82,14 +82,14 @@ class CachingIterator extends \ArrayIterator
             $current = ($this->flags & self::CLONE_CURRENT) && is_object($current) ? clone $current : $current;
             parent::offsetSet($key, $current);
             $this->uncachedIterator->next();
-        }
-        else {
+        } else {
             $this->finished = true;
         }
     }
 
     // Ensure entire inner iterator is collected before applying the follwing.
-    public function seek($pos) {
+    public function seek($pos)
+    {
         $this->collectRest($pos);
         return parent::seek($pos);
     }
@@ -160,5 +160,4 @@ class CachingIterator extends \ArrayIterator
         $this->innerIteratorCount = null;
         return parent::unserialize($serialized);
     }
-
 }
