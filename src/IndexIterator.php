@@ -6,7 +6,6 @@ class IndexIterator extends TraversableIterator implements \Countable
 {
     private $indexingIterator;
     private $valid;
-    private $count;
 
     public function __construct(\Traversable $iterator, iterable $indexes)
     {

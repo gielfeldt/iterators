@@ -12,6 +12,7 @@ class CachingIterator extends \ArrayIterator
     private $modified = false;
     private $finished = false;
     private $flags;
+    private $index;
 
     public function __construct(\Traversable $iterator, int $flags = self::CLONE_KEY | self::CLONE_CURRENT)
     {

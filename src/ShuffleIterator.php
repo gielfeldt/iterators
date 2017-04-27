@@ -14,9 +14,6 @@ class ShuffleIterator extends ReplaceableIterator implements \Countable
         parent::__construct(new \ArrayIterator());
     }
 
-    /**
-     * @param \Traversable $iterator
-     */
     public function rewind()
     {
         $shuffledIterator = new \ArrayIterator();

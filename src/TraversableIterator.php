@@ -22,9 +22,4 @@ class TraversableIterator extends \IteratorIterator
     {
         return $this->index;
     }
-
-    public function setIndex($pos)
-    {
-        $this->index = $pos;
-    }
 }
