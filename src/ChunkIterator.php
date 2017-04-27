@@ -45,8 +45,8 @@ class ChunkIterator extends ValuesIterator
         // The outer iterator is a finite replaceable iterator with a condition
         // on the inner iterator not being empty.
         parent::__construct(
-            new InfiniteIterator(
-                new ReplaceableIterator(),
+            new FiniteIterator(
+                new InfiniteIterator(new ReplaceableIterator()),
                 function ($iterator) {
                     return !$iterator->current()->valid();
                 }

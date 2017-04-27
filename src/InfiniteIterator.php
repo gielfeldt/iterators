@@ -4,12 +4,11 @@ namespace Gielfeldt\Iterators;
 
 class InfiniteIterator extends TraversableIterator
 {
-    private $endCondition;
+    private $empty = false;
     private $currentIteration;
 
-    public function __construct(\Traversable $iterator, callable $endCondition = null)
+    public function __construct(\Traversable $iterator)
     {
-        $this->endCondition = $endCondition ? \Closure::fromCallable($endCondition) : null;
         parent::__construct($iterator);
     }
 
@@ -22,15 +21,16 @@ class InfiniteIterator extends TraversableIterator
     {
         $this->currentIteration = 0;
         parent::rewind();
+        $this->empty = !parent::valid();
     }
 
     public function valid()
     {
-        if (!parent::valid()) {
+        if (!$this->empty && !parent::valid()) {
             parent::rewind();
             $this->currentIteration++;
         }
 
-        return $this->endCondition ? !($this->endCondition)($this) : parent::valid();
+        return !$this->empty;
     }
 }

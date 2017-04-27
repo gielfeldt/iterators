@@ -2,7 +2,7 @@
 
 namespace Gielfeldt\Iterators;
 
-class RandomIterator implements \IteratorAggregate
+class RandomIterator implements \IteratorAggregate, \Countable
 {
     private $count;
     private $innerIterator;
@@ -24,8 +24,11 @@ class RandomIterator implements \IteratorAggregate
             } while (isset($indexes[$index]));
             $indexes[$index] = $index;
         }
-        sort($indexes);
-        $indexes = new \ArrayIterator($indexes);
         return new IndexIterator($this->innerIterator, $indexes);
+    }
+
+    public function count()
+    {
+        return min(count($this->innerIterator), $this->count);
     }
 }

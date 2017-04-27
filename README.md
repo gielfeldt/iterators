@@ -83,6 +83,36 @@ Enjoy!
 
 #### CachingIterator
 
+Cache an iterator for multiple iterations.
+
+```php
+use Gielfeldt\Iterators\CachingIterator;
+
+$input = new \ArrayIterator(range(1, 4));
+$input = new \NoRewindIterator($input);
+$cached = new CachingIterator($input);
+
+print_r(iterator_to_array($cached));
+print_r(iterator_to_array($cached));
+```
+
+Output:
+```
+Array
+(
+    [0] => 1
+    [1] => 2
+    [2] => 3
+    [3] => 4
+)
+Array
+(
+    [0] => 1
+    [1] => 2
+    [2] => 3
+    [3] => 4
+)
+```
 
 #### ChecksumIterator
 Generate a checksum for an iterator, either per iteration or the entire dataset.
@@ -269,6 +299,31 @@ Array
 
 #### FiniteIterator
 
+Provide an end condition through an anonymous function for an iterator.
+
+```php
+use Gielfeldt\Iterators\FiniteIterator;
+
+$input = new \ArrayIterator(range(1, 8));
+$some = new FiniteIterator($input, function ($iterator) {
+    return $iterator->current() > 5;
+});
+
+print_r(iterator_to_array($some));
+```
+
+Output:
+```
+Array
+(
+    [0] => 1
+    [1] => 2
+    [2] => 3
+    [3] => 4
+    [4] => 5
+)
+```
+
 #### FlipIterator
 Similar to array_flip(). However, iterators can have non-unique keys. Be aware of
 this when using iterator_to_array();
@@ -341,7 +396,65 @@ array(2) {
 
 #### IndexIterator
 
+Iterate only through certain rows of an iterator.
+
+```php
+use Gielfeldt\Iterators\IndexIterator;
+
+$input = new \ArrayIterator([
+    'test1' => 'val6',
+    'test2' => 'val5',
+    'test3' => 'val4',
+    'test4' => 'val3',
+    'test5' => 'val2',
+    'test6' => 'val1',
+]);
+$some = new IndexIterator($input, [2, 3, 5]);
+
+print_r(iterator_to_array($some));
+```
+
+Output:
+```
+Array
+(
+    [test3] => val4
+    [test4] => val3
+    [test6] => val1
+)
+```
+
 #### InfiniteIterator
+Like SPL's InfiniteIterator but provides an additional method, getCurrentIteration().
+
+```php
+use Gielfeldt\Iterators\InfiniteIterator;
+use Gielfeldt\Iterators\FiniteIterator;
+
+$input = new \ArrayIterator(range(1, 4));
+$infinite = new InfiniteIterator($input);
+$some = new FiniteIterator($infinite, function ($iterator) {
+    return $iterator->getCurrentIteration() >= 2 && $iterator->current() > 2;
+});
+
+foreach ($some as $k => $v) {
+    print $some->getCurrentIteration() . ": $k => $v\n";
+}
+```
+
+Output:
+```
+0: 0 => 1
+0: 1 => 2
+0: 2 => 3
+0: 3 => 4
+1: 0 => 1
+1: 1 => 2
+1: 2 => 3
+1: 3 => 4
+2: 0 => 1
+2: 1 => 2
+```
 
 #### InterleaveIterator
 Interleave multiple iterators.
@@ -423,6 +536,38 @@ Array
 ```
 
 #### TraversableIterator
+Like SPL's IteratorIterator, but with a more meaningful name :-)
+and provides a getIndex() method.
+
+```php
+use Gielfeldt\Iterators\TraversableIterator;
+
+$keys = range(1, 10);
+shuffle($keys);
+$values = range(1, 10);
+shuffle($values);
+
+$input = new \ArrayIterator(array_combine($keys, $values));
+$iterator = new TraversableIterator($input);
+
+foreach ($iterator as $k => $v) {
+    print $iterator->getIndex() . ": $k => $v\n";
+}
+```
+
+Output:
+```
+0: 1 => 3
+1: 4 => 2
+2: 9 => 10
+3: 3 => 8
+4: 2 => 6
+5: 5 => 5
+6: 8 => 1
+7: 10 => 9
+8: 6 => 7
+9: 7 => 4
+```
 
 #### KeysIterator
 Similar to array_keys().
@@ -495,6 +640,31 @@ Array
 ```
 
 #### RandomIterator
+Selects a set of random elements from a traversable. Does not work with iterators
+that can only be traversed once. For that, see the ReservoirSamplingIterator.
+
+```php
+use Gielfeldt\Iterators\RandomIterator;
+
+$input = new \ArrayIterator(range(1, 10));
+$random = new RandomIterator($input, 4);
+
+var_dump(count($random));
+
+print_r(iterator_to_array($random));
+```
+
+Output:
+```
+int(4)
+Array
+(
+    [1] => 2
+    [6] => 7
+    [7] => 8
+    [8] => 9
+)
+```
 
 #### RepeatIterator
 Repeat and iterator n times.
@@ -568,10 +738,73 @@ Array
 ```
 
 #### ReservoirSamplingIterator
+Like RandomIterator but works more effeciently on iterators of unknown size or
+which can be traversed only once.
 
+```php
+use Gielfeldt\Iterators\ReservoirSamplingIterator;
+
+$input = new \ArrayIterator(range(1, 10));
+$input = new \NoRewindIterator($input);
+$random = new ReservoirSamplingIterator($input, 4);
+
+print_r(iterator_to_array($random));
+```
+
+Output:
+```
+int(4)
+Array
+(
+    [1] => 2
+    [6] => 7
+    [7] => 8
+    [8] => 9
+)
+```
 
 #### ShuffleIterator
+Iterate randomly over a traversable.
 
+```php
+use Gielfeldt\Iterators\ShuffleIterator;
+
+$input = new \ArrayIterator(range(1, 10));
+$shuffled = new ShuffleIterator($input);
+
+print_r(iterator_to_array($shuffled));
+print_r(iterator_to_array($shuffled));
+```
+
+Output:
+```
+Array
+(
+    [1] => 2
+    [4] => 5
+    [0] => 1
+    [9] => 10
+    [7] => 8
+    [5] => 6
+    [2] => 3
+    [8] => 9
+    [3] => 4
+    [6] => 7
+)
+Array
+(
+    [1] => 2
+    [9] => 10
+    [4] => 5
+    [2] => 3
+    [5] => 6
+    [0] => 1
+    [8] => 9
+    [3] => 4
+    [7] => 8
+    [6] => 7
+)
+```
 
 #### SortIterator
 
@@ -638,6 +871,28 @@ Array
 ```
 
 #### StepIterator
+Iterate over a traversable in steps.
+
+```php
+use Gielfeldt\Iterators\StepIterator;
+
+$input = new \ArrayIterator(range(1, 10));
+$stepped = new StepIterator($input, 2);
+
+print_r(iterator_to_array($stepped));
+```
+
+Output:
+```
+Array
+(
+    [0] => 1
+    [2] => 3
+    [4] => 5
+    [6] => 7
+    [8] => 9
+)
+```
 
 
 #### UniqueIterator

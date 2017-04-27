@@ -2,15 +2,27 @@
 
 namespace Gielfeldt\Iterators;
 
-class IndexIterator extends TraversableIterator
+class IndexIterator extends TraversableIterator implements \Countable
 {
     private $indexingIterator;
     private $valid;
+    private $count;
 
-    public function __construct(\Traversable $iterator, \Traversable $indexingIterator)
+    public function __construct(\Traversable $iterator, iterable $indexes)
     {
-        $this->indexingIterator = $indexingIterator instanceof \Iterator ? $indexingIterator : new \IteratorIterator($indexingIterator);
+        if ($indexes instanceof \Traversable) {
+            $indexes = iterator_to_array(new \IteratorIterator($indexes), false);
+        }
+        sort($indexes);
+        $this->indexingIterator = new \ArrayIterator($indexes);
+
+        $iterator = $iterator instanceof \Countable ? $iterator : new CountableIterator($iterator, CountableIterator::CACHE_COUNT);
         parent::__construct($iterator);
+    }
+
+    public function count()
+    {
+        return min(count($this->getInnerIterator()), count($this->indexingIterator));
     }
 
     public function rewind()

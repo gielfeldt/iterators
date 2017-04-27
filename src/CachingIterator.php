@@ -21,15 +21,6 @@ class CachingIterator extends \ArrayIterator
         parent::__construct();
     }
 
-    public function count()
-    {
-        if (!$this->finished && !$this->modified && $this->uncachedIteratorCount !== null) {
-            return $this->uncachedIteratorCount;
-        }
-        $this->collectRest();
-        return parent::count();
-    }
-
     private function setupInnerIterator()
     {
         if ($this->uncachedIterator->getIndex() === null) {
@@ -39,14 +30,30 @@ class CachingIterator extends \ArrayIterator
         }
     }
 
+    public function count()
+    {
+        if (!$this->finished && !$this->modified && $this->uncachedIteratorCount !== null) {
+            return $this->uncachedIteratorCount;
+        }
+        $this->collectRest();
+        return parent::count();
+    }
+
+    public function getIndex()
+    {
+        return $this->index;
+    }
+
     public function rewind()
     {
+        $this->index = 0;
         $this->setupInnerIterator();
         parent::rewind();
     }
 
     public function next()
     {
+        $this->index++;
         parent::next();
         if (!parent::valid()) {
             $this->collect();
@@ -87,10 +94,18 @@ class CachingIterator extends \ArrayIterator
         }
     }
 
+    public function prev()
+    {
+        $this->seek($this->index - 1);
+    }
+
     // Ensure entire inner iterator is collected before applying the follwing.
     public function seek($pos)
     {
-        $this->collectRest($pos);
+        if ($pos >= $this->uncachedIterator->getIndex()) {
+            $this->collectRest($pos);
+        }
+        $this->index = $pos;
         return parent::seek($pos);
     }
 
@@ -156,7 +171,7 @@ class CachingIterator extends \ArrayIterator
     {
         $this->finished = true;
         $this->modified = false;
-        $this->uncachedIterator = new TraversableIterator(new \EmptyIterator());
+        $this->uncachedIterator = new TraversableIterator(new \ArrayIterator());
         $this->uncachedIteratorCount = null;
         return parent::unserialize($serialized);
     }

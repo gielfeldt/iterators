@@ -2,35 +2,37 @@
 
 namespace Gielfeldt\Iterators;
 
-class ShuffleIterator extends TraversableIterator implements \Countable
+class ShuffleIterator extends ReplaceableIterator implements \Countable
 {
-    protected $min = INF;
-    protected $max = -INF;
+    private $min = INF;
+    private $max = -INF;
+    private $innerIterator;
 
     public function __construct(\Traversable $iterator)
     {
-        parent::__construct($this->getShuffledIterator($iterator));
+        $this->innerIterator = $iterator;
+        parent::__construct(new \ArrayIterator());
     }
 
     /**
      * @param \Traversable $iterator
      */
-    public function getShuffledIterator($iterator)
+    public function rewind()
     {
-        $sortedIterator = new \ArrayIterator();
-        $sorted = [];
-        foreach ($iterator as $key => $value) {
-            $sorted[] = $this->generateElement($key, $value, $iterator);
+        $shuffledIterator = new \ArrayIterator();
+        $items = [];
+        foreach ($this->innerIterator as $key => $value) {
+            $items[] = $this->generateElement($key, $value, $this->innerIterator);
             $this->min = $this->min < $value ? $this->min : $value;
             $this->max = $this->max > $value ? $this->max : $value;
         }
 
-        shuffle($sorted);
+        shuffle($items);
 
-        foreach ($sorted as $data) {
-            $sortedIterator->append($data);
+        foreach ($items as $data) {
+            $shuffledIterator[$data->key] = $data->current;
         }
-        return $sortedIterator;
+        $this->setInnerIterator($shuffledIterator);
     }
 
     /**
@@ -41,16 +43,6 @@ class ShuffleIterator extends TraversableIterator implements \Countable
         return (object) ['key' => $key, 'current' => $value];
     }
 
-    public function key()
-    {
-        return $this->getInnerIterator()->current()->key ?? null;
-    }
-
-    public function current()
-    {
-        return $this->getInnerIterator()->current()->current ?? null;
-    }
-
     public function count()
     {
         return $this->getInnerIterator()->count();
@@ -59,13 +51,13 @@ class ShuffleIterator extends TraversableIterator implements \Countable
     public function first()
     {
         $count = $this->getInnerIterator()->count();
-        return $count ? $this->getInnerIterator()[0]->current : null;
+        return $count ? $this->getInnerIterator()[0] : null;
     }
 
     public function last()
     {
         $count = $this->getInnerIterator()->count();
-        return $count ? $this->getInnerIterator()[$count - 1]->current : null;
+        return $count ? $this->getInnerIterator()[$count - 1] : null;
     }
 
     public function min()

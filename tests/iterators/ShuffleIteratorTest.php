@@ -14,7 +14,7 @@ class ShuffleIteratorTest extends IteratorsTestBase
         $this->assertNotEquals(array_keys($input), array_keys($result), 'Inner iterator was not shuffled correctly.');
         $this->assertNotEquals(array_values($input), array_values($result), 'Inner iterator was not shuffled correctly.');
 
-        sort($result);
+        asort($result);
         $this->assertEquals($input, $result, 'Inner iterator was not shuffled correctly.');
 
         $this->assertCount(20, $iterator, 'Inner iterator was not shuffled correctly.');
