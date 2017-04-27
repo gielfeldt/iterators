@@ -156,8 +156,8 @@ class CachingIterator extends \ArrayIterator
     {
         $this->finished = true;
         $this->modified = false;
-        $this->innerIterator = null;
-        $this->innerIteratorCount = null;
+        $this->uncachedIterator = new IteratorIterator(new \EmptyIterator());
+        $this->uncachedIteratorCount = null;
         return parent::unserialize($serialized);
     }
 }
