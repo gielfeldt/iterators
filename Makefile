@@ -3,10 +3,13 @@ all: clean test coverage
 clean:
 	rm -rf build/artifacts/*
 
-test:
+lint:
+	find src -name "*.php" -print0 | xargs -0 -n1 php -l
+
+test: lint
 	vendor/bin/phpunit
 
-coverage:
+coverage: lint
 	vendor/bin/phpunit --coverage-html=build/artifacts/coverage
 
 coverage-show:
