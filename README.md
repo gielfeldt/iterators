@@ -28,6 +28,8 @@ silly.
 
 Enjoy!
 
+[CachingIterator](#cachingiterator)
+
 [ChecksumIterator](#checksumiterator)
 
 [ChunkIterator](#chunkiterator)
@@ -40,27 +42,47 @@ Enjoy!
 
 [DiffIterator](#diffiterator)
 
+[FiniteIterator](#finiteiterator)
+
 [FlipIterator](#flipiterator)
 
 [GlobIterator](#globiterator)
+
+[IndexIterator](#indexiterator)
+
+[InfiniteIterator](#infiniteiterator)
 
 [InterleaveIterator](#interleaveiterator)
 
 [IntersectIterator](#intersectiterator)
 
+[IteratorIterator](#iteratoriterator)
+
 [KeysIterator](#keysiterator)
 
 [MapIterator](#mapiterator)
+
+[RandomIterator](#randomiterator)
 
 [RepeatIterator](#repeatiterator)
 
 [ReplaceableIterator](#replaceableiterator)
 
+[ReservoirSamplingIterator](#reservoirsamplingiterator)
+
+[ShuffleIterator](#shuffleiterator)
+
 [SortIterator](#sortiterator)
+
+[StepIterator](#stepiterator)
 
 [UniqueIterator](#uniqueiterator)
 
 [ValuesIterator](#valuesiterator)
+
+
+#### CachingIterator
+
 
 #### ChecksumIterator
 Generate a checksum for an iterator, either per iteration or the entire dataset.
@@ -244,6 +266,9 @@ Array
 )
 ```
 
+
+#### FiniteIterator
+
 #### FlipIterator
 Similar to array_flip(). However, iterators can have non-unique keys. Be aware of
 this when using iterator_to_array();
@@ -313,6 +338,10 @@ array(2) {
   }
 }
 ```
+
+#### IndexIterator
+
+#### InfiniteIterator
 
 #### InterleaveIterator
 Interleave multiple iterators.
@@ -393,6 +422,8 @@ Array
 )
 ```
 
+#### IteratorIterator
+
 #### KeysIterator
 Similar to array_keys().
 
@@ -462,6 +493,8 @@ Array
     [value3] => key6
 )
 ```
+
+#### RandomIterator
 
 #### RepeatIterator
 Repeat and iterator n times.
@@ -534,6 +567,12 @@ Array
 )
 ```
 
+#### ReservoirSamplingIterator
+
+
+#### ShuffleIterator
+
+
 #### SortIterator
 
 ```php
@@ -597,6 +636,9 @@ Array
     [5] => 1
 )
 ```
+
+#### StepIterator
+
 
 #### UniqueIterator
 Similar to array_unique(). Also supports a custom callback function.
