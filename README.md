@@ -56,7 +56,7 @@ Enjoy!
 
 [IntersectIterator](#intersectiterator)
 
-[IteratorIterator](#iteratoriterator)
+[TraversableIterator](#traversableiterator)
 
 [KeysIterator](#keysiterator)
 
@@ -422,7 +422,7 @@ Array
 )
 ```
 
-#### IteratorIterator
+#### TraversableIterator
 
 #### KeysIterator
 Similar to array_keys().
@@ -537,7 +537,7 @@ Array
 ```
 
 #### ReplaceableIterator
-Just like IteratorIterator but with a setInnerIterator() method.
+Just like TraversableIterator but with a setInnerIterator() method.
 
 ```php
 use Gielfeldt\Iterators\ReplaceableIterator;

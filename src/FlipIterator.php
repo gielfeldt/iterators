@@ -2,7 +2,7 @@
 
 namespace Gielfeldt\Iterators;
 
-class FlipIterator extends IteratorIterator
+class FlipIterator extends TraversableIterator
 {
     public function key()
     {

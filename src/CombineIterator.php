@@ -2,7 +2,7 @@
 
 namespace Gielfeldt\Iterators;
 
-class CombineIterator extends IteratorIterator
+class CombineIterator extends TraversableIterator
 {
     const NEED_ANY = \MultipleIterator::MIT_NEED_ANY;
     const NEED_ALL = \MultipleIterator::MIT_NEED_ALL;

@@ -2,7 +2,7 @@
 
 namespace Gielfeldt\Iterators;
 
-class SortIterator extends IteratorIterator implements \Countable
+class SortIterator extends TraversableIterator implements \Countable
 {
     const SORT_CURRENT = [__CLASS__, 'sortCurrent'];
     const SORT_KEY = [__CLASS__, 'sortKey'];

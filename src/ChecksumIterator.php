@@ -2,7 +2,7 @@
 
 namespace Gielfeldt\Iterators;
 
-class ChecksumIterator extends IteratorIterator
+class ChecksumIterator extends TraversableIterator
 {
     protected $algo;
 

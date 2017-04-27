@@ -2,7 +2,7 @@
 
 namespace Gielfeldt\Iterators;
 
-class StepIterator extends IteratorIterator
+class StepIterator extends TraversableIterator
 {
     private $step;
     private $offset;

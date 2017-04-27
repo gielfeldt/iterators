@@ -2,7 +2,7 @@
 
 namespace Gielfeldt\Iterators;
 
-class IteratorIterator extends \IteratorIterator
+class TraversableIterator extends \IteratorIterator
 {
     private $index;
 

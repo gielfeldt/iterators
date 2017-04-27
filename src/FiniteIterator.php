@@ -2,7 +2,7 @@
 
 namespace Gielfeldt\Iterators;
 
-class FiniteIterator extends IteratorIterator
+class FiniteIterator extends TraversableIterator
 {
     private $endCondition;
 

@@ -2,7 +2,7 @@
 
 namespace Gielfeldt\Iterators;
 
-class KeysIterator extends IteratorIterator
+class KeysIterator extends TraversableIterator
 {
     public function key()
     {

@@ -2,7 +2,7 @@
 
 namespace Gielfeldt\Iterators;
 
-class ShuffleIterator extends IteratorIterator implements \Countable
+class ShuffleIterator extends TraversableIterator implements \Countable
 {
     protected $min = INF;
     protected $max = -INF;

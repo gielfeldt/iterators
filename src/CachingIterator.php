@@ -17,7 +17,7 @@ class CachingIterator extends \ArrayIterator
     {
         $this->flags = $flags;
         $this->uncachedIteratorCount = $iterator instanceof \Countable ? count($iterator) : null;
-        $this->uncachedIterator = new IteratorIterator($iterator);
+        $this->uncachedIterator = new TraversableIterator($iterator);
         parent::__construct();
     }
 
@@ -156,7 +156,7 @@ class CachingIterator extends \ArrayIterator
     {
         $this->finished = true;
         $this->modified = false;
-        $this->uncachedIterator = new IteratorIterator(new \EmptyIterator());
+        $this->uncachedIterator = new TraversableIterator(new \EmptyIterator());
         $this->uncachedIteratorCount = null;
         return parent::unserialize($serialized);
     }

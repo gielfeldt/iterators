@@ -9,7 +9,7 @@ class ReservoirSamplingIterator implements \IteratorAggregate
 
     public function __construct(\Traversable $iterator, int $count)
     {
-        $this->iterator = new IteratorIterator($iterator);
+        $this->iterator = new TraversableIterator($iterator);
         $this->count = $count;
     }
 

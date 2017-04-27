@@ -2,7 +2,7 @@
 
 namespace Gielfeldt\Iterators;
 
-class MapIterator extends IteratorIterator
+class MapIterator extends TraversableIterator
 {
     protected $currentKey;
     protected $currentValue;

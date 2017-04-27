@@ -2,7 +2,7 @@
 
 namespace Gielfeldt\Iterators;
 
-class RepeatIterator extends IteratorIterator implements \Countable
+class RepeatIterator extends TraversableIterator implements \Countable
 {
     protected $count;
     protected $currentIteration = 0;

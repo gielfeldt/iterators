@@ -6,6 +6,9 @@ clean:
 lint:
 	find src -name "*.php" -print0 | xargs -0 -n1 php -l
 
+cs: 
+	phpcs --standard=PSR2 src/
+
 test: lint
 	vendor/bin/phpunit
 
