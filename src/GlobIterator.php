@@ -8,6 +8,7 @@ namespace Gielfeldt\Iterators;
 class GlobIterator extends TraversableIterator implements \Countable
 {
     const GLOB_NOSORT = 2048;
+    const GLOB_ONLYDIR = 16384;
 
     protected $flags;
     protected $path;
@@ -60,6 +61,9 @@ class GlobIterator extends TraversableIterator implements \Countable
         $fIterator = new \CallbackFilterIterator(
             $rIterator,
             function (&$current, &$key) use ($iteratorId, $regexPattern) {
+                if (($this->flags & self::GLOB_ONLYDIR) && !$current->isDir()) {
+                    return false;
+                }
                 GlobIteratorFileInfo::setIteratorId($iteratorId);
                 $fileInfo = $current->getFileInfo(GlobIteratorFileInfo::class);
                 if ($this->flags & \FilesystemIterator::CURRENT_AS_PATHNAME) {

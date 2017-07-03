@@ -177,6 +177,23 @@ class GlobIteratorTest extends IteratorsTestBase
         $this->assertCount(count($expected), $iterator, 'GlobIterator did not return expected result.');
     }
 
+    public function testGlobIteratorOnlyDir()
+    {
+        $pattern = 'vfs://test/**';
+        $iterator = new GlobIterator($pattern, GlobIterator::GLOB_ONLYDIR | GlobIterator::GLOB_NOSORT | \FilesystemIterator::KEY_AS_FILENAME | \FilesystemIterator::CURRENT_AS_PATHNAME);
+
+        $expected = [
+            'vfs://test/tmp',
+            'vfs://test/dir1',
+            'vfs://test/dir1/dir2',
+            'vfs://test/dir3',
+            'vfs://test/dir3/dir4',
+        ];
+
+        $this->assertEquals($expected, iterator_to_array($iterator, false), 'GlobIterator did not return expected result.');
+        $this->assertCount(count($expected), $iterator, 'GlobIterator did not return expected result.');
+    }
+
     /**
      * @dataProvider dataProviderGlob()
      */
