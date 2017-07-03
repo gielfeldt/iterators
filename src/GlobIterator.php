@@ -37,7 +37,7 @@ class GlobIterator extends TraversableIterator implements \Countable
         $realPath = rtrim($realPath, '/') . '/';
 
         $flags = $flags & ~ \FilesystemIterator::CURRENT_AS_PATHNAME;
-        $flags |= \FilesystemIterator::KEY_AS_PATHNAME;
+        $flags |= \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::SKIP_DOTS;
         $iterator = new \RecursiveDirectoryIterator($realPath, $flags);
 
         // Sort if necessary.
