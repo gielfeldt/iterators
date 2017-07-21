@@ -6,7 +6,6 @@ class SortIterator extends TraversableIterator implements \Countable
 {
     const SORT_CURRENT = [__CLASS__, 'sortCurrent'];
     const SORT_KEY = [__CLASS__, 'sortKey'];
-    const SORT_SPL_FILE_INFO = [__CLASS__, 'sortSplFileInfo'];
     const SORT_ASC = 1;
     const SORT_DESC = 2;
     const SORT_REINDEX = 4;
