@@ -67,3 +67,47 @@ class ShuffleIterator extends ReplaceableIterator implements \Countable
         return $this->max;
     }
 }
+
+class ShuffleIterator2 implements \IteratorAggregate
+{
+    private $innerIterator;
+
+    public function __construct(\Traversable $iterator, $persist = false)
+    {
+        $this->innerIterator = $iterator;
+        $this->persist = $persist;
+    }
+
+    public function getIterator()
+    {
+        #$shuffledIterator = new class() extends \ArrayIterator {
+        #    public function 
+        #}
+        $shuffledIterator = new \ArrayIterator();
+        $count = 0;
+        foreach ($this->innerIterator as $key => $value) {
+            $index = rand(0, $count);
+            if ($index == $count) {
+                #print "a";
+                $shuffledIterator[] = [$key, $value];
+            }
+            else {
+                #print "b";
+                $shuffledIterator[] = $shuffledIterator[$index];
+                $shuffledIterator[$index] = [$key, $value];
+            }
+            $count++;
+        }
+        #return $shuffledIterator;
+        return new \Gielfeldt\Iterators\IndexedIterator($shuffledIterator);
+        return new class($shuffledIterator) extends \IteratorIterator {
+            public function key() { return parent::current()[0]; }
+            public function current() { return parent::current()[1]; }
+        };
+    }
+}
+
+class IndexedIterator extends \IteratorIterator {
+    public function key() { return parent::current()[0]; }
+    public function current() { return parent::current()[1]; }
+}

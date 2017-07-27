@@ -6,24 +6,14 @@ class SortIterator extends TraversableIterator implements \Countable
 {
     const SORT_CURRENT = [__CLASS__, 'sortCurrent'];
     const SORT_KEY = [__CLASS__, 'sortKey'];
-    const SORT_SPL_FILE_INFO = [__CLASS__, 'sortSplFileInfo'];
-    const SORT_ASC = 1;
-    const SORT_DESC = 2;
-    const SORT_REINDEX = 4;
+    const SORT_CURRENT_DESC = [__CLASS__, 'sortCurrentDesc'];
+    const SORT_KEY_DESC = [__CLASS__, 'sortKeyDesc'];
 
-    protected $direction;
-    protected $flags;
     protected $callback;
-    protected $realCallback;
 
-    public function __construct(\Traversable $iterator, int $direction = self::SORT_ASC, int $flags = 0, callable $callback = self::SORT_CURRENT)
+    public function __construct(iterable $iterator, callable $callback = self::SORT_CURRENT)
     {
-        $this->direction = $direction;
-        $this->flags = $flags;
         $this->callback = \Closure::fromCallable($callback);
-        $this->realCallback = $direction == self::SORT_ASC ? $this->callback : function ($cmpA, $cmpB) {
-            return ($this->callback)($cmpB, $cmpA);
-        };
         parent::__construct($this->getSortedIterator($iterator));
     }
 
@@ -38,7 +28,7 @@ class SortIterator extends TraversableIterator implements \Countable
             $sorted[] = $this->generateElement($key, $value, $iterator);
         }
 
-        usort($sorted, $this->realCallback);
+        usort($sorted, $this->callback);
 
         foreach ($sorted as $data) {
             $sortedIterator->append($data);
@@ -53,9 +43,6 @@ class SortIterator extends TraversableIterator implements \Countable
 
     public function key()
     {
-        if ($this->flags & self::SORT_REINDEX) {
-            return $this->getInnerIterator()->key();
-        }
         return $this->getInnerIterator()->current()->key ?? null;
     }
 

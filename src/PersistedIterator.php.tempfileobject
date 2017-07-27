@@ -1,0 +1,44 @@
+<?php
+
+namespace Gielfeldt\Iterators;
+
+class PersistedIterator extends \SplTempFileObject
+{
+    public function __construct(iterable $iterator)
+    {
+        parent::__construct(0);
+        foreach ($iterator as $key => $value) {
+            $data = [$key, $value];
+            $this->fwrite(base64_encode(serialize($data)) . "\n");
+        }
+    }
+
+    public function valid()
+    {
+        return $this->valid;
+    }
+
+    public function rewind()
+    {
+        parent::rewind();
+        $this->valid = parent::valid();
+        $this->current = $this->valid ? unserialize(base64_decode(parent::current())) : null;
+    }
+
+    public function next()
+    {
+        parent::next();
+        $this->valid = parent::valid();
+        $this->current = $this->valid ? unserialize(base64_decode(parent::current())) : null;
+    }
+
+    public function current()
+    {
+        return $this->current[1];
+    }
+
+    public function key()
+    {
+        return $this->current[0];
+    }
+}

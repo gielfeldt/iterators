@@ -15,6 +15,18 @@ class Iterator
         return false;
     }
 
+    public static function iterableToIterator(iterable $iterable) {
+        if ($iterable instanceof  \Iterator) {
+            return $iterable;
+        }
+        elseif ($iterable instanceof \IteratorAggregate) {
+            return $iterable->getIterator();
+        }
+        else {
+            return (function ($i) { yield from $i; })($iterable);
+        }
+    }
+
     public static function getInnerIterators(\Traversable $iterator, $include_self = false)
     {
         $result = $include_self ? [$iterator] : [];

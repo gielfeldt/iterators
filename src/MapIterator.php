@@ -9,7 +9,7 @@ class MapIterator extends TraversableIterator
     protected $currentIdx;
     protected $callback;
 
-    public function __construct(\Traversable $iterator, callable $callback)
+    public function __construct(iterable $iterator, callable $callback)
     {
         parent::__construct($iterator);
         $this->callback = \Closure::fromCallable($callback);

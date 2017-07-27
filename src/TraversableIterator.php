@@ -6,6 +6,11 @@ class TraversableIterator extends \IteratorIterator
 {
     private $index;
 
+    public function __construct(iterable $iterator)
+    {
+        parent::__construct(Iterator::iterableToIterator($iterator));
+    }
+
     public function rewind()
     {
         $this->index = 0;
