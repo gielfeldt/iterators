@@ -7,6 +7,7 @@ use Gielfeldt\Iterators\GlobIterator;
 use Gielfeldt\Iterators\MapIterator;
 use Gielfeldt\Iterators\KeysIterator;
 use Gielfeldt\Iterators\ValuesIterator;
+use Gielfeldt\Iterators\SortIterator;
 
 class GlobIteratorTest extends IteratorsTestBase
 {
@@ -97,7 +98,7 @@ class GlobIteratorTest extends IteratorsTestBase
             return $iterator->current()->getPathname();
         });
 
-        $this->assertEquals($expected, iterator_to_array(new KeysIterator($iterator)), 'GlobIterator did not return expected result.');
+        $this->assertEquals($expected, iterator_to_array(new KeysIterator($iterator), false), 'GlobIterator did not return expected result.');
         $this->assertEquals($expected, iterator_to_array($result2), 'GlobIterator did not return expected result.');
         $this->assertCount(count($expected), $iterator, 'GlobIterator did not return expected result.');
     }
@@ -109,7 +110,7 @@ class GlobIteratorTest extends IteratorsTestBase
     {
         $iterator = new GlobIterator($pattern, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO);
 
-        $this->assertEquals($expected, iterator_to_array(new KeysIterator($iterator)), 'GlobIterator did not return expected result.');
+        $this->assertEquals($expected, iterator_to_array(new SortIterator(new KeysIterator($iterator)), false), 'GlobIterator did not return expected result.');
         $this->assertCount(count($expected), $iterator, 'GlobIterator did not return expected result.');
     }
 
@@ -122,7 +123,7 @@ class GlobIteratorTest extends IteratorsTestBase
 
         $expected2 = array_map('basename', $expected);
         $this->assertEquals($expected, iterator_to_array(new ValuesIterator($iterator)), 'GlobIterator did not return expected result.');
-        $this->assertEquals($expected2, iterator_to_array(new KeysIterator($iterator)), 'GlobIterator did not return expected result.');
+        $this->assertEquals($expected2, iterator_to_array(new KeysIterator($iterator), false), 'GlobIterator did not return expected result.');
     }
 
     public function testGlobIteratorCwd()
@@ -146,7 +147,7 @@ class GlobIteratorTest extends IteratorsTestBase
         ];
 
         $iterator = new GlobIterator("**.ext2");
-        $this->assertEquals($expected, iterator_to_array(new KeysIterator($iterator)), 'GlobIterator did not return expected result.');
+        $this->assertEquals($expected, iterator_to_array(new SortIterator(new KeysIterator($iterator)), false), 'GlobIterator did not return expected result.');
         $this->assertCount(count($expected), $iterator, 'GlobIterator did not return expected result.');
 
         $expected = [
@@ -155,7 +156,7 @@ class GlobIteratorTest extends IteratorsTestBase
         ];
 
         $iterator = new GlobIterator("**.ext1");
-        $this->assertEquals($expected, iterator_to_array(new KeysIterator($iterator)), 'GlobIterator did not return expected result.');
+        $this->assertEquals($expected, iterator_to_array(new SortIterator(new KeysIterator($iterator)), false), 'GlobIterator did not return expected result.');
         $this->assertCount(count($expected), $iterator, 'GlobIterator did not return expected result.');
 
         $expected = [
@@ -164,7 +165,7 @@ class GlobIteratorTest extends IteratorsTestBase
         ];
 
         $iterator = new GlobIterator("./**.ext1");
-        $this->assertEquals($expected, iterator_to_array(new KeysIterator($iterator)), 'GlobIterator did not return expected result.');
+        $this->assertEquals($expected, iterator_to_array(new SortIterator(new KeysIterator($iterator)), false), 'GlobIterator did not return expected result.');
         $this->assertCount(count($expected), $iterator, 'GlobIterator did not return expected result.');
 
         $expected = [
@@ -173,7 +174,7 @@ class GlobIteratorTest extends IteratorsTestBase
         ];
 
         $iterator = new GlobIterator("$root/**.ext1");
-        $this->assertEquals($expected, iterator_to_array(new KeysIterator($iterator)), 'GlobIterator did not return expected result.');
+        $this->assertEquals($expected, iterator_to_array(new SortIterator(new KeysIterator($iterator)), false), 'GlobIterator did not return expected result.');
         $this->assertCount(count($expected), $iterator, 'GlobIterator did not return expected result.');
     }
 
